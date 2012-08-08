@@ -21,3 +21,20 @@ function clientside_validation_update_6100() {
   module_enable(array('clientside_validation_form', 'clientside_validation_webform'));
   return array(array('success' => TRUE));
 }
+
+/**
+ * Dependencies changed, enable the right modules.
+ */
+function clientside_validation_update_6101() {
+   $dependants = array(
+    'clientside_validation_fapi',
+    'clientside_validation_webform',
+  );
+  foreach($dependants as $dependant) {
+    if (module_exists($dependant) && !module_exists('clientside_validation_form')) {
+      module_enable(array('clientside_validation_form'));
+      break;
+    }
+  }
+  return array(array('success' => TRUE));
+}
