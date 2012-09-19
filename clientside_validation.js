@@ -16,6 +16,7 @@ Drupal.behaviors.clientsideValidation = function (context) {
       Drupal.myClientsideValidation.bindForms();
     }
   }
+  jQuery.event.trigger('clientsideValidationInitialized');
 }
 
 Drupal.clientsideValidation = function() {
