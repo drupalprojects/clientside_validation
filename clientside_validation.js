@@ -70,95 +70,64 @@ Drupal.clientsideValidation.prototype.bindForms = function(){
     }
 
     if('checkboxrules' in self.forms[f]){
-      groupkey = "";
       jQuery.each (self.forms[f]['checkboxrules'], function(r) {
-        groupkey = r + '_group';
-        self.groups[f][groupkey] = "";
-        jQuery.each(this, function(){
-          i = 0;
+        var groupkey = r + '_group';
+        self.groups[f][groupkey] = [];
+        jQuery.each(this, function() {
           $(this[2] + ' input[type=checkbox]').each(function(){
-            if(i > 0){
-              self.groups[f][groupkey] += ' ';
-            }
-            self.groups[f][groupkey] += $(this).attr('name');
-            i++;
+            self.groups[f][groupkey].push($(this).attr('name'));
           });
         });
       });
     }
 
     if('daterangerules' in self.forms[f]){
-      groupkey = "";
       jQuery.each (self.forms[f]['daterangerules'], function(r) {
-        groupkey = r + '_group';
-        self.groups[f][groupkey] = "";
+        var groupkey = r + '_group';
+        self.groups[f][groupkey] = [];
         jQuery.each(this, function(){
-          i = 0;
           $('#' + f + ' #' + r + ' :input').not('input[type=image]').each(function(){
-            if(i > 0){
-              self.groups[f][groupkey] += ' ';
-            }
-            self.groups[f][groupkey] += $(this).attr('name');
-            i++;
+            self.groups[f][groupkey].push($(this).attr('name'));
           });
         });
       });
     }
 
     if('dateminrules' in self.forms[f]){
-      groupkey = "";
       jQuery.each (self.forms[f]['dateminrules'], function(r) {
-        groupkey = r + '_group';
+        var groupkey = r + '_group';
         self.groups[f][groupkey] = "";
         jQuery.each(this, function(){
-          i = 0;
           $('#' + f + ' #' + r + ' :input').not('input[type=image]').each(function(){
-            if(i > 0){
-              self.groups[f][groupkey] += ' ';
-            }
-            self.groups[f][groupkey] += $(this).attr('name');
-            i++;
+            self.groups[f][groupkey].push($(this).attr('name'));
           });
         });
       });
     }
 
     if('datemaxrules' in self.forms[f]){
-      groupkey = "";
       jQuery.each (self.forms[f]['datemaxrules'], function(r) {
-        groupkey = r + '_group';
-        self.groups[f][groupkey] = "";
+        var groupkey = r + '_group';
+        self.groups[f][groupkey] = [];
         jQuery.each(this, function(){
-          i = 0;
           $('#' + f + ' #' + r + ' :input').not('input[type=image]').each(function(){
-            if(i > 0){
-              self.groups[f][groupkey] += ' ';
-            }
-            self.groups[f][groupkey] += $(this).attr('name');
-            i++;
+            self.groups[f][groupkey].push($(this).attr('name'));
           });
         });
       });
     }
 
     if ('daterequiredrules' in self.forms[f]) {
-      groupkey = "";
       jQuery.each (self.forms[f]['daterequiredrules'], function(r) {
-        groupkey = r + '_group';
-        self.groups[f][groupkey] = "";
+        var groupkey = r + '_group';
+        self.groups[f][groupkey] = [];
         jQuery.each(this, function(){
-          i = 0;
           $('#' + f + ' #' + self.forms[f]['daterequiredrules'][r]['required'][2] + ' :input').not('input[type=image]').each(function(){
-            if(i > 0){
-              self.groups[f][groupkey] += ' ';
-            }
-            self.groups[f][groupkey] += $(this).attr('name');
-            i++;
+            self.groups[f][groupkey].push($(this).attr('name'));
           });
         });
       });
     }
-    self.groups;
 
     // Add basic settings
     // todo: find cleaner fix
@@ -445,7 +414,14 @@ Drupal.clientsideValidation.prototype.bindRules = function(formid){
     jQuery.each (self.forms[formid]['rules'], function(r) {
       // Check if element exist in DOM before adding the rule
       if ($("#" + formid + " :input[name='" + r + "']").length) {
-        $("#" + formid + " :input[name='" + r + "']").rules("add", self.forms[formid]['rules'][r]);
+        var rule = self.forms[formid]['rules'][r];
+        if (typeof self.validators[formid].settings.messages[r] === 'undefined') {
+          self.validators[formid].settings.messages[r] = {};
+        }
+        $.extend(self.validators[formid].settings.messages[r], rule.messages);
+        delete rule.messages;
+        //$("#" + formid + " :input[name='" + r + "']").rules("add", self.forms[formid]['rules'][r]);
+        $("#" + formid + " :input[name='" + r + "']").rules("add", rule);
         $("#" + formid + " :input[name='" + r + "']").change(function(){
           //wait just one millisecond until the error div is updated
           window.setTimeout(function(){
