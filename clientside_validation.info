@@ -4,6 +4,8 @@ description = Add client side validation to forms and Webforms
 core = 7.x
 package = Clientside Validation
 
+dependencies[] = libraries
+
 files[] = clientside_validation.module
 
 configure = admin/config/validation/clientside_validation

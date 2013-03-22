@@ -718,15 +718,16 @@
       self.time.start('checkboxrules');
       jQuery.each (self.forms[formid].checkboxrules, function(r) {
         var $checkboxes = $form.find(this.checkboxgroupminmax[2]).find('input[type="checkbox"]');
+        var messages = self.forms[formid].checkboxrules[r].messages;
+        var rule = self.forms[formid].checkboxrules[r];
+        delete rule.messages;
         if ($checkboxes.length) {
           $checkboxes.addClass('require-one');
-          $checkboxes.each(function(){
-            var rule = self.forms[formid].checkboxrules[r];
-            if (typeof self.validators[formid].settings.messages[r] === 'undefined') {
-              self.validators[formid].settings.messages[r] = {};
+          $checkboxes.each(function(i, elem){
+            if (typeof self.validators[formid].settings.messages[elem.name] === 'undefined') {
+              self.validators[formid].settings.messages[elem.name] = {};
             }
-            $.extend(self.validators[formid].settings.messages[r], rule.messages);
-            delete rule.messages;
+            $.extend(self.validators[formid].settings.messages[elem.name], messages)
             $(this).rules("add", rule);
             $(this).change(hideErrordiv);
           });
@@ -988,18 +989,6 @@
       }
       return result.result;
     }, jQuery.format('Wrong answer.'));
-
-    jQuery.validator.addMethod("rangewords", function(value, element, param) {
-      return this.optional(element) || (param[0] <= jQuery.trim(value).split(/\s+/).length && value.split(/\s+/).length <= param[1]);
-    }, jQuery.format('The value must be between {0} and {1} words long'));
-
-    jQuery.validator.addMethod("minwords", function(value, element, param) {
-      return this.optional(element) || param <= jQuery.trim(value).split(/\s+/).length;
-    }, jQuery.format('The value must be more than {0} words long'));
-
-    jQuery.validator.addMethod("maxwords", function(value, element, param) {
-      return this.optional(element) || jQuery.trim(value).split(/\s+/).length <= param;
-    }, jQuery.format('The value must be fewer than {0} words long'));
 
     jQuery.validator.addMethod("plaintext", function(value, element, param){
       return this.optional(element) || (value === strip_tags(value, param));
