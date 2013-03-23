@@ -1,10 +1,22 @@
 INSTALLATION
 ============
-Download the jQuery validation javascript library (http://bassistance.de/jquery-plugins/jquery-plugin-validation/).
-Place it under sites/all/libraries/jquery.validate so that the file can be found under sites/all/libraries/jquery.validate/dist/jquery.validate.js.
-Install the module and the desired submodules as you normally would.
-Recommended:
-Install XRegExp API and enable the right plugins for faster regular expression validation (http://drupal.org/project/xregexp_api)
+ * Drush
+ --------
+ When you enable Clientside Validation with drush (drush en clientside_validation -y), the jQuery validate library will be downloaded and placed
+ in the right directory automatically.
+ If you enabled Clientside Validation through the UI or you updated from 1.37 or lower to 1.38 or higher, you can download the library with drush
+ through the following command:
+    drush cv-download
+
+ * Manually
+ -----------
+ Download the jQuery validation javascript library (http://bassistance.de/jquery-plugins/jquery-plugin-validation/).
+ Place it under sites/all/libraries/jquery.validate so that the file can be found under sites/all/libraries/jquery.validate/dist/jquery.validate.js.
+ Install the module and the desired submodules as you normally would.
+
+ * Recommended
+ -------------
+ Install XRegExp API and enable the right plugins for faster regular expression validation (http://drupal.org/project/xregexp_api)
 
 DESCRIPTION
 ===========
