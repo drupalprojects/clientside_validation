@@ -12,7 +12,7 @@ function _clientside_validation_deprecated_admin_message() {
 
 function clientside_validation_general_settings_form($form_id, $form_state) {
   drupal_set_title(t('Edit general settings'));
-  if (module_exists('libraries') && $library = libraries_detect('jquery.validate') && !empty($library['installed'])) {
+  if (!module_exists('libraries') ||  !($library = libraries_detect('jquery.validate')) || empty($library['installed'])) {
     _clientside_validation_deprecated_admin_message();
   }
   //jquery.validate.js settings
@@ -168,7 +168,7 @@ function clientside_validation_general_settings_form($form_id, $form_state) {
 }
 
 function clientside_validation_settings_form($form, $form_state, $cvs_formid = NULL, $cvs_type = 'default') {
-  if (module_exists('libraries') && $library = libraries_detect('jquery.validate') && !empty($library['installed'])) {
+  if (!module_exists('libraries') ||  !($library = libraries_detect('jquery.validate')) || empty($library['installed'])) {
     _clientside_validation_deprecated_admin_message();
   }
   $settings = clientside_validation_settings_load($cvs_type, $cvs_formid, TRUE);
@@ -561,7 +561,7 @@ function _cv_setting_status($status) {
 }
 
 function clientside_validation_settings_overview($form, $form_state, $cvs_type) {
-  if (module_exists('libraries') && $library = libraries_detect('jquery.validate') && !empty($library['installed'])) {
+  if (!module_exists('libraries') ||  !($library = libraries_detect('jquery.validate')) || empty($library['installed'])) {
     _clientside_validation_deprecated_admin_message();
   }
   $form = array();
