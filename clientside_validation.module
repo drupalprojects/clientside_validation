@@ -409,7 +409,7 @@ function clientside_validation_webform_after_build(&$form, &$form_state) {
 
 function clientside_validation_add_js_settings($settings) {
   $clientside_validation_settings = &drupal_static('clientside_validation_settings', array());
-  if (!module_exists('libraries') || ($library = libraries_detect('jquery.validate') && !empty($library['installed']))) {
+  if (module_exists('libraries') && $library = libraries_detect('jquery.validate') && !empty($library['installed'])) {
     if (variable_get('clientside_validation_use_minified', 0) == 0) {
       libraries_load('jquery.validate');
     }
