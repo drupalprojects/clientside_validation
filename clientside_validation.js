@@ -825,11 +825,6 @@
       return (amountChecked >= param[0] && amountChecked <= param[1]);
     }, jQuery.format('Minimum {0}, maximum {1}'));
 
-    // Allow integers, same as digits but including a leading '-'
-    jQuery.validator.addMethod("digits_negative", function(value, element) {
-      return this.optional(element) || /^-?\d+$/.test(value);
-    }, jQuery.format('Please enter only digits.'));
-
     // One of the values
     jQuery.validator.addMethod("oneOf", function(value, element, param) {
       for (var p in param.values) {
@@ -1309,6 +1304,25 @@
 
       }
     }, jQuery.format('Not a valid EAN number.'));
+
+    if (Drupal.settings.clientsideValidation.deprecated) {
+      jQuery.validator.addMethod("rangeWords", function(value, element, param) {
+        return this.optional(element) || (param[0] <= jQuery.trim(value).split(/\s+/).length && value.split(/\s+/).length <= param[1]);
+      }, jQuery.format('The value must be between {0} and {1} words long'));
+
+      jQuery.validator.addMethod("minWords", function(value, element, param) {
+        return this.optional(element) || param <= jQuery.trim(value).split(/\s+/).length;
+      }, jQuery.format('The value must be more than {0} words long'));
+
+      jQuery.validator.addMethod("maxWords", function(value, element, param) {
+        return this.optional(element) || jQuery.trim(value).split(/\s+/).length <= param;
+      }, jQuery.format('The value must be fewer than {0} words long'));
+
+      // Allow integers, same as digits but including a leading '-'
+      jQuery.validator.addMethod("integer", function(value, element) {
+        return this.optional(element) || /^-?\d+$/.test(value);
+      }, jQuery.format('Please enter only digits.'));
+    }
 
     /**
      * Allow other modules to add more rules.

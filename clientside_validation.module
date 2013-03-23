@@ -419,6 +419,7 @@ function clientside_validation_add_js_settings($settings) {
   }
   else {
     // @todo: deprecated.
+    $settings['clientsideValidation']['deprecated'] = TRUE;
     _clientside_validation_add_js_deprecated();
   }
 
