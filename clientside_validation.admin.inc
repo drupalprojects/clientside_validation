@@ -4,9 +4,17 @@
  * Admin settings for Clientside Validation
  */
 
+function _clientside_validation_deprecated_admin_message() {
+  $warning = t('The jquery.validate files that are included in the module are deprecated and will be removed in the next version. Please download and enable the libraries module and download the !link and place them under sites/all/libraries/jquery.validate.',
+          array('!link' => l(t('latest version of jQuery validate'), 'http://bassistance.de/jquery-plugins/jquery-plugin-validation/')));
+  drupal_set_message($warning, 'warning');
+}
+
 function clientside_validation_general_settings_form($form_id, $form_state) {
   drupal_set_title(t('Edit general settings'));
-
+  if (!module_exists('libraries') || ($library = libraries_detect('jquery.validate') && !empty($library['installed']))) {
+    _clientside_validation_deprecated_admin_message();
+  }
   //jquery.validate.js settings
   $form['clientside_validation_min'] = array(
     '#type' => 'fieldset',
@@ -160,6 +168,9 @@ function clientside_validation_general_settings_form($form_id, $form_state) {
 }
 
 function clientside_validation_settings_form($form, $form_state, $cvs_formid = NULL, $cvs_type = 'default') {
+  if (!module_exists('libraries') || ($library = libraries_detect('jquery.validate') && !empty($library['installed']))) {
+    _clientside_validation_deprecated_admin_message();
+  }
   $settings = clientside_validation_settings_load($cvs_type, $cvs_formid, TRUE);
   $form['new'] = array(
     '#type' => 'value',
@@ -550,6 +561,9 @@ function _cv_setting_status($status) {
 }
 
 function clientside_validation_settings_overview($form, $form_state, $cvs_type) {
+  if (!module_exists('libraries') || ($library = libraries_detect('jquery.validate') && !empty($library['installed']))) {
+    _clientside_validation_deprecated_admin_message();
+  }
   $form = array();
   $settings = clientside_validation_settings_load($cvs_type, NULL, TRUE);
   $definedforms = array();

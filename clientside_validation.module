@@ -88,6 +88,8 @@ function clientside_validation_libraries_info() {
 function clientside_validation_requirements() {
   // make sure we don't crash the site. Previous versions did not have libraries
   // as dependency. They will need to run update.php first.
+  $warning = t('The jquery.validate files that are included in the module are deprecated and will be removed in the next version. Please download and enable the libraries module and download the !link and place them under sites/all/libraries/jquery.validate.',
+          array('!link' => l(t('latest version of jQuery validate'), 'http://bassistance.de/jquery-plugins/jquery-plugin-validation/')));
   if (module_exists('libraries')) {
     $library = libraries_detect('jquery.validate');
     if ($library && !empty($library['installed'])) {
@@ -103,12 +105,19 @@ function clientside_validation_requirements() {
       return array(
         'clientside_validation' => array(
           'title' => t('jquery.validate.js'),
-          'value' => $library ? $library['error message'] : t('Could not detect jquery.validate library'),
-          'severity' => REQUIREMENT_ERROR,
+          'value' => ($library ? $library['error message'] : t('Could not detect jquery.validate library')) . $warning,
+          'severity' => REQUIREMENT_WARNING,
         ),
       );
     }
   }
+  return array(
+    'clientside_validation' => array(
+      'title' => t('jquery.validate.js'),
+      'value' => $warning,
+      'severity' => REQUIREMENT_WARNING,
+    ),
+  );
 }
 
 /**
@@ -400,11 +409,17 @@ function clientside_validation_webform_after_build(&$form, &$form_state) {
 
 function clientside_validation_add_js_settings($settings) {
   $clientside_validation_settings = &drupal_static('clientside_validation_settings', array());
-  if (variable_get('clientside_validation_use_minified', 0) == 0) {
-    libraries_load('jquery.validate');
+  if (!module_exists('libraries') || ($library = libraries_detect('jquery.validate') && !empty($library['installed']))) {
+    if (variable_get('clientside_validation_use_minified', 0) == 0) {
+      libraries_load('jquery.validate');
+    }
+    else {
+      libraries_load('jquery.validate', 'minified');
+    }
   }
   else {
-    libraries_load('jquery.validate', 'minified');
+    // @todo: deprecated.
+    _clientside_validation_add_js_deprecated();
   }
 
   if (variable_get('clientside_validation_add_js_timing', 0)) {
@@ -412,6 +427,23 @@ function clientside_validation_add_js_settings($settings) {
     drupal_add_js(drupal_get_path('module', 'clientside_validation') . '/time.js');
   }
   $clientside_validation_settings = drupal_array_merge_deep($clientside_validation_settings, $settings);
+}
+
+function _clientside_validation_add_js_deprecated() {
+  if (variable_get('clientside_validation_use_minified', 0) == 0) {
+    drupal_add_js(drupal_get_path('module', 'clientside_validation') . '/jquery-validate/jquery.validate.js');
+  }
+  else {
+    drupal_add_js(drupal_get_path('module', 'clientside_validation') . '/jquery-validate/jquery.validate.min.js');
+  }
+
+  //add our js file to the footer to support vertical_tabs
+  drupal_add_js(drupal_get_path('module', 'clientside_validation') . '/clientside_validation.ie8.js', array(
+    'scope' => 'footer',
+    'weight' => 19,
+    'browsers' => array('IE' => 'lt IE 9', '!IE' => FALSE),
+  ));
+  drupal_add_js(drupal_get_path('module', 'clientside_validation') . '/clientside_validation.js', array('scope' => 'footer', 'weight' => 20));
 }
 
 function _clientside_validation_add_special_rules(&$js_rules, &$settings, $form) {
