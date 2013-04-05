@@ -301,6 +301,7 @@ function _clientside_validation_add_general_settings(&$settings, $form_id) {
     $form_settings_added[] = str_replace('-', '_', $form_id);
   }
 
+
   if (!$general_settings_added) {
     $settings['clientsideValidation']['general'] = array(
       "errorClass" => "error",
@@ -314,9 +315,35 @@ function _clientside_validation_add_general_settings(&$settings, $form_id) {
       "validateOnSubmit" => variable_get('clientside_validation_validate_onsubmit', 1),
       "errorElement" => variable_get('clientside_validation_error_element', 'label'),
     );
+    // add xregxp if choosen and found.
+    if (variable_get('clientside_validation_usexregxp', 0) != 0 && module_exists('xregexp_api')) {
+      $settings['clientsideValidation']['general']['usexregxp'] = clientside_validation_add_xregexp();
+    }
+    else {
+      $settings['clientsideValidation']['general']['usexregxp'] = 0;
+    }
+
     $general_settings_added = TRUE;
   }
+
 }
+
+/*
+ * adds xregexp and optional unicode js lib
+ */
+function clientside_validation_add_xregexp() {
+  $variant = variable_get('clientside_validation_xregxp_variant', '');
+  $lib = FALSE;
+  if (empty($variant)) {
+    $lib = xregexp_api_libraries_load('xregexp');
+  }
+  else {
+    $lib = xregexp_api_libraries_load('xregexp', $variant);
+  }
+  return ($lib && (!isset($lib['error']) || !$lib['error'])) ? 1 : 0;
+}
+
+
 
 /**
  * Set validation rule for required fields.
