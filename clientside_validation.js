@@ -17,7 +17,7 @@ Drupal.behaviors.clientsideValidation = function (context) {
     }
   }
   jQuery.event.trigger('clientsideValidationInitialized');
-}
+};
 
 Drupal.clientsideValidation = function() {
   var self = this;
@@ -58,6 +58,16 @@ Drupal.clientsideValidation.prototype.findVerticalTab = function(element) {
 Drupal.clientsideValidation.prototype.bindForms = function(){
   var self = this;
   jQuery.each (self.forms, function(f) {
+    var $form = $('#' + f);
+    if ($form.parents('#modal-content').length && $($form.hasClass('ctools-use-modal-processed'))) {
+      $form.unbind('submit', Drupal.CTools.Modal.submitAjaxForm);
+      $form.submit(Drupal.clientsideValidation.submitAjaxForm);
+      $form.find(':submit').each(function() {
+        // add our handler before Drupal.CTools.AJAX.clickAjaxButton
+        var handlers = $(this).data('events')['click'];
+        handlers[0] = Drupal.clientsideValidation.clickAJAXButton;
+      });
+    }
     var errorel = self.prefix + f + '-errors';
     self.groups[f] = {};
     // Remove any existing validation stuff
@@ -815,4 +825,29 @@ Drupal.clientsideValidation.prototype.addExtraRules = function(){
       return allowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : '';
     });
   }
-}
+};
+
+// Overwrite ctools
+/**
+ * Submit responder to do an AJAX submit on all modal forms.
+ */
+Drupal.clientsideValidation.submitAjaxForm = function(e) {
+  var url = $(this).attr('action');
+  var form = $(this);
+  if (form.valid()) {
+    setTimeout(function() { Drupal.CTools.AJAX.ajaxSubmit(form, url); }, 1);
+  }
+  return false;
+};
+
+/**
+ * Generic replacement click handler to open the modal with the destination
+ * specified by the href of the link.
+ */
+Drupal.clientsideValidation.clickAJAXButton = function(event) {
+  if (!$(this.form).valid()) {
+    // prevent other handlers.
+    event.stopImmediatePropagation();
+    return false;
+  }
+};
