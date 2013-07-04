@@ -538,7 +538,7 @@ Drupal.clientsideValidation.prototype.addExtraRules = function(){
         var result = true;
         for (var i = 0; i < param.expressions.length; i++) {
           var reg = param.expressions[i];
-          var delim = reg.lastIndexOf(reg[0]);
+          var delim = reg.lastIndexOf(reg.charAt(0));
           // Only allow supported modifiers
           var modraw = reg.substr(delim + 1) || '';
           var mod = '';
