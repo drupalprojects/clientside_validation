@@ -22,7 +22,7 @@ define('CLIENTSIDE_VALIDATION_CUSTOM_ERROR_FUNCTION', 7);
 /**
  * Implements hook_js_alter().
  */
-function clientside_validation_js_alter() {
+function clientside_validation_js_alter(&$javascript) {
   $clientside_validation_settings = &drupal_static('clientside_validation_settings', array());
   // Provide conversion table between translated month names, both full and abbreviated, and their number.
   foreach (range(1, 12) as $month_number) {
@@ -30,9 +30,7 @@ function clientside_validation_js_alter() {
     $clientside_validation_settings['clientsideValidation']['general']['months'][t(date('F', $date))] = $month_number;
     $clientside_validation_settings['clientsideValidation']['general']['months'][t(date('M', $date))] = $month_number;
   }
-
-  drupal_add_js($clientside_validation_settings, 'setting');
-
+  $javascript = drupal_add_js($clientside_validation_settings, 'setting');
 }
 
 /**
