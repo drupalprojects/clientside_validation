@@ -277,7 +277,7 @@ function clientside_validation_form_alter(&$form, &$form_state, $form_id) {
  * Webform.
  */
 function clientside_validation_webform_after_build(&$form, &$form_state) {
-  static $js_rules = array();
+  $js_rules = array();
   clientside_validation_settings_current_form($form['#clientside_validation_settings']);
   drupal_alter("clientside_validation_webform", $form, $form_state, $js_rules);
   if (!empty($js_rules)) {
@@ -388,7 +388,7 @@ function _clientside_validation_add_special_rules(&$js_rules, &$settings, $form)
  * Regular form.
  */
 function clientside_validation_form_after_build(&$form, &$form_state) {
-  static $js_rules = array();
+  $js_rules = array();
   clientside_validation_settings_current_form($form['#clientside_validation_settings']);
   drupal_alter("clientside_validation_form", $form, $form_state, $js_rules);
   if (!empty($js_rules)) {
