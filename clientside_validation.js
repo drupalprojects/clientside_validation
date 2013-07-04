@@ -704,7 +704,7 @@
       window.setTimeout(function(){
         var visibles = 0;
         // @TODO: check settings
-        $("div.messages.error ul li").each(function(){
+        $(".clientside-error ul li").each(function(){
           if($(this).is(':visible')){
             visibles++;
           }
@@ -713,7 +713,7 @@
           }
         });
         if(visibles < 1){
-          $("div.messages.error").hide();
+          $(".clientside-error").hide();
         }
       }, 1);
     };
