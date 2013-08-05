@@ -17,6 +17,9 @@ function clientside_validation_form_after_build_recurse($form_id, &$form, &$form
       $element = &$form[$item];
       if (isset($element['#type'])) {
         clientside_validation_regular($form_id, $element, $js_rules, $form_state);
+        if ($element['#type'] == 'submit' && isset($element['#limit_validation_errors']) && empty($element['#limit_validation_errors']) && $element['#limit_validation_errors'] !== FALSE) {
+          $element['#attributes']['class'][] = 'cancel';
+        }
       }
       if (isset($element['#element_validate']) && !empty($element['#element_validate'])) {
         $context = array('type' => 'element_validate', 'functions' => $element['#element_validate']);
