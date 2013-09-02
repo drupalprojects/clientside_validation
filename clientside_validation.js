@@ -1192,7 +1192,7 @@
             month = date.getMonth();
           }
           else {
-            if (typeof Drupal.settings.clientsideValidation.general.months[parts[param.monthpos]] !== undefined) {
+            if (typeof Drupal.settings.clientsideValidation.general.months[parts[param.monthpos]] !== 'undefined') {
               month = Drupal.settings.clientsideValidation.general.months[parts[param.monthpos]];
             }
             else {
