@@ -961,7 +961,7 @@ function _clientside_validation_set_not_equal($name, $title, $elements, &$js_rul
   }
   if (empty($message)) {
     $variables = array(
-      'message' => '!title field has to different from !firstone',
+      'message' => '!title field has to be different from !firstone',
       'placeholders' => array('!title' => $title, '!firstone' => theme('item_list',  $items)),
       'error_type' => 'notequalto',
       'element_name' => $name,
