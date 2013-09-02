@@ -815,13 +815,13 @@
     jQuery.validator.addMethod("oneOf", function(value, element, param) {
       for (var p in param.values) {
         if (param.values[p] === value && param.caseSensitive) {
-          return true;
+          return !param.negate;
         }
         else if (param.values[p].toLowerCase() === value.toLowerCase() && !param.caseSensitive) {
-          return true;
+          return !param.negate;
         }
       }
-      return false;
+      return param.negate;
     }, jQuery.format(''));
 
     jQuery.validator.addMethod("specificVals", function(value, element, param){
@@ -838,11 +838,11 @@
         value = value.split(' ');
       }
       for (var i in value) {
-        if(param.indexOf(value[i]) !== -1) {
-            return false;
+        if(param.values.indexOf(value[i]) !== -1) {
+            return param.negate;
         }
       }
-      return true;
+      return !param.negate;
     });
 
     // Default regular expression support
@@ -936,11 +936,11 @@
         return this.optional(element);
       }
       else {
-        var regexp = new RegExp(param[0], param[1]);
+        var regexp = new RegExp(param.regex[0], param.regex[1]);
         if(regexp.test(value)){
-          return true;
+          return !param.negate;
         }
-        return false;
+        return param.negate;
       }
 
     }, jQuery.format('The value does not match the expected format.'));
@@ -984,19 +984,32 @@
     }, jQuery.format('The value must be fewer than {0} words long'));
 
     jQuery.validator.addMethod("plaintext", function(value, element, param){
-      return this.optional(element) || (value === strip_tags(value, param));
+      var result = param.negate ? (value !== strip_tags(value, param.tags)) : (value === strip_tags(value, param.tags));
+      return this.optional(element) || result;
     }, jQuery.format('The value must be plaintext'));
 
     jQuery.validator.addMethod("selectMinlength", function(value, element, param) {
-      return this.optional(element) || $(element).find('option:selected').length >= param;
+      var result = $(element).find('option:selected').length >= param.min;
+      if (param.negate) {
+        result = !result;
+      }
+      return this.optional(element) || result;
     }, jQuery.format('You must select at least {0} values'));
 
     jQuery.validator.addMethod("selectMaxlength", function(value, element, param) {
-      return this.optional(element) || $(element).find('option:selected').length <= param;
+      var result = $(element).find('option:selected').length <= param.max;
+      if (param.negate) {
+        result = !result;
+      }
+      return this.optional(element) || result;
     }, jQuery.format('You must select a maximum of {0} values'));
 
     jQuery.validator.addMethod("selectRangelength", function(value, element, param) {
-      return this.optional(element) || ($(element).find('option:selected').length >= param[0] && $(element).find('option:selected').length <= param[1]);
+      var result = ($(element).find('option:selected').length >= param.range[0] && $(element).find('option:selected').length <= param.range[1]);
+      if (param.negate) {
+        result = !result;
+      }
+      return this.optional(element) || result;
     }, jQuery.format('You must select at between {0} and {1} values'));
 
     jQuery.validator.addMethod("datemin", function(value, element, param) {

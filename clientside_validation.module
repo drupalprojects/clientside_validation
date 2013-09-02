@@ -763,13 +763,14 @@ function _clientside_validation_set_minmaxlength($name, $title, $min, $max, &$js
 /**
  * Set validation rule for fields with a minimum and/or maximum length for select options.
  */
-function _clientside_validation_set_minmaxlength_select($name, $title, $min, $max, &$js_rules, $message = '') {
+function _clientside_validation_set_minmaxlength_select($name, $title, $min, $max, &$js_rules, $message = '', $negate = FALSE) {
   $title = _clientside_validation_set_title($title);
   if ($max == 1) {
     $max = '';
   }
   if (isset($min) && $min !== '' && isset($max) && $max !== '') {
-    $js_rules[$name]['selectRangelength'] = array($min, $max);
+    $js_rules[$name]['selectRangelength']['range'] = array($min, $max);
+    $js_rules[$name]['selectRangelength']['negate'] = $negate;
     if (empty($message)) {
       $variables = array(
         'message' => '!title field has to have between !min and !max values.',
@@ -788,7 +789,7 @@ function _clientside_validation_set_minmaxlength_select($name, $title, $min, $ma
     $js_rules[$name]['messages']['selectRangelength'] = theme('clientside_error', $variables);
   }
   elseif (isset($min) && $min !== '') {
-    $js_rules[$name]['selectMinlength'] = $min;
+    $js_rules[$name]['selectMinlength'] = array('min' => $min, 'negate' => $negate);
     if (empty($message)) {
       $variables = array(
         'message' => '!title field has to have minimal !min values.',
@@ -807,7 +808,7 @@ function _clientside_validation_set_minmaxlength_select($name, $title, $min, $ma
     $js_rules[$name]['messages']['selectMinlength'] = theme('clientside_error', $variables);
   }
   elseif (isset($max) && $max !== '') {
-    $js_rules[$name]['selectMaxlength'] = $max;
+    $js_rules[$name]['selectMaxlength'] = array('max' => $max, 'negate' => $negate);
     if (empty($message)) {
       $variables = array(
         'message' => '!title field has to have maximum !max values.',
@@ -894,9 +895,10 @@ function _clientside_validation_set_minmax_words($name, $title, $min, $max, &$js
 /**
  * Set validation rule for plain text fields
  */
-function _clientside_validation_set_plain_text($name, $title, $allowed_tags, &$js_rules, $message = '') {
+function _clientside_validation_set_plain_text($name, $title, $allowed_tags, &$js_rules, $message = '', $negate = FALSE) {
   $title = _clientside_validation_set_title($title);
-  $js_rules[$name]['plaintext'] = empty($allowed_tags) ? '' : $allowed_tags;
+  $js_rules[$name]['plaintext']['tags'] = empty($allowed_tags) ? '' : $allowed_tags;
+  $js_rules[$name]['plaintext']['negate'] = $negate;
   if (empty($message)) {
       $variables = array(
         'message' => (empty($allowed_tags)) ? '!title field can not contain any HTML tags' : '!title field can not contain any HTML tags exept !allowed',
@@ -981,11 +983,11 @@ function _clientside_validation_set_not_equal($name, $title, $elements, &$js_rul
 /**
  * Set validation rule for fields that must be equal to a specific value.
  */
-function _clientside_validation_set_specific_value($name, $title, $value, &$js_rules, $message = '', $case_sensitive = TRUE) {
+function _clientside_validation_set_specific_value($name, $title, $value, &$js_rules, $message = '', $case_sensitive = TRUE, $negate = FALSE) {
   if (!is_array($value)) {
     $value = array($value);
   }
-  $js_rules[$name]['oneOf'] = array('values' => $value, 'caseSensitive' => $case_sensitive);
+  $js_rules[$name]['oneOf'] = array('values' => $value, 'caseSensitive' => $case_sensitive, 'negate' => $negate);
   $title = _clientside_validation_set_title($title);
   if (empty($message)) {
     $variables = array(
@@ -1034,8 +1036,9 @@ function _clientside_validation_set_specific_values($name, $title, $values, &$js
 /**
  * Set validation rule for fields that can not consist of one or more specific values
  */
-function _clientside_validation_set_blacklist($name, $title, $values, &$js_rules, $message='') {
-  $js_rules[$name]['blacklist'] = $values;
+function _clientside_validation_set_blacklist($name, $title, $values, &$js_rules, $message = '', $negate = FALSE) {
+  $js_rules[$name]['blacklist']['values'] = $values;
+  $js_rules[$name]['blacklist']['negate'] = $negate;
   $title = _clientside_validation_set_title($title);
   if (empty($message)) {
     $variables = array(
@@ -1084,7 +1087,7 @@ function _clientside_validation_set_ean($name, $title, &$js_rules, $message = ''
 /**
  * Set validation rule for fields with regex validation from webform_validation
  */
-function _clientside_validation_set_regex($name, $title, &$js_rules, $expression, $message = '', $modifiers = "", $type = 'regex') {
+function _clientside_validation_set_regex($name, $title, &$js_rules, $expression, $message = '', $modifiers = "", $type = 'regex', $negate = FALSE) {
   $title = _clientside_validation_set_title($title);
   if (empty($message)) {
     $variables = array(
@@ -1102,9 +1105,10 @@ function _clientside_validation_set_regex($name, $title, &$js_rules, $expression
     );
   }
   $message = theme('clientside_error', $variables);
-  $js_rules[$name]['regexMatch'] = array($expression);
+  $js_rules[$name]['regexMatch']['regex'] = array($expression);
+  $js_rules[$name]['regexMatch']['negate'] = $negate;
   if (!empty($modifiers)) {
-    $js_rules[$name]['regexMatch'][] = $modifiers;
+    $js_rules[$name]['regexMatch']['regex'][] = $modifiers;
   }
   $js_rules[$name]['messages']['regexMatch'] = $message;
 }

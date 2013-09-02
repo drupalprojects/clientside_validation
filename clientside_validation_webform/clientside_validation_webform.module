@@ -141,6 +141,7 @@ function clientside_validation_webform_add_webform_validation($form_id, &$form, 
   if ($webform_validation_rules = _clientside_validation_webform_webform_validation($form_state['values']['details']['nid'], $form)) {
     $checkboxrules = array();
     foreach ($webform_validation_rules as $webform_validation_rule) {
+      $negate =  isset($webform_validation_rule['negate']) && $webform_validation_rule['negate'];
       switch ($webform_validation_rule['validator']) {
         case 'min_length':
           foreach ($webform_validation_rule['components'] as $component) {
@@ -157,13 +158,13 @@ function clientside_validation_webform_add_webform_validation($form_id, &$form, 
         case 'min_words':
           foreach ($webform_validation_rule['components'] as $component) {
             $message = t('!name field must have at least !min words.', array('!name' => variable_get('clientside_validation_prefix', '') . $component['element_title'] . variable_get('clientside_validation_suffix', ''), '!min' => $webform_validation_rule['data']));
-            _clientside_validation_set_minmax_words($component['element_name'], $component['element_title'], $webform_validation_rule['data'], "", $js_rules);
+            _clientside_validation_set_minmax_words($component['element_name'], $component['element_title'], $webform_validation_rule['data'], "", $js_rules, $message);
           }
           break;
         case 'max_words':
           foreach ($webform_validation_rule['components'] as $component) {
             $message = t('!name field can not have more than !max words.', array('!name' => variable_get('clientside_validation_prefix', '') . $component['element_title'] . variable_get('clientside_validation_suffix', ''), '!max' => $webform_validation_rule['data']));
-            _clientside_validation_set_minmax_words($component['element_name'], $component['element_title'], "", $webform_validation_rule['data'], $js_rules);
+            _clientside_validation_set_minmax_words($component['element_name'], $component['element_title'], "", $webform_validation_rule['data'], $js_rules, $message);
           }
           break;
         case 'numeric':
@@ -204,7 +205,7 @@ function clientside_validation_webform_add_webform_validation($form_id, &$form, 
           break;
         case 'plain_text':
           foreach ($webform_validation_rule['components'] as $component) {
-            _clientside_validation_set_plain_text($component['element_name'], $component['element_title'], "", $js_rules);
+            _clientside_validation_set_plain_text($component['element_name'], $component['element_title'], "", $js_rules, '', $negate);
           }
           break;
         case 'blacklist':
@@ -212,7 +213,7 @@ function clientside_validation_webform_add_webform_validation($form_id, &$form, 
           $blacklist = explode(',', $webform_validation_rule['data']);
           $blacklist = array_map('trim', $blacklist);
           foreach ($webform_validation_rule['components'] as $component) {
-            _clientside_validation_set_blacklist($component['element_name'], $component['element_title'], $blacklist, $js_rules, $message);
+            _clientside_validation_set_blacklist($component['element_name'], $component['element_title'], $blacklist, $js_rules, $message, $negate);
           }
           break;
         case 'equal':
@@ -235,7 +236,7 @@ function clientside_validation_webform_add_webform_validation($form_id, &$form, 
           foreach ($webform_validation_rule['components'] as $component) {
             $value = explode(',', $webform_validation_rule['data']);
             $message = (isset($webform_validation_rule['error_message']) && !empty($webform_validation_rule['error_message'])) ? $webform_validation_rule['error_message'] : '';
-            _clientside_validation_set_specific_value($component['element_name'], $component['element_title'], $value, $js_rules, $message);
+            _clientside_validation_set_specific_value($component['element_name'], $component['element_title'], $value, $js_rules, $message, TRUE, $negate);
           }
           break;
         case 'select_min':
@@ -307,7 +308,7 @@ function clientside_validation_webform_add_webform_validation($form_id, &$form, 
               if (isset($component['extra']['multiple']) && $component['extra']['multiple']) {
                 $el_name .= '[]';
               }
-              _clientside_validation_set_minmaxlength_select($el_name, $component['element_title'], $webform_validation_rule['data'], $webform_validation_rule['data'], $js_rules);
+              _clientside_validation_set_minmaxlength_select($el_name, $component['element_title'], $webform_validation_rule['data'], $webform_validation_rule['data'], $js_rules, '', $negate);
             }
           }
           break;
@@ -321,7 +322,7 @@ function clientside_validation_webform_add_webform_validation($form_id, &$form, 
           foreach ($webform_validation_rule['components'] as $component) {
             $message = $webform_validation_rule['error_message'];
             $expression = $webform_validation_rule['data'];
-            _clientside_validation_set_regex($component['element_name'], $component['element_title'], $js_rules, $expression, $message);
+            _clientside_validation_set_regex($component['element_name'], $component['element_title'], $js_rules, $expression, $message, '', 'regex', $negate);
           }
           break;
         case 'must_be_empty':
@@ -333,7 +334,7 @@ function clientside_validation_webform_add_webform_validation($form_id, &$form, 
         default:
           foreach ($webform_validation_rule['components'] as $component) {
             $message = (isset($webform_validation_rule['error_message']) && !empty($webform_validation_rule['error_message'])) ? $webform_validation_rule['error_message'] : t('Invalid value for !name', array('!name' => variable_get('clientside_validation_prefix', '') . $component['element_title'] . variable_get('clientside_validation_suffix', '')));
-            $context = array('type' => 'webform', 'rule' => $webform_validation_rule, 'message' => $message);
+            $context = array('type' => 'webform', 'rule' => $webform_validation_rule, 'message' => $message, 'negate' => $negate);
             drupal_alter('clientside_validation_rule', $js_rules, $component, $context);
           }
           break;
