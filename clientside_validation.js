@@ -1169,15 +1169,25 @@
 
         var month = parseInt(parts[param.monthpos], 10);
         if (isNaN(month)) {
-          if (typeof Drupal.settings.clientsideValidation.general.months[parts[param.monthpos]] !== undefined) {
-            month = Drupal.settings.clientsideValidation.general.months[parts[param.monthpos]];
+          var date_parts = param.format.split(param.splitter);
+          var full_idx = date_parts.indexOf("F");
+          var abbr_idx = date_parts.indexOf("M");
+          var mopos = Math.max(full_idx, abbr_idx);
+          if (parseInt(mopos) > -1) {
+            param.monthpos = mopos;
+            date = new Date(parts[param.monthpos] + " 1, 2000");
+            month = date.getMonth();
           }
           else {
-            month = new Date(parts[param.monthpos] + " 1, 2000");
-            month = month.getMonth();
+            if (typeof Drupal.settings.clientsideValidation.general.months[parts[param.monthpos]] !== undefined) {
+              month = Drupal.settings.clientsideValidation.general.months[parts[param.monthpos]];
+            }
+            else {
+              month = new Date(parts[param.monthpos] + " 1, 2000");
+              month = month.getMonth();
+            }
           }
         }
-        month = month - 1;
 
         var year = parseInt(parts[param.yearpos], 10);
         var date = new Date();
