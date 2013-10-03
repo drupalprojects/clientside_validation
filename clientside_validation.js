@@ -1285,7 +1285,7 @@
           result = res;
         }
       });
-      return result.result;
+      return this.optional(element) || result.result;
 
     }, jQuery.format('Please fill in a valid phone number'));
 
