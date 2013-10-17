@@ -1201,6 +1201,9 @@
             }
           }
         }
+        else {
+          month--;
+        }
 
         var year = parseInt(parts[param.yearpos], 10);
         var date = new Date();
