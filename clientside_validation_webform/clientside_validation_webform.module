@@ -138,7 +138,7 @@ function clientside_validation_webform_after_build_recurse($form_id, &$form, &$f
  */
 
 function clientside_validation_webform_add_webform_validation($form_id, &$form, &$form_state, &$js_rules) {
-  if ($webform_validation_rules = _clientside_validation_webform_webform_validation($form_state['values']['details']['nid'], $form)) {
+  if (isset($form_state['values']['details']) && $webform_validation_rules = _clientside_validation_webform_webform_validation($form_state['values']['details']['nid'], $form)) {
     $checkboxrules = array();
     foreach ($webform_validation_rules as $webform_validation_rule) {
       $negate =  isset($webform_validation_rule['negate']) && $webform_validation_rule['negate'];
