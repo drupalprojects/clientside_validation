@@ -28,6 +28,9 @@
         }
       }
       else {
+        if (typeof(Drupal.settings.clientsideValidation.forms) === 'undefined') {
+          return;
+        }
         var update = false;
         jQuery.each(Drupal.settings.clientsideValidation.forms, function (f) {
           if ($(context).find('#' + f).length || $(context).is('#' + f)) {
@@ -193,6 +196,9 @@
   Drupal.clientsideValidation.prototype.bindForms = function(){
     var self = this;
     var groupkey;
+    if (typeof(self.forms) === 'undefined') {
+      return;
+    }
     self.time.start('2. bindForms');
     // unset invalid forms
     jQuery.each (self.forms, function (f) {
