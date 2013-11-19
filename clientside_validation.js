@@ -387,7 +387,7 @@
                * @name clientsideValidationFormHasErrors
                * @memberof Drupal.clientsideValidation
                */
-              jQuery.event.trigger('clientsideValidationFormHasErrors', form.currentTarget);
+              jQuery.event.trigger('clientsideValidationFormHasErrors', [form.target]);
             }
           }
         };
