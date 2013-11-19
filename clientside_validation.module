@@ -933,13 +933,16 @@ function _clientside_validation_set_equal($name, $title, $value, &$js_rules, $me
   if ($webform) {
     $js_rules[$name]['equalTo'] = ':input[name=\'submitted[' . $value['form_key'] . ']\']';
   }
-  else {
+  elseif (is_array($value)) {
     $js_rules[$name]['equalTo'] = ':input[name=\'' . $value['element_name'] . '\']';
+  }
+  else {
+    $js_rules[$name]['equalTo'] = ':input[name=\'' . $value . '\']';
   }
   if (empty($message)) {
     $variables = array(
-      'message' => '!title field has to be equal to !firstone.',
-      'placeholders' => array('!title' => $title, '!firstone' => $value['name']),
+      'message' => is_array($value) ? '!title field has to be equal to !firstone.' : 'Field values must match',
+      'placeholders' => is_array($value) ? array('!title' => $title, '!firstone' => $value['name']) : array(),
       'error_type' => 'equalto',
       'element_name' => $name,
     );
