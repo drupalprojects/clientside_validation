@@ -279,6 +279,7 @@
         var validate_options = {
           errorClass: 'error',
           groups: self.groups[f],
+          messages: self.forms[f].messages,
           errorElement: self.forms[f].general.errorElement,
           unhighlight: function(element, errorClass, validClass) {
             var tab;
@@ -775,11 +776,6 @@
         var rule = rules[elem.name];
         if (rule) {
           var $elem = $(elem);
-          if (typeof self.validators[formid].settings.messages[elem.name] === 'undefined') {
-            self.validators[formid].settings.messages[elem.name] = {};
-          }
-          $.extend(self.validators[formid].settings.messages[elem.name], rule.messages);
-          delete rule.messages;
           $elem.rules("add",rule);
           $elem.change(hideErrordiv);
         }
@@ -805,11 +801,6 @@
       var amountChecked = $(param[2]).find('input:checked').length;
       return (amountChecked >= param[0] && amountChecked <= param[1]);
     }, jQuery.format('Minimum {0}, maximum {1}'));
-
-    // Allow integers, same as digits but including a leading '-'
-    jQuery.validator.addMethod("digits_negative", function(value, element) {
-      return this.optional(element) || /^-?\d+$/.test(value);
-    }, jQuery.format('Please enter only digits.'));
 
     // One of the values
     jQuery.validator.addMethod("oneOf", function(value, element, param) {

@@ -1,9 +1,18 @@
-; $Id: 
+; $Id:
 name = Clientside Validation Webform
 description = Add client side validation to Webforms
 core = 7.x
 package = Clientside Validation
 
-files[] = clientside_validation_webform.module
 dependencies[] = clientside_validation
 dependencies[] = webform
+
+files[] = includes/validators/CvWebformValidator.inc
+files[] = includes/validators/webform/CvWebformDateValidator.inc
+files[] = includes/validators/webform/CvWebformDecimalCommaValidator.inc
+files[] = includes/validators/webform/CvWebformDecimalPointValidator.inc
+files[] = includes/validators/webform/CvWebformEmailValidator.inc
+files[] = includes/validators/webform/CvWebformFileValidator.inc
+files[] = includes/validators/webform/CvWebformIntegerValidator.inc
+files[] = includes/validators/webform/CvWebformTimeValidator.inc
+

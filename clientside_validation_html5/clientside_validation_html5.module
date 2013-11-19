@@ -13,14 +13,6 @@ function clientside_validation_html5_clientside_validation_form_alter(&$form, &$
   clientside_validation_html5_after_build_recurse($form['#id'], $form, $form_state, $js_rules);
 }
 
-function clientside_validation_html5_clientside_validation_webform_alter(&$form, &$form_state, &$js_rules) {
-  $js_added = &drupal_static('cv_html5_js_added', FALSE);
-  if (!$js_added) {
-    drupal_add_js(drupal_get_path('module', 'clientside_validation_html5') . '/clientside_validation_html5.js', array('scope' => 'footer', 'weight' => 20));
-    $js_added = TRUE;
-  }
-}
-
 function clientside_validation_html5_after_build_recurse($form_id, &$form, &$form_state, &$js_rules) {
   if ($children = array_values(element_children($form))) {
     foreach ($children as $index => $item) {
