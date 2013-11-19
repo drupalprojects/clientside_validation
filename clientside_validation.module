@@ -33,6 +33,14 @@ function clientside_validation_js_alter(&$javascript) {
   $javascript['settings']['data'][] = $clientside_validation_settings;
 }
 
+function clientside_validation_ajax_render_alter(&$commands) {
+  $cv_settings = &drupal_static('clientside_validation_settings', array());
+  foreach ($commands as $delta => $command) {
+    if ($command['command'] == 'settings') {
+      $commands[$delta]['settings'] = drupal_array_merge_deep($command['settings'], $cv_settings);
+    }
+  }
+}
 /**
  * Implements hook_menu().
  */
