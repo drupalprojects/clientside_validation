@@ -1387,7 +1387,7 @@
           var $ajax_el = jQuery(Drupal.ajax[ajax_el].element);
           var ajax_form = $ajax_el.is('form') ? $ajax_el.attr('id') : $ajax_el.closest('form').attr('id');
           var change_ajax = true;
-          if (typeof (Drupal.myClientsideValidation.forms[ajax_form] !== 'undefined')) {
+          if (typeof Drupal.myClientsideValidation.forms[ajax_form] !== 'undefined') {
             change_ajax = Boolean(parseInt(Drupal.myClientsideValidation.forms[ajax_form].general.validateBeforeAjax, 10));
           }
           if (!$ajax_el.hasClass('cancel') && change_ajax) {
