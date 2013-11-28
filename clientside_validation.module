@@ -1478,7 +1478,7 @@ function clientside_validation_settings_current_form($settings = NULL) {
 }
 
 function clientside_validation_settings_load_defaults() {
-  static $defaults;
+  static $defaults = FALSE;
   if (!$defaults) {
     $defaults = clientside_validation_settings_load('default');
   }
@@ -1516,7 +1516,7 @@ function clientside_validation_settings_load($cvs_type = NULL, $cvs_formid = NUL
     ),
   );
   if ($cvs_type == 'default') {
-    return variable_get('clientside_validation_default_settings', $default_settings);
+    return drupal_array_merge_deep($default_settings, variable_get('clientside_validation_default_settings', $default_settings));
   }
   if (!db_table_exists('clientside_validation_settings')) {
     drupal_set_message(

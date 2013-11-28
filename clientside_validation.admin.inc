@@ -300,7 +300,7 @@ function clientside_validation_settings_form($form, $form_state, $cvs_formid = N
       '0' => t('No'),
     ),
     '#title' => t('Validate before AJAX calls'),
-    '#description' => t('Validate elements before ajax calls. Use with caution, this behavior has been known to !cause_issues.', l(t('cause issues'), 'https://drupal.org/project/issues/clientside_validation?text=4bf5b2d&status=All')),
+    '#description' => t('Validate elements before ajax calls. Use with caution, this behavior has been known to !cause_issues.', array('!cause_issues' => l(t('cause issues'), 'https://drupal.org/project/issues/clientside_validation?text=4bf5b2d&status=All'))),
     '#default_value' => $settings['validate_options']['validate_before_ajax'],
   );
 
