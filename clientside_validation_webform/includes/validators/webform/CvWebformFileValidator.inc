@@ -14,18 +14,7 @@ class CvWebformFileValidator extends CvWebformValidator {
   }
   public function getJavascriptSettings(array $element, array &$form_state) {
     $name = $this->getName($element);
-    $settings = array(
-      'rules' => array(
-        $name => array(
-          'required' => TRUE,
-        ),
-      ),
-      'messages' => array(
-        $name => array(
-          'required' => t('This field is required!'),
-        ),
-      )
-    );
+    $settings = array();
     $extensions = array();
     if (isset($element['#webform_component']['filtering']['types']) && !empty($element['#webform_component']['extra']['filtering']['types'])) {
       $extensions = $element['#webform_component']['extra']['filtering']['types'];

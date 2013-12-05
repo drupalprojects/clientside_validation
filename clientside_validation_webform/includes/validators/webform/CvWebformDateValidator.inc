@@ -8,13 +8,13 @@ class CvWebformDateValidator extends CvWebformValidator {
     }
     return (
       $element['#webform_component']['type'] == 'date'
-      && isset($element['hour']['#name'])
     );
   }
 
   public function getJavascriptSettings(array $element, array &$form_state) {
     $settings = array();
     if (isset($element['#required']) && $element['#required']) {
+      // TODO: min & max date.
       $day_name = $this->getName($element) . '[day]';
       $month_name = $this->getName($element) . '[month]';
       $year_name = $this->getName($element) . '[year]';
