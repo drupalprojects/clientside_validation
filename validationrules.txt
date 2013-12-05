@@ -1,0 +1,40 @@
+Core
+----
+[x]blacklist
+[x]decimalcomma
+[x]decimalpoint
+[x]integer
+[x]maxlength
+[x ]minlength
+[x]max
+[x]min
+[x]required
+
+Webform
+-------
+[x]date (required)
+[ ]date (format)
+[ ]date (min)
+[ ]date (max)
+[x]decimalcomma
+[x]decimalpoint
+[x]email
+[x]file (extensions)
+[x]integer
+[x]max
+[x]min
+[x]time
+[ ]step
+
+Webform Validation
+------------------
+[x]max words
+[x]min words
+[x]max length
+[x]min length
+[x]max
+[x]min
+[x]one of several
+
+FAPI Validation
+---------------
