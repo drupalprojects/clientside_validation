@@ -1214,13 +1214,13 @@
         var year = parseInt(parts[param.yearpos], 10);
         var date = new Date();
         var result = true;
-        if (parts[param.daypos].toString().length !== parts[param.daypos].length){
+        if (param.daypos !== false && parts[param.daypos].toString().length !== parts[param.daypos].length){
           result = false;
         }
-        if (parts[param.monthpos].toString().length !== parts[param.monthpos].length){
+        if (param.monthpos !== false && parts[param.monthpos].toString().length !== parts[param.monthpos].length){
           result = false;
         }
-        if (parts[param.yearpos].toString().length !== parts[param.yearpos].length){
+        if (param.yearpos !== false && parts[param.yearpos].toString().length !== parts[param.yearpos].length){
           result = false;
         }
         if (param.yearpos !== false){
