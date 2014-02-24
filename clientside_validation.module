@@ -580,64 +580,67 @@ function _clientside_validation_set_number_decimal($name, $title, $decimalpoint,
 /**
  * Set validation rule for fields with a minimum and/or a maximum value.
  */
-function _clientside_validation_set_minmax($name, $title, $min, $max, &$js_rules, $message = '') {
+function _clientside_validation_set_minmax($name, $title, $min, $max, &$js_rules, $message = '', $decimal_separator = '.') {
   $title = _clientside_validation_set_title($title);
   if (isset($min) && $min !== '' && isset($max) && $max !== '') {
-    $js_rules[$name]['range'] = array($min, $max);
+    $rule = $decimal_separator == '.' ? 'range' : 'range_comma';
+    $js_rules[$name][$rule] = array($min, $max);
     if (empty($message)) {
       $variables = array(
         'message' => '!title field has to be between !min and !max.',
         'placeholders' => array('!title' => $title, '!min' => $min, '!max' => $max),
-        'error_type' => 'range',
+        'error_type' => $rule,
         'element_name' => $name,
       );
     }
     else {
       $variables = array(
         'message' => $message,
-        'error_type' => 'range',
+        'error_type' => $rule,
         'element_name' => $name,
       );
     }
-    $js_rules[$name]['messages']['range'] = theme('clientside_error', $variables);
+    $js_rules[$name]['messages'][$rule] = theme('clientside_error', $variables);
   }
   elseif (isset($min) && $min !== '') {
-    $js_rules[$name]['min'] = $min;
+    $rule = $decimal_separator == '.' ? 'min' : 'min_comma';
+    $js_rules[$name][$rule] = $min;
     if (empty($message)) {
       $variables = array(
         'message' => '!title field has to be greater than !min.',
         'placeholders' => array('!title' => $title, '!min' => $min),
-        'error_type' => 'min',
+        'error_type' => $rule,
         'element_name' => $name,
       );
     }
     else {
       $variables = array(
         'message' => $message,
-        'error_type' => 'min',
+        'error_type' => $rule,
         'element_name' => $name,
       );
     }
-    $js_rules[$name]['messages']['min'] = theme('clientside_error', $variables);
+    $js_rules[$name]['messages'][$rule] = theme('clientside_error', $variables);
   }
   elseif (isset($max) && $max !== '') {
-    $js_rules[$name]['max'] = $max;
+    $rule = $decimal_separator == '.' ? 'max' : 'max_comma';
+    $js_rules[$name][$rule] = $max;
     if (empty($message)) {
       $variables = array(
         'message' => '!title field has to be smaller than !max.',
         'placeholders' => array('!title' => $title, '!max' => $max),
-        'error_type' => 'max',
+        'error_type' => $rule,
         'element_name' => $name,
       );
     }
     else {
       $variables = array(
         'message' => $message,
-        'error_type' => 'max',
+        'error_type' => $rule,
         'element_name' => $name,
       );
     }
-    $js_rules[$name]['messages']['max'] = theme('clientside_error', $variables);
+    $js_rules[$name]['messages'][$rule] = theme('clientside_error', $variables);
   }
 }
 
@@ -1154,6 +1157,8 @@ function _clientside_validation_set_regex_pcre($name, $title, &$js_rules, $expre
  * Set validation rule for file fields that must have a certain extension.
  */
 function _clientside_validation_set_extensions($name, $extensions, &$js_rules) {
+  // @see https://drupal.org/comment/8428631#comment-8428631
+  /*
   $extension_list = preg_replace('#,(?![^,]+,)#', ' or', implode(', ', $extensions));
   $js_rules[$name]['accept'] = implode('|', $extensions);
   $variables = array(
@@ -1163,6 +1168,7 @@ function _clientside_validation_set_extensions($name, $extensions, &$js_rules) {
     'element_name' => $name
   );
   $js_rules[$name]['messages']['accept'] = theme('clientside_error', $variables);
+  */
 }
 
 /**

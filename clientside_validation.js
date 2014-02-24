@@ -707,17 +707,34 @@
       jQuery.each (self.forms[formid].checkboxrules, function(r) {
         var $checkboxes = $form.find(this.checkboxgroupminmax[2]).find('input[type="checkbox"]');
         if ($checkboxes.length) {
-          $checkboxes.addClass('require-one');
+          var identifier = 'require-one-' + this.checkboxgroupminmax[2].substring(1);
+          var min = this.checkboxgroupminmax[0];
+          var message = this.messages.checkboxgroupminmax;
+          $checkboxes.addClass(identifier);
           $checkboxes.each(function(){
+            var $checkbox = $(this);
             var rule = self.forms[formid].checkboxrules[r];
-            if (typeof self.validators[formid].settings.messages[r] === 'undefined') {
-              self.validators[formid].settings.messages[r] = {};
+            var newrule = {
+              require_from_group: [min, '.' + identifier]
             }
-            $.extend(self.validators[formid].settings.messages[r], rule.messages);
-            delete rule.messages;
-            $(this).rules("add", rule);
-            $(this).change(hideErrordiv);
+            $checkbox.rules("add", newrule);
+            $checkbox.change(hideErrordiv);
+
+            if (typeof self.validators[formid].settings.messages[$checkbox.attr('name')] === 'undefined') {
+              self.validators[formid].settings.messages[$checkbox.attr('name')] = {};
+            }
+            $.extend(self.validators[formid].settings.messages[$checkbox.attr('name')], {
+              require_from_group: message
+            });
           });
+
+          if (typeof self.validators[formid].settings.messages['.' + identifier] === 'undefined') {
+            self.validators[formid].settings.messages['.' + identifier] = {};
+          }
+          $.extend(self.validators[formid].settings.messages['.' + identifier], {
+            require_from_group: message
+          });
+          console.log(self.validators[formid].settings.messages);
         }
       });
       self.time.stop('checkboxrules');
@@ -804,6 +821,21 @@
 
     jQuery.validator.addMethod("numberDE", function(value, element) {
       return this.optional(element) || /^-?(?:\d+|\d{1,3}(?:\.\d{3})+)(?:,\d+)?$/.test(value);
+    });
+
+    jQuery.validator.addMethod("min_comma", function(value, element, param) {
+      var real_val = Number(value.replace(',', '.'));
+      return this.optional(element) || real_val >= param;
+    });
+
+    jQuery.validator.addMethod("max_comma", function(value, element, param) {
+      var real_val = Number(value.replace(',', '.'));
+      return this.optional(element) || real_val <= param;
+    });
+
+    jQuery.validator.addMethod("range_comma", function(value, element, param) {
+      var real_val = Number(value.replace(',', '.'));
+      return this.optional(element) || (real_val >= param[0] && real_val <= param[1]);
     });
 
     // Min a and maximum b checkboxes from a group
@@ -1334,6 +1366,28 @@
 
       }
     }, jQuery.format('Not a valid EAN number.'));
+
+    jQuery.validator.addMethod("require_from_group", function(value, element, options) {
+      var $fields = $(options[1], element.form),
+        $fieldsFirst = $fields.eq(0),
+        validator = $fieldsFirst.data("valid_req_grp") ? $fieldsFirst.data("valid_req_grp") : $.extend({}, this),
+        isValid = $fields.filter(function() {
+          return validator.elementValue(this);
+        }).length >= options[0];
+
+      // Store the cloned validator for future validation
+      $fieldsFirst.data("valid_req_grp", validator);
+
+      // If element isn't being validated, run each require_from_group field's validation rules
+      if (!$(element).data("being_validated")) {
+        $fields.data("being_validated", true);
+        $fields.each(function() {
+          validator.element(this);
+        });
+        $fields.data("being_validated", false);
+      }
+      return isValid;
+    }, jQuery.validator.format("Please fill at least {0} of these fields."));
 
     /**
      * Allow other modules to add more rules.
