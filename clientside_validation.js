@@ -823,6 +823,21 @@
       return this.optional(element) || /^-?(?:\d+|\d{1,3}(?:\.\d{3})+)(?:,\d+)?$/.test(value);
     });
 
+    jQuery.validator.addMethod("min_comma", function(value, element, param) {
+      var real_val = Number(value.replace(',', '.'));
+      return this.optional(element) || real_val >= param;
+    });
+
+    jQuery.validator.addMethod("max_comma", function(value, element, param) {
+      var real_val = Number(value.replace(',', '.'));
+      return this.optional(element) || real_val <= param;
+    });
+
+    jQuery.validator.addMethod("range_comma", function(value, element, param) {
+      var real_val = Number(value.replace(',', '.'));
+      return this.optional(element) || (real_val >= param[0] && real_val <= param[1]);
+    });
+
     // Min a and maximum b checkboxes from a group
     jQuery.validator.addMethod("checkboxgroupminmax", function(value, element, param) {
       var amountChecked = $(param[2]).find('input:checked').length;
