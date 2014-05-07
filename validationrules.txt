@@ -5,7 +5,7 @@ Core
 [x]decimalpoint
 [x]integer
 [x]maxlength
-[x ]minlength
+[x]minlength
 [x]max
 [x]min
 [x]required
@@ -13,8 +13,7 @@ Core
 Webform
 -------
 [x]date (required)
-[ ]date (format)
-[ ]date (min)
+[x]date (min)
 [ ]date (max)
 [x]decimalcomma
 [x]decimalpoint
@@ -38,3 +37,8 @@ Webform Validation
 
 FAPI Validation
 ---------------
+
+
+Other
+-----
+[ ]date (format)
