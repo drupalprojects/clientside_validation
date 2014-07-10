@@ -36,7 +36,7 @@ function clientside_validation_js_alter(&$javascript) {
 function clientside_validation_ajax_render_alter(&$commands) {
   $cv_settings = &drupal_static('clientside_validation_settings', array());
   foreach ($commands as $delta => $command) {
-    if ($command['command'] == 'settings') {
+    if (isset($command['command']) && $command['command'] == 'settings') {
       $commands[$delta]['settings'] = drupal_array_merge_deep($command['settings'], $cv_settings);
     }
   }
