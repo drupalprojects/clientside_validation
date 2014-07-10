@@ -4,17 +4,18 @@
  * Adds clientside validation support for the webform module
  */
 
-function clientside_validation_webform_clientside_validation_webform_alter(&$form, &$form_state, &$js_rules) {
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function clientside_validation_webform_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'clientside_validation') {
+    return 'plugins/' . $plugin;
+  }
+}
+
+function clientside_validation_webform_clientside_validation_form_alter(&$form, &$form_state, &$js_rules) {
   clientside_validation_webform_after_build_recurse($form['#id'], $form, $form_state, $js_rules);
   clientside_validation_webform_add_webform_validation($form['#id'], $form, $form_state, $js_rules);
-
-  // check for Save Draft button
-  if (isset($form['actions']['draft'])) {
-    if (!isset($form['actions']['draft']['#attributes']['class'])) {
-      $form['actions']['draft']['#attributes']['class'] = array();
-    }
-    $form['actions']['draft']['#attributes']['class'][0] = 'cancel';
-  }
 }
 
 function clientside_validation_webform_after_build_recurse($form_id, &$form, &$form_state, &$js_rules) {
@@ -27,19 +28,7 @@ function clientside_validation_webform_after_build_recurse($form_id, &$form, &$f
       }
       if (isset($element['#title']) && !$skipvalidation) {
         if (isset($element['#type'])) {
-          if (isset($element['#webform_component']) && $element['#webform_component']['type'] == 'time' && isset($element['hour']['#name'])) {
-            $message = t('Hour in !name field is required.', array('!name' => variable_get('clientside_validation_prefix', '') . $element['#title'] . variable_get('clientside_validation_suffix', '')));
-            _clientside_validation_set_required($element['hour']['#name'], $element['#title'], isset($element['#required']) ? $element['#required'] : FALSE, $js_rules, $message);
-            $message = t('Minute in !name field is required.', array('!name' => variable_get('clientside_validation_prefix', '') . $element['#title'] . variable_get('clientside_validation_suffix', '')));
-            _clientside_validation_set_required($element['minute']['#name'], $element['#title'], isset($element['#required']) ? $element['#required'] : FALSE, $js_rules, $message);
-          }
-          elseif (isset($element['#webform_component']) && $element['#webform_component']['type'] == 'date') {
-            $message = t('Month in !name field is required.', array('!name' => variable_get('clientside_validation_prefix', '') . $element['#title'] . variable_get('clientside_validation_suffix', '')));
-            _clientside_validation_set_required($element['#name'] . '[month]', $element['#title'], isset($element['#required']) ? $element['#required'] : FALSE, $js_rules, $message);
-            $message = t('Day in !name field is required.', array('!name' => variable_get('clientside_validation_prefix', '') . $element['#title'] . variable_get('clientside_validation_suffix', '')));
-            _clientside_validation_set_required($element['#name'] . '[day]', $element['#title'], isset($element['#required']) ? $element['#required'] : FALSE, $js_rules, $message);
-            $message = t('Year in !name field is required.', array('!name' => variable_get('clientside_validation_prefix', '') . $element['#title'] . variable_get('clientside_validation_suffix', '')));
-            _clientside_validation_set_required($element['#name'] . '[year]', $element['#title'], isset($element['#required']) ? $element['#required'] : FALSE, $js_rules, $message);
+          if (isset($element['#webform_component']) && $element['#webform_component']['type'] == 'date') {
             if (isset($element['#year_start']) && isset($element['#year_end'])) {
               if (is_numeric($element['#year_start']) && is_numeric($element['#year_end'])) {
                 $message = t('The entered date needs to be between the years @start and @end.', array('@start' => $element['#year_start'], '@end' => $element['#year_end']));
@@ -358,7 +347,7 @@ function clientside_validation_webform_add_webform_validation($form_id, &$form, 
  * Retreive webform validation rules
  */
 function _clientside_validation_webform_webform_validation($nid, $form) {
-  static $webform_validation_rules;
+  $webform_validation_rules = &drupal_static('clientside_validation_webform_validation_rules', array());
   $current_page = $form['details']['page_num']['#value'];
   if (!isset($webform_validation_rules[$nid][$current_page])) {
     if (module_exists('webform_validation')) {
@@ -378,10 +367,29 @@ function _clientside_validation_webform_webform_validation($nid, $form) {
       clientside_validation_webform_webform_validation_add_names($webform_validation_rules[$nid][$current_page], $form);
     }
     else {
-      $webform_validation_rules[$nid][$current_page] = NULL;
+      $webform_validation_rules[$nid][$current_page] = array();
     }
   }
   return $webform_validation_rules[$nid][$current_page];
+}
+
+function _clientside_validation_get_webform_validation_rules($element, $form, $rule_name = NULL) {
+  $element_rules = &drupal_static('clientside_validation_webform_element_validation_rules', array());
+  if (!isset($element_rules[$form['#id']][$element['#name']])) {
+    $element_rules[$form['#id']][$element['#name']] = array();
+    $form_rules = _clientside_validation_webform_webform_validation($element['#webform_component']['nid'], $form);
+    foreach ($form_rules as $rule) {
+      foreach ($rule['components'] as $component) {
+        if ($component['element_name'] == $element['#name']) {
+          $element_rules[$form['#id']][$element['#name']][$rule['validator']] = $rule;
+        }
+      }
+    }
+  }
+  if (!is_null($rule_name)) {
+    return isset($element_rules[$form['#id']][$element['#name']][$rule_name]) ? $element_rules[$form['#id']][$element['#name']][$rule_name] : FALSE;
+  }
+  return $element_rules[$form['#id']][$element['#name']];
 }
 
 function clientside_validation_webform_webform_validation_add_names(&$webform_validation_rules, $form) {

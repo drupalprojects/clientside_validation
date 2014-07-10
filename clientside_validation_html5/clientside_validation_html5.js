@@ -29,7 +29,7 @@
          */
         function _getMultiplier(a, b, c) {
           var inta = Number(parseInt(a, 10));
-          var mula = a.length - inta.toString().length - 1;
+          var mula = a.toString().length - inta.toString().length - 1;
 
           var intb = parseInt(b, 10);
           var mulb = b.toString().length - intb.toString().length - 1;

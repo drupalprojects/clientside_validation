@@ -1,9 +1,12 @@
-; $Id: 
+; $Id:
 name = Clientside Validation
 description = Add client side validation to forms and Webforms
 core = 7.x
 package = Clientside Validation
 
-files[] = clientside_validation.module
+dependencies[] = ctools
+dependencies[] = libraries
+
+files[] = includes/ClientsideValidationValidator.inc
 
 configure = admin/config/validation/clientside_validation
