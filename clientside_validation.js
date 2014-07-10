@@ -1309,6 +1309,30 @@
       return ret;
     }, jQuery.format('Please fill in at least one of the fields'));
 
+    // Support for Drupal urls.
+    jQuery.validator.addMethod("drupalURL", function(value, element) {
+      var result = false;
+      if (this.settings['name_event'] == 'onkeyup') {
+        return true;
+      }
+      if (jQuery.validator.methods.url.call(this, value, element)) {
+        return true;
+      }
+      jQuery.ajax({
+        'url': Drupal.settings.basePath + 'clientside_validation/drupalURL',
+        'type': "POST",
+        'data': {
+          'value': value
+        },
+        'dataType': 'json',
+        'async': false,
+        'success': function(res){
+          result = res;
+        }
+      });
+      return result.result;
+    }, jQuery.format('Please fill in a valid url'));
+
     // Support for phone
     jQuery.validator.addMethod("phone", function(value, element, param) {
       var country_code = param;

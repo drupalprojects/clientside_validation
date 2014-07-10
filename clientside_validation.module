@@ -163,6 +163,14 @@ function clientside_validation_menu() {
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
+
+  $items['clientside_validation/drupalURL'] = array(
+    'title' => 'Clientside validation validate url callback',
+    'page callback' => '_clientside_validation_url_validation_callback',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
   return $items;
 }
 
@@ -1227,7 +1235,7 @@ function _clientside_validation_set_email($name, $title, &$js_rules, $message = 
  */
 function _clientside_validation_set_url($name, $title, &$js_rules, $message = '') {
   $title = _clientside_validation_set_title($title);
-  $js_rules[$name]['url'] = TRUE;
+  $js_rules[$name]['drupalURL'] = TRUE;
   $variables = array(
     'message' => empty($message) ? 'The value in !title is not a valid url.' : $message,
     'placeholders' => empty($message) ? array('!title' => $title) : array(),
@@ -1583,4 +1591,51 @@ function clientside_validation_library_alter(&$libraries, $module) {
     $libraries['jquery.form']['js']['misc/jquery.form.js']['data'] = $path . '/jquery.form.js';
     $libraries['jquery.form']['version'] = '3.09';
   }
+}
+
+/**
+ * Check that a path is valid and accessible for internal and aliased paths, also if the path is an
+ * external url, it is validated according to RFC 2396.
+ *
+ * @param $path
+ *   The path to check is valid.
+ */
+function _clientside_validation_url_validation_callback() {
+  $path = $_POST['value'];
+  $result = array();
+  $result['result'] = FALSE;
+
+  // Check if the url is valid according to RFC 2396.
+  if (filter_var($path, FILTER_VALIDATE_URL)) {
+    $result['result'] = TRUE;
+  }
+
+  // If we have an internal URL, strip out the query string and fragment
+  // before attempting to validate the URL.
+  if (!url_is_external($path)) {
+    $parsed_path = parse_url($path);
+    if (isset($parsed_path['query'])) {
+      $query = drupal_get_query_array($parsed_path['query']);
+    }
+    if (isset($parsed_path['fragment'])) {
+      $fragment = $parsed_path['fragment'];
+    }
+    if ($path != $parsed_path['path']) {
+      $path = $parsed_path['path'];
+    }
+  }
+
+  // Checks a path exists and the current user has access to it.
+  if (trim($path) && drupal_valid_path($path)) {
+    $result['result'] = TRUE;
+  }
+  else {
+    // Check if the aliased path, exists and the current user has access to it.
+    $lookup_path = drupal_lookup_path('source', $path);
+    if (drupal_valid_path($lookup_path)) {
+      $result['result'] = TRUE;
+    }
+  }
+
+  drupal_json_output($result);
 }
