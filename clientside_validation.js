@@ -984,7 +984,12 @@
         return this.optional(element);
       }
       else {
-        var regexp = new RegExp(param.regex[0], param.regex[1]);
+        var modifier = param.regex[1];
+        var valid_modifiers = ['i', 'g', 'm'];
+        if (jQuery.inArray(modifier, valid_modifiers) === -1) {
+          modifier = '';
+        }
+        var regexp = new RegExp(param.regex[0], modifier);
         if(regexp.test(value)){
           return !param.negate;
         }
