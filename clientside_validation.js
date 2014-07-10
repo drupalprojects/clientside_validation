@@ -723,10 +723,9 @@
           $checkboxes.addClass(identifier);
           $checkboxes.each(function(){
             var $checkbox = $(this);
-            var rule = self.forms[formid].checkboxrules[r];
             var newrule = {
               require_from_group: [min, '.' + identifier]
-            }
+            };
             $checkbox.rules("add", newrule);
             $checkbox.change(hideErrordiv);
 
@@ -744,7 +743,6 @@
           $.extend(self.validators[formid].settings.messages['.' + identifier], {
             require_from_group: message
           });
-          console.log(self.validators[formid].settings.messages);
         }
       });
       self.time.stop('checkboxrules');
@@ -753,7 +751,8 @@
       self.time.start('daterangerules');
       jQuery.each (self.forms[formid].daterangerules, function(r) {
         $form.find('#' + r).find('input, select').not('input[type=image]').each(function(){
-          var rule = self.forms[formid].daterangerules[r];
+          // Make sure we are working with the copy of rules object.
+          var rule = jQuery.extend(true, {}, self.forms[formid].daterangerules[r]);
           if (typeof self.validators[formid].settings.messages[r] === 'undefined') {
             self.validators[formid].settings.messages[r] = {};
           }
@@ -770,7 +769,8 @@
       self.time.start('dateminrules');
       jQuery.each (self.forms[formid].dateminrules, function(r) {
         $form.find('#' + r).find('input, select').not('input[type=image]').each(function(){
-          var rule = self.forms[formid].dateminrules[r];
+          // Make sure we are working with the copy of rules object.
+          var rule = jQuery.extend(true, {}, self.forms[formid].dateminrules[r]);
           if (typeof self.validators[formid].settings.messages[r] === 'undefined') {
             self.validators[formid].settings.messages[r] = {};
           }
@@ -787,7 +787,8 @@
       self.time.start('datemaxrules');
       jQuery.each (self.forms[formid].datemaxrules, function(r) {
         $form.find('#' + r).find('input, select').not('input[type=image]').each(function(){
-          var rule = self.forms[formid].datemaxrules[r];
+          // Make sure we are working with the copy of rules object.
+          var rule = jQuery.extend(true, {}, self.forms[formid].datemaxrules[r]);
           if (typeof self.validators[formid].settings.messages[r] === 'undefined') {
             self.validators[formid].settings.messages[r] = {};
           }
@@ -802,7 +803,8 @@
 
     if ('rules' in self.forms[formid]) {
       self.time.start('rules');
-      var rules = self.forms[formid].rules;
+      // Make sure we are working with the copy of rules object.
+      var rules = jQuery.extend(true, {}, self.forms[formid].rules);
       // :input can be slow, see http://jsperf.com/input-vs-input/2
       $form.find('input, textarea, select').each(function(idx, elem) {
         var rule = rules[elem.name];
