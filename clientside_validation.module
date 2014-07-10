@@ -220,7 +220,6 @@ function _clientside_validation_ajax_captcha() {
     if (!function_exists($captcha_validate)) {
        $captcha_validate = 'captcha_validate_strict_equality';
     }
-    watchdog($solution, $captcha_response);
     if ($captcha_validate($solution, $captcha_response)) {
       return drupal_json_output(array('result' => TRUE));
     }
