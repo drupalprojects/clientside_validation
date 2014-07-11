@@ -31,9 +31,14 @@ class CvCoreIntegerValidator extends ClientsideValidationValidator {
       ),
       'messages' => array(
         $name => array(
-          'integer' => '!title field accepts only numbers.',
+          'integer' => $this->getMessage($element),
         ),
       ),
     );
   }
+
+  public function getMessage(array $element) {
+    return '!title field accepts only numbers.';
+  }
+
 }

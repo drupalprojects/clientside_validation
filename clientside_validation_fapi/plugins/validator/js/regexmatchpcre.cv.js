@@ -7,14 +7,14 @@
 (function($, document, Drupal, window) {
   "use strict";
   //Define a Drupal behaviour with a custom name
-  Drupal.behaviors.cvRegexMatchPCRE = {
+  Drupal.behaviors.cvFAPIRegexMatchPCRE = {
     attach: function(context) {
       // Default regular expression support
       var ajaxPCREfn = function(value, element, param) {
         var result = false;
 
         $.ajax({
-          'url': Drupal.settings.basePath + 'clientside_validation/ajax',
+          'url': Drupal.settings.basePath + 'clientside_validation/regex-pcre',
           'type': "POST",
           'data': {
             'value': value,
@@ -76,9 +76,9 @@
       };
       // Add an eventlistener to the document reacting on the
       // 'clientsideValidationAddCustomRules' event.
-      $(document).bind('clientsideValidationAddCustomRules', function(event, cv) {
+      $(document).bind('clientsideValidationAddCustomRules', function(event) {
         // Decide which one to use
-        if (cv.data.general.usexregxp) {
+        if (Drupal.settings.clientsideValidation.general.usexregxp) {
           $.validator.addMethod("regexMatchPCRE", xregexPCREfn, $.validator.format('The value does not match the expected format.'));
         }
         else {

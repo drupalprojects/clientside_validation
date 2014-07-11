@@ -7,7 +7,7 @@
 (function ($, document) {
   "use strict";
   //Define a Drupal behaviour with a custom name
-  Drupal.behaviors.cvOneOf = {
+  Drupal.behaviors.cvWebformOneOf = {
     attach: function (context) {
       // Add an eventlistener to the document reacting on the
       // 'clientsideValidationAddCustomRules' event.

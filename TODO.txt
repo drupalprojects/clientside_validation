@@ -1,0 +1,12 @@
+hierarchical_select
+checkbox_tree
+date (separate module + required)
+see where we can use xregexp
+convert:
+  - clientside_validation_html5
+  - clientside_validation_ife
+  - clientside_validation_states
+  - clientside_validation_testswarm
+  - clientside_validation_webform
+
+TEST!!!!

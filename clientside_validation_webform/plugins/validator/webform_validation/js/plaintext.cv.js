@@ -7,7 +7,7 @@
 (function($, document) {
   "use strict";
   //Define a Drupal behaviour with a custom name
-  Drupal.behaviors.cvPlainText = {
+  Drupal.behaviors.cvWebformPlainText = {
     attach: function(context) {
       /**
        * strip illegal tags

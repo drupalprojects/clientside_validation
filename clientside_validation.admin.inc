@@ -159,8 +159,9 @@ function clientside_validation_general_settings_form($form_id, $form_state) {
   return $form;
 }
 
-function clientside_validation_settings_form($form, $form_state, $cvs_formid = NULL, $cvs_type = 'default') {
+function clientside_validation_settings_form($form, &$form_state, $cvs_formid = NULL, $cvs_type = 'default') {
   $settings = clientside_validation_settings_load($cvs_type, $cvs_formid, TRUE);
+  $form['#cv_settings'] = $settings;
   $form['new'] = array(
     '#type' => 'value',
     '#value' => FALSE,
@@ -169,7 +170,7 @@ function clientside_validation_settings_form($form, $form_state, $cvs_formid = N
     drupal_set_title(clientside_validation_settings_title($cvs_type, $cvs_formid, TRUE), PASS_THROUGH);
   }
   else {
-    if (!$settings || $settings['settings'] === FALSE || empty($settings['form_id'])) {
+    if (!$settings || empty($settings['form_id'])) {
       $settings = clientside_validation_settings_load_defaults();
       drupal_set_title(clientside_validation_settings_title($cvs_type, $cvs_formid, FALSE), PASS_THROUGH);
       $form['new'] = array(
@@ -180,11 +181,6 @@ function clientside_validation_settings_form($form, $form_state, $cvs_formid = N
     else {
       drupal_set_title(clientside_validation_settings_title($cvs_type, $cvs_formid, TRUE), PASS_THROUGH);
     }
-  }
-
-  // Make sure settings aren't nested.
-  if (isset($settings['settings']) && is_array($settings['settings'])) {
-    $settings = $settings['settings'];
   }
 
   $form['#tree'] = TRUE;
@@ -222,25 +218,6 @@ function clientside_validation_settings_form($form, $form_state, $cvs_formid = N
     $form['validate_options']['disable_html5'] = array(
       '#type' => 'value',
       '#value' => $settings['validate_options']['disable_html5'],
-    );
-  }
-
-  if (module_exists('clientside_validation_form')) {
-    $form['validate_options']['captcha'] = array(
-      '#type' => 'radios',
-      '#options' => array(
-        '1' => t('Yes'),
-        '0' => t('No'),
-      ),
-      '#title' => t('Validate CAPTCHA'),
-      '#default_value' => $settings['validate_options']['captcha'],
-      '#description' => t('Enable or disable Clientside Validation for CAPTCHA elements'),
-    );
-  }
-  else {
-    $form['validate_options']['captcha'] = array(
-      '#type' => 'value',
-      '#value' => $settings['validate_options']['captcha'],
     );
   }
 

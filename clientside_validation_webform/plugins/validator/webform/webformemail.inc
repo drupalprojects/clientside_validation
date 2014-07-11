@@ -29,9 +29,14 @@ class CvWebformEmailValidator extends CvWebformValidator {
       ),
       'messages' => array(
         $name => array(
-          'email' => 'The value in !title is not a valid email address.',
+          'email' => $this->getMessage($element),
         ),
       ),
     );
   }
+
+  public function getMessage(array $element) {
+    return 'The value in !title is not a valid email address.';
+  }
+
 }

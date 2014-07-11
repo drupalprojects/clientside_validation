@@ -8,7 +8,7 @@
   var formid = 'clientside-validation-testswarm-fapi-validation';
   var validator = {};
   $(document).bind('clientsideValidationInitialized', function (){
-    validator = Drupal.myClientsideValidation.validators[formid];
+    validator = Drupal.cvInstances[formid].validator;
   });
   Drupal.tests.cvfapivalidation = {
     getInfo: function() {

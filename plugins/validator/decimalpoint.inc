@@ -42,9 +42,14 @@ class CvCoreDecimalPointValidator extends ClientsideValidationValidator {
       ),
       'messages' => array(
         $name => array(
-          'number' => '!title field accepts only numbers (use a \'.\' as decimal point).',
+          'number' => $this->getMessage($element),
         ),
       ),
     );
   }
+
+  public function getMessage(array $element) {
+    return '!title field accepts only numbers (use a \'.\' as decimal point).';
+  }
+
 }

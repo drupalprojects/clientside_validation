@@ -7,7 +7,7 @@
 (function ($, document) {
   "use strict";
   //Define a Drupal behaviour with a custom name
-  Drupal.behaviors.cvDecimalComma = {
+  Drupal.behaviors.cvCoreDecimalComma = {
     attach: function (context) {
       // Add an eventlistener to the document reacting on the
       // 'clientsideValidationAddCustomRules' event.

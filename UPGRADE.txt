@@ -1,0 +1,2 @@
+DISABLE and UNINSTALL the Clientside Validation Form module BEFORE upgrading
+from 1.x!

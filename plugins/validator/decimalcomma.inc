@@ -17,7 +17,7 @@ class CvCoreDecimalCommaValidator extends ClientsideValidationValidator {
       return FALSE;
     }
 
-    $separator = ',';
+    $separator = '.';
     if (isset($element['#entity_type'])) {
       $field = field_widget_field($element, $form_state);
       if (isset($field['settings']['decimal_separator'])) {
@@ -42,7 +42,7 @@ class CvCoreDecimalCommaValidator extends ClientsideValidationValidator {
       ),
       'messages' => array(
         $name => array(
-          'numberDE' => '!title field accepts only numbers (use a \',\' as decimal point).',
+          'numberDE' => $this->getMessage($element),
         ),
       ),
     );
@@ -53,4 +53,9 @@ class CvCoreDecimalCommaValidator extends ClientsideValidationValidator {
     $files[] = drupal_get_path('module', 'clientside_validation') . '/plugins/validator/js/decimalcomma.cv.js';
     return $files;
   }
+
+  public function getMessage(array $element) {
+    return '!title field accepts only numbers (use a \',\' as decimal point).';
+  }
+
 }

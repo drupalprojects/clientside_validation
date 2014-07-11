@@ -31,10 +31,14 @@ class CvCoreMaximumValidator extends ClientsideValidationValidator {
       ),
       'messages' => array(
         $name => array(
-          'max' => '!title field has to be smaller than !max.',
+          'max' => $this->getMessage($element),
         ),
       ),
     );
+  }
+
+  public function getMessage(array $element) {
+    return '!title field has to be smaller than !max.';
   }
 
 }

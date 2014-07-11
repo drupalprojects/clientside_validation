@@ -16,5 +16,7 @@ abstract class ClientsideValidationValidator {
   public function jsFiles() {
     return array();
   }
+
+  abstract public function getMessage(array $element);
 }
 

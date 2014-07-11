@@ -21,9 +21,9 @@
   Drupal.behaviors.clientsideValidationFieldValidation = {
     attach: function () {
       $(document).bind('clientsideValidationInitialized', function(){
-        for (var formid in Drupal.myClientsideValidation.validators) {
-          if (Drupal.myClientsideValidation.validators.hasOwnProperty(formid)) {
-            Drupal.myClientsideValidation.validators[formid].settings.showErrors = function (errorMap, errorList) {
+        for (var formid in Drupal.cvInstances) {
+          if (Drupal.cvInstances.hasOwnProperty(formid)) {
+            Drupal.cvInstances[formid].validator.settings.showErrors = function (errorMap, errorList) {
               this.defaultShowErrors();
               for (var index in errorList) {
                 var $element = $(errorList[index].element);

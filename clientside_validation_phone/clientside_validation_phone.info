@@ -1,0 +1,6 @@
+name = Clientside Validation Phone
+description = Adds Clientside Validation support for Phone elements.
+core = 7.x
+package = Clientside Validation
+dependencies[] = phone
+dependencies[] = clientside_validation

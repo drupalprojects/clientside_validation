@@ -42,9 +42,14 @@ class CvCoreMaximumLengthValidator extends ClientsideValidationValidator {
       ),
       'messages' => array(
         $name => array(
-          'maxlength' => '!title field has to have maximum !max values.',
+          'maxlength' => $this->getMessage($element),
         ),
       ),
     );
   }
+
+  public function getMessage(array $element) {
+    return '!title field has to have maximum !max values.';
+  }
+
 }

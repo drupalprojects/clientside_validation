@@ -30,7 +30,7 @@ class CvCoreRequiredValidator extends ClientsideValidationValidator {
         ),
         'messages' => array(
           $name => array(
-            'required' => t('This field is required!'),
+            'require_from_group' => $this->getMessage($element),
           ),
         )
       );
@@ -47,7 +47,7 @@ class CvCoreRequiredValidator extends ClientsideValidationValidator {
         ),
         'messages' => array(
           $name => array(
-            'oneOf' => '!title field is required.',
+            'oneOf' => $this->getMessage($element),
           ),
         ),
       );
@@ -60,9 +60,14 @@ class CvCoreRequiredValidator extends ClientsideValidationValidator {
       ),
       'messages' => array(
         $name => array(
-          'required' => t('This field is required!'),
+          'required' => $this->getMessage($element),
         ),
       )
     );
   }
+
+  public function getMessage(array $element) {
+    return t('This field is required!');
+  }
+
 }

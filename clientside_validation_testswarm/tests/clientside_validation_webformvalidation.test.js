@@ -8,7 +8,7 @@
   var validator = {};
   $(document).bind('clientsideValidationInitialized', function(){
     var formid = Drupal.settings.clientsideValidationTestswarm.formID;
-    validator = Drupal.myClientsideValidation.validators[formid];
+    validator = Drupal.cvInstances[formid].validator;
   });
   Drupal.tests.cvwebformvalidation = {
     getInfo: function() {
@@ -520,7 +520,7 @@
           // Check for the "Equal to" and "Must equal" errors.
           QUnit.equal($('label[for=edit-submitted-equal-fieldset-equal-to].error:visible').length, 0, Drupal.t('Error label not found for "Equal to"'));
           QUnit.equal($('label[for=edit-submitted-equal-fieldset-must-equal].error:visible').length, 0, Drupal.t('Error label not found for "Must equal"'));
-          
+
           //Change the second value.
           $('#edit-submitted-equal-fieldset-must-equal').val('1abc');
 

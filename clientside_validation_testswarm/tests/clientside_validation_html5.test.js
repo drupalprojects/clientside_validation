@@ -8,7 +8,7 @@
   var formid = 'clientside-validation-testswarm-html5';
   var validator = {};
   $(document).bind('clientsideValidationInitialized', function (){
-    validator = Drupal.myClientsideValidation.validators[formid];
+    validator = Drupal.cvInstances[formid].validator;
   });
   Drupal.tests.cvhtml5 = {
     getInfo: function() {

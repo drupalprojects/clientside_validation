@@ -56,7 +56,7 @@ class CvCoreDateFormatValidator extends ClientsideValidationValidator {
       ),
       'messages' => array(
         $name => array(
-          'dateFormat' => 'The value in !title is not a valid date.',
+          'dateFormat' => $this->getMessage($element),
         ),
       ),
     );
@@ -67,4 +67,9 @@ class CvCoreDateFormatValidator extends ClientsideValidationValidator {
     $files[] = drupal_get_path('module', 'clientside_validation') . '/plugins/validator/js/dateformat.cv.js';
     return $files;
   }
+
+  public function getMessage(array $element) {
+    return 'The value in !title is not a valid date.';
+  }
+
 }

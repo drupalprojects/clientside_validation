@@ -31,9 +31,14 @@ class CvCoreMinimumValidator extends ClientsideValidationValidator {
       ),
       'messages' => array(
         $name => array(
-          'min' => '!title field has to be greater than !min.',
+          'min' => $this->getMessage($element),
         ),
       ),
     );
   }
+
+  public function getMessage(array $element) {
+    return '!title field has to be greater than !min.';
+  }
+
 }

@@ -29,12 +29,12 @@
         }
       });
       $(document).bind('clientsideValidationInitialized', function(){
-        for (var formid in Drupal.myClientsideValidation.forms) {
-          if (Drupal.myClientsideValidation.forms.hasOwnProperty(formid)) {
-            for (var element in Drupal.myClientsideValidation.forms[formid].rules) {
-              if (Drupal.myClientsideValidation.forms[formid].rules.hasOwnProperty(element)) {
-                for (var rulename in Drupal.myClientsideValidation.forms[formid].rules[element]) {
-                  if (Drupal.myClientsideValidation.forms[formid].rules[element].hasOwnProperty(rulename) && rulename === 'statesrequired') {
+        for (var formid in Drupal.cvInstances) {
+          if (Drupal.cvInstances.hasOwnProperty(formid)) {
+            for (var element in Drupal.cvInstances[formid].settings.rules) {
+              if (Drupal.cvInstances[formid].settings.rules.hasOwnProperty(element)) {
+                for (var rulename in Drupal.cvInstances[formid].settings.rules[element]) {
+                  if (Drupal.cvInstances[formid].settings.rules[element].hasOwnProperty(rulename) && rulename === 'statesrequired') {
                     var selector = ':input[name="' + element + '"]';
                     $(selector).rules("remove", "statesrequired");
                     $(selector).rules("add", {

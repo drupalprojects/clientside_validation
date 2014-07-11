@@ -1,4 +1,3 @@
-; $Id:
 name = Clientside Validation
 description = Add client side validation to forms and Webforms
 core = 7.x

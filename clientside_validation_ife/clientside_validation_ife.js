@@ -27,8 +27,8 @@
          * @method
          * @private
          */
-        jQuery.each(Drupal.myClientsideValidation.validators, function (formid) {
-          Drupal.myClientsideValidation.validators[formid].showErrors(Drupal.settings.clientsideValidation.forms[formid].serverSideErrors);
+        jQuery.each(Drupal.cvInstances, function (formid) {
+          Drupal.cvInstances[formid].validator.showErrors(Drupal.cvInstances[formid].settings.serverSideErrors);
         });
       });
     }

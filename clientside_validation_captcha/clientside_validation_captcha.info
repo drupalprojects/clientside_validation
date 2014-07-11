@@ -1,0 +1,6 @@
+name = Clientside Validation Captcha
+description = Adds clientside validation support for captcha elements.
+core = 7.x
+package = Clientside Validation
+dependencies[] = clientside_validation
+dependencies[] = captcha
