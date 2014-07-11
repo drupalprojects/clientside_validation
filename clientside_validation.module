@@ -57,6 +57,15 @@ function clientside_validation_requirements($phase) {
 }
 
 /**
+ * Implements hook_ctools_plugin_directory().
+ */
+function clientside_validation_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'clientside_validation') {
+    return 'plugins/' . $plugin;
+  }
+}
+
+/**
  * Implements hook_ctools_plugin_type().
  */
 function clientside_validation_ctools_plugin_type() {
