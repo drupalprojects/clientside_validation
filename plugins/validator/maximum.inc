@@ -5,6 +5,7 @@ $plugin = array(
   'validator' => array(
     'class' => 'CvCoreMaximumValidator',
   ),
+  'weight' => -99,
 );
 
 class CvCoreMaximumValidator extends ClientsideValidationValidator {

@@ -360,16 +360,27 @@ function clientside_validation_add_validation(&$element, &$form_state, $form_id)
     $validators = clientside_validation_get_validators($element, $form_state);
     foreach ($validators as $validator) {
       $settings = $validator->getJavascriptSettings($element, $form_state);
-      $element['#attached']['js'][] = array(
-        'data' => array(
-          'clientsideValidation' => array(
-            'forms' => array(
-              $form_id => $settings,
+      $files = $validator->jsFiles($element);
+      if ($settings) {
+        $element['#attached']['js'][] = array(
+          'data' => array(
+            'clientsideValidation' => array(
+              'forms' => array(
+                $form_id => $settings,
+              ),
             ),
           ),
-        ),
-        'type' => 'setting',
-      );
+          'type' => 'setting',
+        );
+      }
+      if ($files) {
+        foreach ($files as $file) {
+          $element['#attached']['js'][] = array(
+            'data' => $file,
+            'type' => 'file',
+          );
+        }
+      }
     }
     return empty($validators);
   }
@@ -400,6 +411,7 @@ function clientside_validation_get_validators($element, &$form_state) {
   if (!$plugins) {
     $plugins = ctools_get_plugins('clientside_validation', 'validator');
   }
+  uasort($plugins, 'drupal_sort_weight');
   $defaults = array(
     'validator' => array(
       'constructor argument' => array(),

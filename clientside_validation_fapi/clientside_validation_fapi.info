@@ -4,5 +4,5 @@ core = 7.x
 package = Clientside Validation
 
 files[] = includes/CvFAPIValidator.inc
-dependencies[] = clientside_validation_form
+dependencies[] = clientside_validation
 dependencies[] = fapi_validation

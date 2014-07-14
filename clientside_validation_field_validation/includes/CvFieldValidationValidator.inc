@@ -20,12 +20,15 @@ abstract class CvFieldValidationValidator extends ClientsideValidationValidator 
       && isset($element['#field_name'])
       && field_info_instance($element['#entity_type'], $element['#field_name'], $element['#bundle'])
     );
+    if (!$supports) {
+      return FALSE;
+    }
     $rule = $this->getRule($element);
-    if (!$supports || !$rule) {
+    if (!$rule) {
       return FALSE;
     }
     $parent_last = end($element['#parents']);
-    if (($parent_last !== FALSE) && ($parent_last !== $rule['col'])) {
+    if (($parent_last !== FALSE) && ($parent_last !== $rule->col) && $element['#type'] != 'select') {
       return FALSE;
     }
     return TRUE;
@@ -49,7 +52,7 @@ abstract class CvFieldValidationValidator extends ClientsideValidationValidator 
 
   public function getJsArg(array $element) {
     $rule = $this->getRule($element);
-    return isset($rule['data']) ? $rule['data'] : $rule['settings']['data'];
+    return isset($rule->data) ? $rule->data : $rule->settings['data'];
   }
 
   public function getRule($element) {
@@ -73,15 +76,15 @@ abstract class CvFieldValidationValidator extends ClientsideValidationValidator 
       if (isset($rule->disabled) && !empty($rule->disabled)) {
         continue;
       }
-      if ($rule['validator'] == $this->field_validation_rule) {
+      if ($rule->validator == $this->field_validation_rule) {
         return $rule;
       }
     }
     return FALSE;
   }
 
-  public function jsFiles() {
-    $files = parent::jsFiles();
+  public function jsFiles(array &$element) {
+    $files = parent::jsFiles($element);
     $files[] = drupal_get_path('module', 'clientside_validation_field_validation') . '/clientside_validation_field_validation.js';
     return $files;
   }

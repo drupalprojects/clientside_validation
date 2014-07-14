@@ -36,8 +36,8 @@ class CvCoreCaptchaValidator extends ClientsideValidationValidator {
     );
   }
 
-  public function jsFiles() {
-    $files = parent::jsFiles();
+  public function jsFiles(array &$element) {
+    $files = parent::jsFiles($element);
     $files[] = drupal_get_path('module', 'clientside_validation_captcha') . '/plugins/validator/js/captcha.cv.js';
     return $files;
   }

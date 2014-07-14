@@ -16,11 +16,11 @@
           value = value.split(' ');
         }
         for (var i in value) {
-          if (param.values.indexOf(value[i]) !== -1) {
-            return param.negate;
+          if (param.indexOf(value[i]) !== -1) {
+            return this.optional(element) || false;
           }
         }
-        return this.optional(element) || !param.negate;
+        return this.optional(element) || true;
       });
     }
   };

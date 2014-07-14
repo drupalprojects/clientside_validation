@@ -17,16 +17,8 @@
             return this.optional(element);
           }
           else {
-            var modifier = param.regex[1];
-            var valid_modifiers = ['i', 'g', 'm'];
-            if ($.inArray(modifier, valid_modifiers) === -1) {
-              modifier = '';
-            }
-            var regexp = new RegExp(param.regex[0], modifier);
-            if (regexp.test(value)) {
-              return !param.negate;
-            }
-            return param.negate;
+            var regexp = new RegExp(param);
+            return regexp.test(value);
           }
         }, $.validator.format('The value does not match the expected format.'));
       });

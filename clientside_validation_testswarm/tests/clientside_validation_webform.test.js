@@ -6,9 +6,11 @@
    * Webform.
    */
   var validator = {};
-  $(document).bind('clientsideValidationInitialized', function(){
+  $(document).bind('clientsideValidationInitialized', function(e, cv_instance){
     var formid = Drupal.settings.clientsideValidationTestswarm.formID;
-    validator = Drupal.cvInstances[formid].validator;
+    if (cv_instance.form_id === formid) {
+      validator = cv_instance.validator;
+    }
   });
   Drupal.tests.cvwebform = {
     getInfo: function() {
@@ -28,7 +30,7 @@
           validator.form();
 
           // Check for the "Date" error.
-          QUnit.equal($('label[for=webform-component-date_group].error:visible').length, 1, Drupal.t('Error label found for "Date"'));
+          QUnit.equal($('label[for=webform-component-date].error:visible').length, 1, Drupal.t('Error label found for "Date"'));
 
           // The date range is set from -2 years to +2 years. In the next steps we will be filling in the date
           // beginning with year, then month, then day, validating the form in each step to make sure the required error
@@ -51,7 +53,7 @@
           validator.form();
 
           // Check for the "Date" error.
-          QUnit.equal($('label[for=webform-component-date_group].error:visible').length, 1, Drupal.t('Error label found for "Date"'));
+          QUnit.equal($('label[for=webform-component-date].error:visible').length, 1, Drupal.t('Error label found for "Date"'));
 
           // Fill in the month for "Date".
           $('#edit-submitted-date-month').val(date.getMonth()+1);
@@ -60,7 +62,7 @@
           validator.form();
 
           // Check for the "Date" error.
-          QUnit.equal($('label[for=webform-component-date_group].error:visible').length, 1, Drupal.t('Error label found for "Date"'));
+          QUnit.equal($('label[for=webform-component-date].error:visible').length, 1, Drupal.t('Error label found for "Date"'));
 
           // Fill in the day for "Date".
 
@@ -69,7 +71,7 @@
           // Validate the form.
           validator.form();
           // Check for the "Date" error.
-          QUnit.equal($('label[for=webform-component-date_group].error:visible').length, 1, Drupal.t('Error label found for "Date"'));
+          QUnit.equal($('label[for=webform-component-date].error:visible').length, 1, Drupal.t('Error label found for "Date"'));
 
           // Now we check the other end of the scale, we set the date to 'tomorrow, in two years'.
           date = new Date();
@@ -89,7 +91,7 @@
           // Validate the form.
           validator.form();
           // Check for the "Date" error.
-          QUnit.equal($('label[for=webform-component-date_group].error:visible').length, 1, Drupal.t('Error label found for "Date"'));
+          QUnit.equal($('label[for=webform-component-date].error:visible').length, 1, Drupal.t('Error label found for "Date"'));
 
           // Set the date to today.
           date = new Date();
@@ -100,7 +102,7 @@
           // Validate the form.
           validator.form();
           // Check for the "Date" error.
-          QUnit.equal($('label[for=webform-component-date_group].error:visible').length, 0, Drupal.t('Error label not found for "Date"'));
+          QUnit.equal($('label[for=webform-component-date].error:visible').length, 0, Drupal.t('Error label not found for "Date"'));
         };
       },
       webformEmail: function($, Drupal, window, document, undefined) {
@@ -272,7 +274,7 @@
           validator.form();
 
           // Check for the error.
-          QUnit.equal($('label[for="submitted[checkboxes]_group"].error:visible').length, 1, Drupal.t('Error label found for "Checkboxes"'));
+          QUnit.equal($('label[for="cv-checkboxes-0"].error:visible').length, 1, Drupal.t('Error label found for "Checkboxes"'));
 
           // Select an option.
           $('#edit-submitted-checkboxes input[type="checkbox"]:even').attr('checked', 'checked');
@@ -281,7 +283,7 @@
           validator.form();
 
           // Check for the error.
-          QUnit.equal($('label[for="submitted[checkboxes]_group"].error:visible').length, 0, Drupal.t('Error label not found for "Checkboxes"'));
+          QUnit.equal($('label[for="cv-checkboxes-0"].error:visible').length, 0, Drupal.t('Error label not found for "Checkboxes"'));
         };
       },
       webformTextarea: function($, Drupal, window, document, undefined) {

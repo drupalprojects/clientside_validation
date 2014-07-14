@@ -5,6 +5,7 @@ $plugin = array(
   'validator' => array(
     'class' => 'CvCoreIntegerValidator',
   ),
+  'weight' => -99,
 );
 
 

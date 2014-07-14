@@ -5,6 +5,7 @@ $plugin = array(
   'validator' => array(
     'class' => 'CvCoreMinimumValidator',
   ),
+  'weight' => -99,
 );
 
 class CvCoreMinimumValidator extends ClientsideValidationValidator {

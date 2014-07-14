@@ -3,4 +3,4 @@ description = Clientside Validation support for From API's #states.
 package = Clientside Validation
 core = 7.x
 
-dependencies[] = clientside_validation_form
+dependencies[] = clientside_validation

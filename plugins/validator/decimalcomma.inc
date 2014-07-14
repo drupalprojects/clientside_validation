@@ -5,6 +5,7 @@ $plugin = array(
   'validator' => array(
     'class' => 'CvCoreDecimalCommaValidator',
   ),
+  'weight' => -99,
 );
 
 class CvCoreDecimalCommaValidator extends ClientsideValidationValidator {
@@ -48,8 +49,8 @@ class CvCoreDecimalCommaValidator extends ClientsideValidationValidator {
     );
   }
 
-  public function jsFiles() {
-    $files = parent::jsFiles();
+  public function jsFiles(array &$element) {
+    $files = parent::jsFiles($element);
     $files[] = drupal_get_path('module', 'clientside_validation') . '/plugins/validator/js/decimalcomma.cv.js';
     return $files;
   }

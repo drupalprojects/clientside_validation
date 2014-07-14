@@ -7,6 +7,9 @@ abstract class CvFAPIValidator extends ClientsideValidationValidator {
 
   public function __construct($args) {
     parent::__construct();
+    if (!isset($args['fapi_rule_callback'])) {
+      dpm(debug_backtrace());
+    }
     $this->fapi_rule_callback = $args['fapi_rule_callback'];
     $this->js_rule = $args['js_rule'];
     $this->js_arg = $args['js_arg'];

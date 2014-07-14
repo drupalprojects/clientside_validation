@@ -1,6 +1,8 @@
 <?php
 
 abstract class ClientsideValidationValidator {
+  public function __construct() {
+  }
   public function supports(array $element, array &$form_state) {
     $name = $this->getName($element);
     return !empty($name);
@@ -13,7 +15,7 @@ abstract class ClientsideValidationValidator {
     }
     return  (isset($element['#multiple']) && $element['#multiple']) ? $element['#name'] . '[]' : $element['#name'];
   }
-  public function jsFiles() {
+  public function jsFiles(array &$element) {
     return array();
   }
 

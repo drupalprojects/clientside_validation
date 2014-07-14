@@ -59,7 +59,7 @@
              * @name clientsideValidationInitialized
              * @memberof Drupal.clientsideValidation
              */
-            jQuery.event.trigger('clientsideValidationInitialized', [Drupal.cvInstances[i]]);
+            $.event.trigger('clientsideValidationInitialized', [Drupal.cvInstances[i]]);
           }
         }
       }
@@ -214,6 +214,7 @@
       var validate_options = {
         errorClass: 'error',
         messages: self.settings.messages,
+        groups: self.settings.groups,
         errorElement: self.settings.general.errorElement,
         unhighlight: function(element, errorClass, validClass) {
           var $tab;

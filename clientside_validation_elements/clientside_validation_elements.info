@@ -1,0 +1,7 @@
+name = Clientside Validation Elements
+description = Add Clientside Validation support for the Elements module
+core = 7.x
+package = Clientside Validation
+
+dependencies[] = clientside_validation
+dependencies[] = elements

@@ -5,6 +5,7 @@ $plugin = array(
   'validator' => array(
     'class' => 'CvCoreDecimalPointValidator',
   ),
+  'weight' => -99,
 );
 
 class CvCoreDecimalPointValidator extends ClientsideValidationValidator {

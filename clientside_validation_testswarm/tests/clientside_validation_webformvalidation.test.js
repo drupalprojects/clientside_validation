@@ -6,9 +6,11 @@
    * Field Validation.
    */
   var validator = {};
-  $(document).bind('clientsideValidationInitialized', function(){
+  $(document).bind('clientsideValidationInitialized', function(e, cv_instance) {
     var formid = Drupal.settings.clientsideValidationTestswarm.formID;
-    validator = Drupal.cvInstances[formid].validator;
+    if (cv_instance.form_id === formid) {
+      validator = cv_instance.validator;
+    }
   });
   Drupal.tests.cvwebformvalidation = {
     getInfo: function() {
