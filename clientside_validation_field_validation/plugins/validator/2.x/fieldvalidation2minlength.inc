@@ -22,10 +22,6 @@ class CvFieldValidation2MinLengthValidator extends CvFieldValidationValidator {
     return $min != '' && is_numeric($min);
   }
 
-  public function getMessage(array $element) {
-    return '!title field has a minimum length of !minl characters.';
-  }
-
   public function getJsArg(array $element) {
     $rule = $this->getRule($element);
     return $rule->settings['min'];

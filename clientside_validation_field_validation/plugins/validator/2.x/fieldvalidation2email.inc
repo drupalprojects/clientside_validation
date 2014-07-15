@@ -14,10 +14,6 @@ $plugin = array(
 
 class CvFieldValidation2EmailValidator extends CvFieldValidationValidator {
 
-  public function getMessage(array $element) {
-    return '!title must be a valid email address.';
-  }
-
   public function getJsArg(array $element) {
     return TRUE;
   }

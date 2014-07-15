@@ -14,10 +14,6 @@ $plugin = array(
 
 class CvFieldValidation2NumericValidator extends CvFieldValidationValidator {
 
-  public function getMessage(array $element) {
-    return '!title must be numeric.';
-  }
-
   public function getJsArg(array $element) {
     return TRUE;
   }

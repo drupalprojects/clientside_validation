@@ -43,7 +43,7 @@ class CvCoreCaptchaValidator extends ClientsideValidationValidator {
   }
 
   public function getMessage(array $element) {
-    return 'Wrong answer for !title.';
+    return t('Wrong answer for @title.', array('@title' => $element['#title']));
   }
 
 }

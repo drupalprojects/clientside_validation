@@ -13,6 +13,6 @@ $plugin = array(
 
 class CvWebformValidationSelectExactMinValidator extends CvWebformValidationValidator {
   public function getMessage(array $element) {
-    return 'Select a minimum of !min items for !title.';
+    return t('Please select @min options for @title.', array('@min' => $element['#cv_data']['minlength'], '@title' => $element['#title']));
   }
 }

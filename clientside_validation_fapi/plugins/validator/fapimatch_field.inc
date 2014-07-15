@@ -15,7 +15,8 @@ $plugin = array(
 class CvFAPIMatchFieldValidator extends CvFAPIValidator {
 
   public function getMessage(array $element) {
-    return '!title field has to be equal to !firstone.';
+    $rule = $this->getRule($element);
+    return isset($rule['error']) && $rule['error'] ? $rule['error'] : t('@title value does not match other field.', array('@title' => $element['#title']));
   }
 
   public function getJsArg(array $element) {

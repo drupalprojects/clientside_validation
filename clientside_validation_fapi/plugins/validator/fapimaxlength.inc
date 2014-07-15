@@ -23,7 +23,8 @@ class CvFAPIMaxlengthValidator extends CvFAPIValidator {
   }
 
   public function getMessage(array $element) {
-    return '!title field has to have maximum !max values.';
+    $rule = $this->getRule($element);
+    return isset($rule['error']) && $rule['error'] ? $rule['error'] : t('Invalid size of @title value.', array('@title' => $element['#title']));
   }
 
   public function getJsArg(array $element) {

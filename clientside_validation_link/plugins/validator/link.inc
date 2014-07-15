@@ -44,7 +44,7 @@ class CvCoreEmailValidator extends ClientsideValidationValidator {
   }
 
   public function getMessage(array $element) {
-    return 'The value in !title is not a valid url.';
+    return t('The value in @title is not a valid url.', array('@title' => $element['#title']));
   }
 
 }

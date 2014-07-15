@@ -15,7 +15,8 @@ $plugin = array(
 class CvFAPICharsValidator extends CvFAPIValidator {
 
   public function getMessage(array $element) {
-    return '!title can not contain !chars.';
+    $rule = $this->getRule($element);
+    return isset($rule['error']) && $rule['error'] ? $rule['error'] : t('Invalid characters on @title value.', array('@title' => $element['#title']));
   }
 
   public function getJsArg(array $element) {

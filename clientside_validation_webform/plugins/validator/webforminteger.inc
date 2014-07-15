@@ -34,7 +34,7 @@ class CvWebformIntegerValidator extends CvWebformValidator {
   }
 
   public function getMessage(array $element) {
-    return 'The value in !title is not a valid number.';
+    return t('The value in @title is not a valid number.', array('@title' => $element['#title']));
   }
 
 }

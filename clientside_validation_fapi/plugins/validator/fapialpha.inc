@@ -15,7 +15,8 @@ $plugin = array(
 class CvFAPIAlphaValidator extends CvFAPIValidator {
 
   public function getMessage(array $element) {
-    return '!title field does not match the required pattern.';
+    $rule = $this->getRule($element);
+    return isset($rule['error']) && $rule['error'] ? $rule['error'] : t('Use only alpha characters at @title.', array('@title' => $element['#title']));
   }
 
   public function jsFiles(array &$element) {

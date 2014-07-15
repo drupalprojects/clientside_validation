@@ -13,6 +13,6 @@ $plugin = array(
 
 class CvWebformValidationMinWordsValidator extends CvWebformValidationValidator {
   public function getMessage(array $element) {
-    return '!title field has to have minimal !min values.';
+    return format_plural($element['#cv_data']['minWords'], '@title should be at least 1 word long.', '@title should be at least @count words long.', array('@title' => $element['#title']));
   }
 }

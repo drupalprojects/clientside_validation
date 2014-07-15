@@ -22,10 +22,6 @@ class CvFieldValidation2MinWordsValidator extends CvFieldValidationValidator {
     return $min != '' && is_numeric($min);
   }
 
-  public function getMessage(array $element) {
-    return '!title must have a minimum of !min words.';
-  }
-
   public function getJsArg(array $element) {
     $rule = $this->getRule($element);
     return $rule->settings['min'];

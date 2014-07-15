@@ -13,9 +13,4 @@ $plugin = array(
 );
 
 class CvFieldValidation1SelectMinValidator extends CvFieldValidationValidator {
-
-  public function getMessage(array $element) {
-    return 'You must select more than !min items for !title.';
-  }
-
 }

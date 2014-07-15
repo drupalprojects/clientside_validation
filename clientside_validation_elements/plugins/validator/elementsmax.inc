@@ -45,7 +45,7 @@ class CvElementsMaxValidator extends ClientsideValidationValidator {
 
   public function getMessage(array $element) {
     $step = isset($element['#step']) ? $element['#step'] : 1;
-    return drupal_strtolower($step) == 'any' ? '!title field has to be smaller than !max' : '!title field has to be smaller than !max with steps of !step.';
+    return drupal_strtolower($step) == 'any' ? t('@title field has to be smaller than @max', array('@title' => $element['#title'], '@max' => $element['#max'])) : t('@title field has to be smaller than @max with steps of @step.', array('@title' => $element['#title'], '@max' => $element['#max'], '@step' => $step));
   }
 
   public function jsFiles(array &$element) {

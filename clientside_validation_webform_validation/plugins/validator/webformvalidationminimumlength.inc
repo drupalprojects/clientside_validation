@@ -13,6 +13,6 @@ $plugin = array(
 
 class CvWebformValidationMinimumLengthValidator extends CvWebformValidationValidator {
   public function getMessage(array $element) {
-    return '!title field has to have minimal !min values.';
+    return t('@title should be at least @minlength characters long.', array('@title' => $element['#title'], '@minlength' => $element['#cv_data']['minlength']));
   }
 }

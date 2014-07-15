@@ -9,10 +9,7 @@
   //Define a Drupal behaviour with a custom name
   Drupal.behaviors.cvFAPIRegexMatchPCRE = {
     attach: function(context) {
-      // Default regular expression support
-      var ajaxPCREfn = function(value, element, param) {
-        var result = false;
-
+      var fn = Drupal.cvHelpers.debounce(function(value, element, param, validator) {
         $.ajax({
           'url': Drupal.settings.basePath + 'clientside_validation/regex-pcre',
           'type': "POST",
@@ -21,19 +18,38 @@
             'param': param
           },
           'dataType': 'json',
-          'async': false,
-          'success': function(res) {
-            result = res;
+          'success': function(response) {
+            var valid = response.result === true || response.result === "true",
+              errors, message, submitted;
+
+            if (valid) {
+              submitted = validator.formSubmitted;
+              validator.prepareElement(element);
+              validator.formSubmitted = submitted;
+              validator.successList.push(element);
+              delete validator.invalid[element.name];
+              validator.showErrors();
+            } else {
+              errors = {};
+              message = response.message || validator.defaultMessage(element, "regexMatchPCRE");
+              errors[element.name] = $.isFunction(message) ? message(value) : message;
+              validator.invalid[element.name] = true;
+              validator.showErrors(errors);
+              validator.submitted[element.name] = message;
+            }
+            validator.stopRequest(element, valid);
           }
         });
-        if (result.result === false) {
-          if (result.message.length) {
-            $.extend($.validator.messages, {
-              "regexMatchPCRE": result.message
-            });
-          }
+      }, 200);
+      // Default regular expression support
+      var ajaxPCREfn = function(value, element, param) {
+        if ( this.optional(element) ) {
+          return "dependency-mismatch";
         }
-        return result.result;
+        var validator = this;
+        this.startRequest(element);
+        fn(value, element, param, validator);
+        return 'pending';
       };
 
       // Regular expression support using XRegExp

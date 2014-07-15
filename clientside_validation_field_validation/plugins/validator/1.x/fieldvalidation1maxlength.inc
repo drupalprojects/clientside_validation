@@ -13,9 +13,4 @@ $plugin = array(
 );
 
 class CvFieldValidation1MaxLengthValidator extends CvFieldValidationValidator {
-
-  public function getMessage(array $element) {
-    return '!title field has a maximum length of !minl characters.';
-  }
-
 }

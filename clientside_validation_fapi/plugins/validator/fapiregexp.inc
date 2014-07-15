@@ -15,7 +15,8 @@ $plugin = array(
 class CvFAPIRegexpValidator extends CvFAPIValidator {
 
   public function getMessage(array $element) {
-    return '!title field does not match the required pattern.';
+    $rule = $this->getRule($element);
+    return isset($rule['error']) && $rule['error'] ? $rule['error'] : t('@title value does not match rule.', array('@title' => $element['#title']));
   }
 
   public function getJsArg(array $element) {

@@ -22,13 +22,12 @@ class CvWebformValidationUniqueValidator extends CvWebformValidationValidator {
       foreach ($all as $component) {
         $settings['rules'][$firstone['element_name']]['notEqualTo'][] = ':input[name="' . $component['element_name'] . '"]';
       }
-      $settings['messages'][$firstone['element_name']]['notEqualTo'] = $this->getMessage($element);
+      $settings['messages'][$firstone['element_name']]['notEqualTo'] = t('The value of @title is not unique.', array('@title' => $firstone['name']));
     }
     return $settings;
   }
 
   public function getMessage(array $element) {
-    return '!title field has to be equal to !firstone.';
   }
 
   public function jsFiles(array &$element) {

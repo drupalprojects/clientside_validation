@@ -5,7 +5,7 @@ abstract class ClientsideValidationValidator {
   }
   public function supports(array $element, array &$form_state) {
     $name = $this->getName($element);
-    return !empty($name);
+    return !empty($name) && isset($element['#title']);
   }
   abstract public function getJavascriptSettings(array &$element, array &$form_state);
 

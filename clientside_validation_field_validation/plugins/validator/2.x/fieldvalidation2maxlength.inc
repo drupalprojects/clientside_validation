@@ -22,10 +22,6 @@ class CvFieldValidation2MaxLengthValidator extends CvFieldValidationValidator {
     return $max != '' && is_numeric($max);
   }
 
-  public function getMessage(array $element) {
-    return '!title field has a maximum length of !maxl characters.';
-  }
-
   public function getJsArg(array $element) {
     $rule = $this->getRule($element);
     return $rule->settings['max'];

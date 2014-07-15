@@ -30,12 +30,11 @@ class CvWebformValidationEqualValidator extends CvWebformValidationValidator {
     $settings = array();
     foreach ($others as $component) {
       $settings['rules'][$component['element_name']][$this->js_rule] = ':input[name=\'submitted[' . $form_key . ']\']';
-      $settings['messages'][$component['element_name']][$this->js_rule] = $this->getMessage($element);
+      $settings['messages'][$component['element_name']][$this->js_rule] = t('@item_checked does not match @item_first.', array('@item_checked' => $component['name'], '@item_first' => $firstone['name']));
     }
     return $settings;
   }
 
   public function getMessage(array $element) {
-    return '!title field has to be equal to !firstone.';
   }
 }

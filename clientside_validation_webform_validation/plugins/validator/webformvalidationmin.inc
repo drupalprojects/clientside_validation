@@ -26,6 +26,7 @@ class CvWebformValidationMinimumValidator extends CvWebformValidationValidator {
     $rule = _clientside_validation_get_webform_validation_rules($element, $form_state['complete form'], $this->webform_rule);
     $name = $this->getName($element);
     $data = explode('|', $rule['data']);
+    $element['#cv_data']['min'] = floatval($data[0]);
     return array(
       'rules' => array(
          $name => array(
@@ -41,6 +42,6 @@ class CvWebformValidationMinimumValidator extends CvWebformValidationValidator {
   }
 
   public function getMessage(array $element) {
-    return '!title field has to be greater than !min.';
+    return t('@title should be greater than or equal to @min.', array('@title' => $element['#title'], '@min' => $element['#cv_data']['min']));
   }
 }

@@ -22,10 +22,6 @@ class CvFieldValidation2SelectMaxValidator extends CvFieldValidationValidator {
     return $max != '' && is_numeric($max);
   }
 
-  public function getMessage(array $element) {
-    return 'You must select less than !max items for !title.';
-  }
-
   public function getJsArg(array $element) {
     $rule = $this->getRule($element);
     return $rule->settings['max'];

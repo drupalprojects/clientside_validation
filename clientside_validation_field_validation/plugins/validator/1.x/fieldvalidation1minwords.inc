@@ -13,9 +13,4 @@ $plugin = array(
 );
 
 class CvFieldValidation1MinWordsValidator extends CvFieldValidationValidator {
-
-  public function getMessage(array $element) {
-    return '!title must have a minimum of !min words.';
-  }
-
 }

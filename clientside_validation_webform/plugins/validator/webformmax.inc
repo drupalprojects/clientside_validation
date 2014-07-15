@@ -36,7 +36,7 @@ class CvWebformMaxValidator extends CvWebformValidator {
 
   public function getMessage(array $element) {
     $settings = $element['#webform_component']['extra'];
-    return (isset($settings['step']) && !empty($settings['step']) && $settings['step'] != 'any') ? '!title field has to be smaller than !max and must be dividable by !step.' : '!title field has to be smaller than !max.';
+    return (isset($settings['step']) && !empty($settings['step']) && $settings['step'] != 'any') ? t('@title field has to be greater than @max and must be dividable by @step.', array('@title' => $element['#title'], '@max' => $settings['max'], '@step' => $settings['step'])) : t('@title field has to be greater than @max.', array('@title' => $element['#title'], '@max' => $settings['max']));
   }
 
   public function jsFiles(array &$element) {

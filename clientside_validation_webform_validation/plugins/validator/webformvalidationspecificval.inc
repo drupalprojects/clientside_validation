@@ -16,6 +16,7 @@ class CvWebformValidationSpecificValValidator extends CvWebformValidationValidat
   public function getJavascriptSettings(array &$element, array &$form_state) {
     $rule = _clientside_validation_get_webform_validation_rules($element, $form_state['complete form'], $this->webform_rule);
     $name = $this->getName($element);
+    $element['#cv_data']['rule'] = $rule;
     return array(
       'rules' => array(
          $name => array(
@@ -35,7 +36,8 @@ class CvWebformValidationSpecificValValidator extends CvWebformValidationValidat
   }
 
   public function getMessage(array $element) {
-    return '!title field has to be one of the following values: !values.';
+    $rule = $element['#cv_data']['rule'];
+    return $rule['error_message'];
   }
 
   public function jsFiles(array &$element) {

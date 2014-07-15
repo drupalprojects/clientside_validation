@@ -15,7 +15,8 @@ $plugin = array(
 class CvFAPINumericValidator extends CvFAPIValidator {
 
   public function getMessage(array $element) {
-    return '!title field accepts only numbers (use a \'.\' as decimal point).';
+    $rule = $this->getRule($element);
+    return isset($rule['error']) && $rule['error'] ? $rule['error'] : t('Use only numbers at @title.', array('@title' => $element['#title']));
   }
 
 }

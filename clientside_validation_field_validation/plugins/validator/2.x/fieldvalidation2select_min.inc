@@ -22,10 +22,6 @@ class CvFieldValidation2SelectMinValidator extends CvFieldValidationValidator {
     return $min != '' && is_numeric($min);
   }
 
-  public function getMessage(array $element) {
-    return 'You must select more than !min items for !title.';
-  }
-
   public function getJsArg(array $element) {
     $rule = $this->getRule($element);
     return $rule->settings['min'];

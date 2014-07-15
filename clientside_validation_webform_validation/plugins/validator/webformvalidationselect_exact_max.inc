@@ -13,6 +13,6 @@ $plugin = array(
 
 class CvWebformValidationSelectExactMaxValidator extends CvWebformValidationValidator {
   public function getMessage(array $element) {
-    return 'Select a maximum of !max items for !title.';
+    return t('Please select @max options for @title.', array('@max' => $element['#cv_data']['maxlength'], '@title' => $element['#title']));
   }
 }

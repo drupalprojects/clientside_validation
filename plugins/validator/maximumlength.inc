@@ -16,10 +16,13 @@ class CvCoreMaximumLengthValidator extends ClientsideValidationValidator {
     }
     return
       (isset($element['#maxlength']) && $element['#maxlength'] > 0)
-      || (isset($element['#type']) && $element['#type'] == 'select');
+      || (isset($element['#type']) && $element['#type'] == 'select' && $element['#multiple']);
   }
 
   public function getJavascriptSettings(array &$element, array &$form_state) {
+    if (!isset($element['#title'])) {
+      dpm($element);
+    }
     if ($element['#type'] == 'select') {
       $max = count($element['#options']);
       if (isset($element['#entity_type'])) {
@@ -35,6 +38,7 @@ class CvCoreMaximumLengthValidator extends ClientsideValidationValidator {
       $max = $element['#maxlength'];
     }
     $name = $this->getName($element);
+    $element['#cv_data']['maxlength'] = $max;
     return array(
       'rules' => array(
         $name => array(
@@ -50,7 +54,10 @@ class CvCoreMaximumLengthValidator extends ClientsideValidationValidator {
   }
 
   public function getMessage(array $element) {
-    return '!title field has to have maximum !max values.';
+    if ($element['#type'] == 'select') {
+      return t('@title field has to have maximum @max values.', array('@title' => $element['#title'], '@max' => $element['#cv_data']['maxlength']));
+    }
+    return t('@title field has a maximum length of @max.', array('@title' => $element['#title'], '@max' => $element['#cv_data']['maxlength']));
   }
 
 }

@@ -15,7 +15,8 @@ $plugin = array(
 class CvFAPIEmailValidator extends CvFAPIValidator {
 
   public function getMessage(array $element) {
-    return 'The value in !title is not a valid email address.';
+    $rule = $this->getRule($element);
+    return isset($rule['error']) && $rule['error'] ? $rule['error'] : t('@title is not a valid email.', array('@title' => $element['#title']));
   }
 
 }

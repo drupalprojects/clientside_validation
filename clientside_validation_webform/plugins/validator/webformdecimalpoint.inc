@@ -37,7 +37,7 @@ class CvWebformDecimalPointValidator extends CvWebformValidator {
   }
 
   public function getMessage(array $element) {
-    return '!title field accepts only numbers (use a \'.\' as decimal point).';
+    return t('@title field accepts only numbers (use a \'.\' as decimal point).', array('@title' => $element['#title']));
   }
 
 }

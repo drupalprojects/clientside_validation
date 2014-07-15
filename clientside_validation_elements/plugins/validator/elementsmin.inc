@@ -45,7 +45,7 @@ class CvElementsMinValidator extends ClientsideValidationValidator {
 
   public function getMessage(array $element) {
     $step = isset($element['#step']) ? $element['#step'] : 1;
-    return drupal_strtolower($step) == 'any' ? '!title field has to be greater than !min' : '!title field has to be greater than !min with steps of !step.';
+    return drupal_strtolower($step) == 'any' ? t('@title field has to be greater than @min', array('@title' => $element['#title'], '@min' => $element['#min'])) : t('@title field has to be greater than @min with steps of @step.', array('@title' => $element['#title'], '@min' => $element['#min'], '@step' => $step));
   }
 
   public function jsFiles(array &$element) {

@@ -16,7 +16,8 @@ $plugin = array(
 class CvFAPIURLValidator extends CvFAPIValidator {
 
   public function getMessage(array $element) {
-    return 'The value in !title is not a valid url.';
+    $rule = $this->getRule($element);
+    return isset($rule['error']) && $rule['error'] ? $rule['error'] : t('Invalid format of @title.', array('@title' => $element['#title']));
   }
 
   public function getJsArg(array $element) {

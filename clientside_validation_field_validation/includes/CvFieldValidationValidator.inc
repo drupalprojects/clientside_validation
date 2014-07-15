@@ -88,4 +88,9 @@ abstract class CvFieldValidationValidator extends ClientsideValidationValidator 
     $files[] = drupal_get_path('module', 'clientside_validation_field_validation') . '/clientside_validation_field_validation.js';
     return $files;
   }
+
+  public function getMessage(array $element) {
+    $rule = $this->getRule($element);
+    return $rule->error_message;
+  }
 }

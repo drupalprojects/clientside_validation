@@ -24,6 +24,7 @@ class CvCoreMinimumValidator extends ClientsideValidationValidator {
   public function getJavascriptSettings(array &$element, array &$form_state) {
     $instance = field_widget_instance($element, $form_state);
     $name = $this->getName($element);
+    $element['#cv_data']['min'] = $instance['settings']['min'];
     return array(
       'rules' => array(
         $name => array(
@@ -39,7 +40,7 @@ class CvCoreMinimumValidator extends ClientsideValidationValidator {
   }
 
   public function getMessage(array $element) {
-    return '!title field has to be greater than !min.';
+    return t('@title field has to be greater than @min.', array('@min' => $element['#cv_data']['min'], '@title' => $element['#title']));
   }
 
 }

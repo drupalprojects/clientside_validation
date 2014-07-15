@@ -14,10 +14,6 @@ $plugin = array(
 
 class CvFieldValidation2URLValidator extends CvFieldValidationValidator {
 
-  public function getMessage(array $element) {
-    return '!title has to be a valid url.';
-  }
-
   public function getJsArg(array $element) {
     $rule = $this->getRule($element);
     if ($rule->settings['external']) {

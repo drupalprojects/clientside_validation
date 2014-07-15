@@ -15,7 +15,8 @@ $plugin = array(
 class CvFAPIDigitValidator extends CvFAPIValidator {
 
   public function getMessage(array $element) {
-    return '!title field does not match the required pattern.';
+    $rule = $this->getRule($element);
+    return isset($rule['error']) && $rule['error'] ? $rule['error'] : t('Use only digits on @field.', array('@title' => $element['#title']));
   }
 
   public function jsFiles(array &$element) {

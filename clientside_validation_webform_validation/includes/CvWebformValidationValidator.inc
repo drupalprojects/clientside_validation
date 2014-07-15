@@ -20,6 +20,7 @@ abstract class CvWebformValidationValidator extends CvWebformValidator {
   public function getJavascriptSettings(array &$element, array &$form_state) {
     $rule = _clientside_validation_get_webform_validation_rules($element, $form_state['complete form'], $this->webform_rule);
     $name = $this->getName($element);
+    $element['#cv_data'][$this->js_rule] = $rule['data'];
     return array(
       'rules' => array(
          $name => array(

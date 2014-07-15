@@ -22,10 +22,6 @@ class CvFieldValidation2MaxWordsValidator extends CvFieldValidationValidator {
     return $max != '' && is_numeric($max);
   }
 
-  public function getMessage(array $element) {
-    return '!title can not have more than !max words.';
-  }
-
   public function getJsArg(array $element) {
     $rule = $this->getRule($element);
     return $rule->settings['max'];

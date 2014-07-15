@@ -14,10 +14,6 @@ $plugin = array(
 
 class CvFieldValidation2EmptyValidator extends CvFieldValidationValidator {
 
-  public function getMessage(array $element) {
-    return '!title must be empty.';
-  }
-
   public function getJsArg(array $element) {
     return TRUE;
   }
@@ -25,7 +21,6 @@ class CvFieldValidation2EmptyValidator extends CvFieldValidationValidator {
   public function jsFiles(array &$element) {
     $files = parent::jsFiles($element);
     $files[] = drupal_get_path('module', 'clientside_validation_field_validation') . '/plugins/validator/js/empty.cv.js';
-    ;
     return $files;
   }
 

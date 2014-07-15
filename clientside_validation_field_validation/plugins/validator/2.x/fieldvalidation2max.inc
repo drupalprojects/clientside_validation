@@ -22,10 +22,6 @@ class CvFieldValidation2MaxValidator extends CvFieldValidationValidator {
     return $max != '' && is_numeric($max);
   }
 
-  public function getMessage(array $element) {
-    return '!title must be greater than !max.';
-  }
-
   public function getJsArg(array $element) {
     $rule = $this->getRule($element);
     return floatval($rule->settings['max']);

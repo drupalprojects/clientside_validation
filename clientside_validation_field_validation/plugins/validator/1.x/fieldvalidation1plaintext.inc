@@ -14,10 +14,6 @@ $plugin = array(
 
 class CvFieldValidation1PlainTextValidator extends CvFieldValidationValidator {
 
-  public function getMessage(array $element) {
-    return '!title only allows the use of plain text.';
-  }
-
   public function jsFiles(array &$element) {
     $files = parent::jsFiles($element);
     $files[] = drupal_get_path('module', 'clientside_validation_field_validation') . '/plugins/validator/js/plaintext.cv.js';

@@ -36,10 +36,10 @@ class CvWebformTimeRequiredValidator extends CvWebformValidator {
       ),
       'messages' => array(
         $hour_name => array(
-          'required' => 'Hour in !title field is required.',
+          'required' => t('Hour in @title field is required.', array('@title' => $element['#title'])),
         ),
         $minute_name => array(
-          'required' => 'Minute in !title field is required.',
+          'required' => t('Minute in @title field is required.', array('@title' => $element['#title'])),
         ),
       ),
     );

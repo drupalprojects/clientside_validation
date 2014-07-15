@@ -36,7 +36,7 @@ class CvElementsURLValidator extends ClientsideValidationValidator {
   }
 
   public function getMessage(array $element) {
-    return 'The value in !title is not a valid URL.';
+    return t('The value in @title is not a valid URL.', array('@title' => $element['#title']));
   }
 
 }

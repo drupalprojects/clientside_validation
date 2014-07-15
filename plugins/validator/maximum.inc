@@ -24,6 +24,7 @@ class CvCoreMaximumValidator extends ClientsideValidationValidator {
   public function getJavascriptSettings(array &$element, array &$form_state) {
     $instance = field_widget_instance($element, $form_state);
     $name = $this->getName($element);
+    $element['#cv_data']['max'] = $instance['settings']['max'];
     return array(
       'rules' => array(
         $name => array(
@@ -39,7 +40,7 @@ class CvCoreMaximumValidator extends ClientsideValidationValidator {
   }
 
   public function getMessage(array $element) {
-    return '!title field has to be smaller than !max.';
+    return t('@title field has to be smaller than @max.', array('@title' => $element['#title'], '@max' => $element['#cv_data']['max']));
   }
 
 }

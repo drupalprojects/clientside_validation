@@ -30,6 +30,7 @@ class CvElementsNumberValidator extends ClientsideValidationValidator {
     $min = isset($element['#min']) ? $element['#min'] : 1;
     $is_decimal = drupal_strtolower($step) == 'any' || floor($step) != $step || floor($min) != $min || floor($max) != $max;
     $rule = $is_decimal ? 'number' : 'integer';
+    $element['#cv_data']['is_decimal'] = $is_decimal;
     return array(
       'rules' => array(
         $name => array(
@@ -45,12 +46,7 @@ class CvElementsNumberValidator extends ClientsideValidationValidator {
   }
 
   public function getMessage(array $element) {
-    $step = isset($element['#step']) ? $element['#step'] : 1;
-    $max = isset($element['#max']) ? $element['#max'] : 1;
-    $min = isset($element['#min']) ? $element['#min'] : 1;
-    $is_decimal = drupal_strtolower($step) == 'any' || floor($step) != $step || floor($min) != $min || floor($max) != $max;
-    $rule = $is_decimal ? 'number' : 'integer';
-    return $is_decimal ? '!title field accepts only numbers (use a \'.\' as decimal point).' : '!title field accepts only numbers.';
+    return $element['#cv_data']['is_decimal'] ? t('@title field accepts only numbers (use a \'.\' as decimal point).', array('@title' => $element['#title'])) : t('@title field accepts only numbers.', array('@title' => $element['#title']));
   }
 
 }

@@ -17,6 +17,7 @@ class CvWebformValidationBlacklistValidator extends CvWebformValidationValidator
     $rule = _clientside_validation_get_webform_validation_rules($element, $form_state['complete form'], $this->webform_rule);
     $name = $this->getName($element);
     $data = explode(',', $rule['data']);
+    $element['#cv_data']['rule'] = $rule;
     return array(
       'rules' => array(
          $name => array(
@@ -32,7 +33,8 @@ class CvWebformValidationBlacklistValidator extends CvWebformValidationValidator
   }
 
   public function getMessage(array $element) {
-    return '!title can not contain the words: !words.';
+    $rule = $element['#cv_data']['rule'];
+    return $rule['error_message'];
   }
 
   public function jsFiles(array &$element) {

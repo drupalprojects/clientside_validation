@@ -36,7 +36,7 @@ class CvElementsEmailValidator extends ClientsideValidationValidator {
   }
 
   public function getMessage(array $element) {
-    return 'The value in !title is not a valid email address.';
+    return t('The value in @title is not a valid email address.', array('@title' => $element['#title']));
   }
 
 }

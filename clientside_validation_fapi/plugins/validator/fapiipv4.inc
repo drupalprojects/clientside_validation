@@ -15,7 +15,8 @@ $plugin = array(
 class CvFAPIIPv4Validator extends CvFAPIValidator {
 
   public function getMessage(array $element) {
-    return '!title field does not match the required pattern.';
+    $rule = $this->getRule($element);
+    return isset($rule['error']) && $rule['error'] ? $rule['error'] : t('Invalid format of @title.', array('@title' => $element['#title']));
   }
 
   public function jsFiles(array &$element) {

@@ -14,10 +14,6 @@ $plugin = array(
 
 class CvFieldValidation2SpecificValValidator extends CvFieldValidationValidator {
 
-  public function getMessage(array $element) {
-    return '!title field has to be one of the following values: !values.';
-  }
-
   public function getJsArg(array $element) {
     $arg = parent::getJsArg($element);
     return array('values' => array($arg), 'negate' => FALSE, 'caseSensitive' => TRUE);

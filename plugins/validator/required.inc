@@ -46,6 +46,6 @@ class CvCoreRequiredValidator extends ClientsideValidationValidator {
   }
 
   public function getMessage(array $element) {
-    return t('This field is required!');
+    return isset($element['#required_error']) ? $element['#required_error'] : t('@title field is required.', array('@title' => $element['#title']));
   }
 }

@@ -51,6 +51,9 @@ abstract class CvFAPIValidator extends ClientsideValidationValidator {
 
       // If $rule is an array, use error message if is set.
       if (is_array($rule)) {
+        if (isset($rule['error'])) {
+          $error_message = $rule['error'];
+        }
         if (!isset($rule['rule'])) {
           drupal_set_message(t('Rule array with wrong structure on %field.', array('%field' => $element['#name'])), 'error');
           continue;
@@ -73,7 +76,7 @@ abstract class CvFAPIValidator extends ClientsideValidationValidator {
         $params = $params[1];
       }
       if (isset($data[$rule]) && $data[$rule]['callback'] == $this->fapi_rule_callback) {
-        return array('rule' => $data[$rule], 'params' => $params);
+        return array('rule' => $data[$rule], 'params' => $params, 'error' => $error = is_null($error_message) ? $data[$rule]['error_msg'] : $error_message);
       }
     }
     return FALSE;

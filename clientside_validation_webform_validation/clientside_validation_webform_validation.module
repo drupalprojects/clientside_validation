@@ -44,14 +44,9 @@ function _clientside_validation_webform_validation_webform_validation($nid, $for
 }
 
 function _clientside_validation_get_webform_validation_rules($element, $form, $rule_name = NULL) {
-  static $once = FALSE;
   $element_rules = &drupal_static('clientside_validation_webform_validation_element_validation_rules', array());
   if (!isset($element_rules[$form['#id']][$element['#name']])) {
     $element_rules[$form['#id']][$element['#name']] = array();
-    if (!isset($element['#webform_component']) && !$once) {
-      dpm(debug_backtrace());
-      $once = true;
-    }
     $form_rules = _clientside_validation_webform_validation_webform_validation($element['#webform_component']['nid'], $form);
     foreach ($form_rules as $rule) {
       foreach ($rule['components'] as $component) {

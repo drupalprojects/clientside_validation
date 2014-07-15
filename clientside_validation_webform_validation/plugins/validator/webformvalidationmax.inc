@@ -26,6 +26,7 @@ class CvWebformValidationMaximumValidator extends CvWebformValidationValidator {
     $rule = _clientside_validation_get_webform_validation_rules($element, $form_state['complete form'], $this->webform_rule);
     $name = $this->getName($element);
     $data = explode('|', $rule['data']);
+    $element['#cv_data']['max'] = floatval($data[1]);
     return array(
       'rules' => array(
          $name => array(
@@ -41,6 +42,6 @@ class CvWebformValidationMaximumValidator extends CvWebformValidationValidator {
   }
 
   public function getMessage(array $element) {
-    return '!title field has to be smaller than !max.';
+    return t('@title should be less than or equal to @max.', array('@title' => $element['#title'], '@max' => $element['#cv_data']['max']));
   }
 }
