@@ -61,4 +61,24 @@ class CvWebformDateMaxValidator extends CvWebformValidator {
     return isset($element['#year_end']) ? t('The year in @title must be before @year', array('@title' => $element['#title'], '@date' => $element['#year_end'])) : t('The entered date in @title must be before @date', array('@title' => $element['#title'], '@year' => $element['#end_date']));
   }
 
+  public function setDataAttributes(array &$element, array &$form_state) {
+    $js_settings = $this->getJavascriptSettings($element, $form_state);
+    if (isset($element['#year_end'])) {
+      $name = $this->getName($element['year']);
+      foreach ($js_settings['rules'][$name] as $rulename => $rulearg) {
+        $element['year']['#attributes']['data-rule' . drupal_ucfirst(drupal_strtolower($rulename))] = is_object($rulearg) || is_array($rulearg) ? drupal_json_encode($rulearg) : $rulearg;
+        $element['year']['#attributes']['data-msg' . drupal_ucfirst(drupal_strtolower($rulename))] = $js_settings['messages'][$name][$rulename];
+      }
+    }
+    else {
+      $name = 'webform-component-' . str_replace('_', '-', implode('--', array_slice($element['#parents'], 1)));
+      foreach (array('day', 'month', 'year') as $child) {
+        $name = $this->getName($element[$child]);
+        foreach ($js_settings['rules'][$name] as $rulename => $rulearg) {
+          $element[$child]['#attributes']['data-rule' . drupal_ucfirst(drupal_strtolower($rulename))] = is_object($rulearg) || is_array($rulearg) ? drupal_json_encode($rulearg) : $rulearg;
+          $element[$child]['#attributes']['data-msg' . drupal_ucfirst(drupal_strtolower($rulename))] = $js_settings['messages'][$name][$rulename];
+        }
+      }
+    }
+  }
 }

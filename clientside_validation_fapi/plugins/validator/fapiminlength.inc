@@ -16,7 +16,7 @@ class CvFAPIMinlengthValidator extends CvFAPIValidator {
 
   public function getMessage(array $element) {
     $rule = $this->getRule($element);
-    return isset($rule['error']) && $rule['error'] ? $rule['error'] : t('Invalid size of @title value.', array('@title' => $element['#title']));
+    return isset($rule['error']) && $rule['error'] ? t($rule['error'], array('%field' => $element['#title'])) : t('Invalid size of @title value.', array('@title' => $element['#title']));
   }
 
   public function getJsArg(array $element) {

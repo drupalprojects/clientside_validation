@@ -20,9 +20,6 @@ class CvCoreMaximumLengthValidator extends ClientsideValidationValidator {
   }
 
   public function getJavascriptSettings(array &$element, array &$form_state) {
-    if (!isset($element['#title'])) {
-      dpm($element);
-    }
     if ($element['#type'] == 'select') {
       $max = count($element['#options']);
       if (isset($element['#entity_type'])) {

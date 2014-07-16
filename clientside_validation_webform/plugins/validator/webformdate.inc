@@ -21,7 +21,6 @@ class CvWebformDateValidator extends CvWebformValidator {
   public function getJavascriptSettings(array &$element, array &$form_state) {
     $settings = array();
     if (isset($element['#required']) && $element['#required']) {
-      // TODO: min & max date.
       $day_name = $this->getName($element) . '[day]';
       $month_name = $this->getName($element) . '[month]';
       $year_name = $this->getName($element) . '[year]';
@@ -54,6 +53,17 @@ class CvWebformDateValidator extends CvWebformValidator {
   }
 
   public function getMessage(array $element) {
+  }
+
+  public function setDataAttributes(array &$element, array &$form_state) {
+    $js_settings = $this->getJavascriptSettings($element, $form_state);
+    foreach (array('day', 'month', 'year') as $child) {
+      $name = $this->getName($element[$child]);
+      foreach ($js_settings['rules'][$name] as $rulename => $rulearg) {
+        $element[$child]['#attributes']['data-rule' . drupal_ucfirst(drupal_strtolower($rulename))] = is_object($rulearg) || is_array($rulearg) ? drupal_json_encode($rulearg) : $rulearg;
+        $element[$child]['#attributes']['data-msg' . drupal_ucfirst(drupal_strtolower($rulename))] = $js_settings['messages'][$name][$rulename];
+      }
+    }
   }
 
 }

@@ -140,18 +140,6 @@ function clientside_validation_general_settings_form($form_id, $form_state) {
         '#options' => $options,
         '#default_value' => variable_get('clientside_validation_xregxp_variant', ''),
       );
-      if (version_compare($lib['version'], '2', '>=')) {
-        $form['clientside_validation_xregxp']['clientside_validation_xregxp_variant']['#description'] .= '<br />' .
-        t('!warning: You are using version 2.x or higher of the XRegExp library.
-          For best compatibility (including some !fapi rules) you should enable
-          the backcompat.js plugin on the !settingspage',
-          array(
-            '!warning' => '<strong>Warning</strong>',
-            '!fapi' => l(t('FAPI Validation'), 'http://drupal.org/project/fapi_validation'),
-            '!settingspage' => l(t('XRegExp API Settings page'), 'admin/config/system/xregexp'),
-          )
-        );
-      }
     }
   }
 
@@ -202,24 +190,27 @@ function clientside_validation_settings_form($form, &$form_state, $cvs_formid = 
     '#weight' => 10,
   );
 
-  if (module_exists('clientside_validation_html5')) {
-    $form['validate_options']['disable_html5'] = array(
-      '#type' => 'radios',
-      '#options' => array(
-        '1' => t('Yes'),
-        '0' => t('No'),
-      ),
-      '#title' => t('Replace HTML5 validation with Clientside Validation'),
-      '#default_value' => $settings['validate_options']['disable_html5'],
-      '#description' => t('Replace HTML5 validation with Clientside Validation on forms that have Clientside Validation enabled'),
-    );
-  }
-  else {
-    $form['validate_options']['disable_html5'] = array(
-      '#type' => 'value',
-      '#value' => $settings['validate_options']['disable_html5'],
-    );
-  }
+  $form['validate_options']['rules_type'] = array(
+    '#type' => 'radios',
+    '#title' => t('Add clientside validation rules'),
+    '#options' => array(
+      'data_attributes' => t('Through data attributes'),
+      'js_settings' => t('Through JavaScript settings'),
+    ),
+    '#default_value' => $settings['validate_options']['rules_type'],
+    '#description' => t('Choose whether to add the validation rules through Drupal.settings or through data attributes on the HTML elements.'),
+  );
+
+  $form['validate_options']['disable_html5'] = array(
+    '#type' => 'radios',
+    '#options' => array(
+      '1' => t('Yes'),
+      '0' => t('No'),
+    ),
+    '#title' => t('Replace HTML5 validation with Clientside Validation'),
+    '#default_value' => $settings['validate_options']['disable_html5'],
+    '#description' => t('Replace HTML5 validation with Clientside Validation on forms that have Clientside Validation enabled.'),
+  );
 
   $form['validate_options']['validate_onsubmit'] = array(
     '#type' => 'radios',
@@ -307,27 +298,6 @@ function clientside_validation_settings_form($form, &$form_state, $cvs_formid = 
     '#weight' => 20,
   );
 
-  $form['error']['prefix'] = array(
-    '#title' => t('Field name prefix'),
-    '#description' => t('The prefix of the field name in the error messages.'),
-    '#type' => 'textfield',
-    '#default_value' => $settings['error']['prefix'],
-  );
-
-  $form['error']['suffix'] = array(
-    '#title' => t('Field name suffix'),
-    '#description' => t('The suffix of the field name in the error messages.'),
-    '#type' => 'textfield',
-    '#default_value' => $settings['error']['suffix'],
-  );
-
-  $form['error']['example_image'] = array(
-    '#type' => 'item',
-    '#title' => t('Example'),
-    '#markup' => '<img id="example_image" src="' . base_path() . drupal_get_path('module', 'clientside_validation') . '/errormsg.png" alt="' . t('Error message example') . '" />',
-    '#description' => t('Filling in double quotes in both the above fields will give this result.'),
-  );
-
   $form['error']['scrollto_errormessage'] = array(
     '#title' => t('Scroll to error message'),
     '#description' => t('If checked, the page will automatically scroll to the error messages when validation fails.'),
@@ -413,7 +383,7 @@ function clientside_validation_settings_form($form, &$form_state, $cvs_formid = 
     '#type' => 'textfield',
     '#title' => t('Custom function name'),
     '#description' => t('If you selected "Custom function" in the previous step, provide the name of the custom javascript function.
-      This function will be given to !errorPlacement',
+      This function will be given to !errorPlacement.',
       array(
         '!errorPlacement' =>
         l(t('the errorPlacement option of jQuery.validate()'), 'http://docs.jquery.com/Plugins/Validation/validate#options')
@@ -452,6 +422,36 @@ function clientside_validation_settings_form($form, &$form_state, $cvs_formid = 
                       fields (e.g. conditional fields), those will be validated too.'),
     '#weight' => 3,
   );
+
+  $form['plugins'] = array(
+    '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+    '#title' => t('Plugin settings'),
+    '#weight' => 21,
+    '#tree' => FALSE,
+  );
+
+  ctools_include('plugins');
+  $plugins = ctools_get_plugins('clientside_validation', 'validator');
+  uasort($plugins, 'drupal_sort_weight');
+  foreach ($plugins as $plugin_id => $plugin) {
+    if (!isset($form['plugins'][$plugin['module']])) {
+      $info = system_get_info('module', $plugin['module']);
+      $form['plugins'][$plugin['module']] = array(
+        '#type' => 'fieldset',
+        '#collapsible' => TRUE,
+        '#collapsed' => TRUE,
+        '#title' => $info['name'],
+      );
+    }
+    $form['plugins'][$plugin['module']][$plugin_id] = array(
+      '#type' => 'checkbox',
+      '#title' => $plugin['label'],
+      '#default_value' => $settings['plugins'][$plugin_id],
+    );
+  }
+
   if ($cvs_type == 'default') {
     $form['include_hidden']['include_hidden'] = array(
       '#type' => 'textarea',
@@ -467,6 +467,7 @@ function clientside_validation_settings_form($form, &$form_state, $cvs_formid = 
       'error' => 'Error message settings',
       'error_placement' => 'Error message placement',
       'include_hidden' => 'Hidden fields and vertical tabs',
+      'plugins' => 'Plugin settings',
     );
     foreach ($fieldsets as $key => $fieldset) {
       $statefield = ':input[name="' . $key . '_override_default"]';

@@ -15,12 +15,13 @@ $plugin = array(
 class CvWebformValidationSomeOfSeveralValidator extends CvWebformValidationValidator {
 
   public function getJavascriptSettings(array &$element, array &$form_state) {
-    static $groupnum = 0;
     $rule = _clientside_validation_get_webform_validation_rules($element, $form_state['complete form'], $this->webform_rule);
+    ksort($rule['components']);
+    $firstone = reset($rule['components']);
     $name = $this->getName($element);
     $names = array();
     $group_names = array();
-    $group = 'oneofseveral-' . $groupnum++;
+    $group = $firstone['element_name'] . '_group';
     $element['#cv_data']['rule'] = $rule;
     foreach ($rule['components'] as $component) {
       $names[] = ':input[name="' . $component['element_name'] . '"]';

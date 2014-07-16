@@ -16,18 +16,23 @@ class CvWebformValidationUniqueValidator extends CvWebformValidationValidator {
   public function getJavascriptSettings(array &$element, array &$form_state) {
     $rule = _clientside_validation_get_webform_validation_rules($element, $form_state['complete form'], $this->webform_rule);
     $settings = array();
-    $all = $rule['components'];
-    while (count($all) > 1) {
-      $firstone = array_shift($all);
-      foreach ($all as $component) {
-        $settings['rules'][$firstone['element_name']]['notEqualTo'][] = ':input[name="' . $component['element_name'] . '"]';
+    $rule['components'];
+    ksort($rule['components']);
+    $firstone = reset($rule['components']);
+    $group  = $firstone['element_name'] . '_group';
+    $name = $this->getName($element);
+    foreach ($rule['components'] as  $component) {
+      if ($component['element_name'] != $name) {
+        $settings['rules'][$name]['notEqualTo'][] = ':input[name="' . $component['element_name'] . '"]';
       }
-      $settings['messages'][$firstone['element_name']]['notEqualTo'] = t('The value of @title is not unique.', array('@title' => $firstone['name']));
+      $settings['groups'][$group][] = $component['element_name'];
     }
+    $settings['messages'][$name]['notEqualTo'] = $this->getMessage($element);
     return $settings;
   }
 
   public function getMessage(array $element) {
+    return t('The value of @title is not unique.', array('@title' => $element['#title']));
   }
 
   public function jsFiles(array &$element) {

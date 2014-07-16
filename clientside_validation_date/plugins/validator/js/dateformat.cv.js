@@ -7,7 +7,7 @@
 (function($, document, Drupal) {
   "use strict";
   //Define a Drupal behaviour with a custom name
-  Drupal.behaviors.cvCoreDateFormat = {
+  Drupal.behaviors.cvDateDateFormat = {
     attach: function(context) {
       // Add an eventlistener to the document reacting on the
       // 'clientsideValidationAddCustomRules' event.

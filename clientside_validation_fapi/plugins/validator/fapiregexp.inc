@@ -16,7 +16,7 @@ class CvFAPIRegexpValidator extends CvFAPIValidator {
 
   public function getMessage(array $element) {
     $rule = $this->getRule($element);
-    return isset($rule['error']) && $rule['error'] ? $rule['error'] : t('@title value does not match rule.', array('@title' => $element['#title']));
+    return isset($rule['error']) && $rule['error'] ? t($rule['error'], array('%field' => $element['#title'])) : t('@title value does not match rule.', array('@title' => $element['#title']));
   }
 
   public function getJsArg(array $element) {
@@ -26,7 +26,7 @@ class CvFAPIRegexpValidator extends CvFAPIValidator {
 
   public function jsFiles(array &$element) {
     $files = parent::jsFiles($element);
-    $files[] = drupal_get_path('module', 'clientside_validation_fapi') . '/plugins/validator/js/regexmatchpcre.cv.js';
+    $files[] = drupal_get_path('module', 'clientside_validation') . '/plugins/validator/js/regexmatchpcre.cv.js';
     return $files;
   }
 

@@ -3,13 +3,13 @@
 $plugin = array(
   'label' => t('Date format'),
   'validator' => array(
-    'class' => 'CvCoreDateFormatValidator',
+    'class' => 'CvDateDateFormatValidator',
   ),
   'weight' => -99,
 );
 
 
-class CvCoreDateFormatValidator extends ClientsideValidationValidator {
+class CvDateDateFormatValidator extends ClientsideValidationValidator {
 
   public function supports(array $element, array &$form_state) {
     return (

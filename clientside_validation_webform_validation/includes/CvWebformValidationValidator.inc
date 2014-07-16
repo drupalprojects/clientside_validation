@@ -24,7 +24,7 @@ abstract class CvWebformValidationValidator extends CvWebformValidator {
     return array(
       'rules' => array(
          $name => array(
-          $this->js_rule => $rule['data'],
+          $this->js_rule => is_numeric($rule['data']) ? floatval($rule['data']) : $rule['data'],
         ),
       ),
       'messages' => array(

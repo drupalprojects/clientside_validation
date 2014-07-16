@@ -1,6 +1,2 @@
-hierarchical_select
-checkbox_tree
-date (separate module + required)
-see where we can use xregexp
-
-TEST!!!!
+Enable/disable plugins per form?
+UPGRADE PATH!!!

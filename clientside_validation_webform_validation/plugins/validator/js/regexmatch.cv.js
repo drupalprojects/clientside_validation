@@ -13,16 +13,11 @@
       // 'clientsideValidationAddCustomRules' event.
       $(document).bind('clientsideValidationAddCustomRules', function(event) {
         $.validator.addMethod("regexMatch", function(value, element, param) {
-          if (this.optional(element) && value === '') {
-            return this.optional(element);
+          if (this.optional(element)) {
+            return true;
           }
-          else {
-            var regexp = new RegExp(param.regex);
-            if (regexp.test(value)) {
-              return !param.negate;
-            }
-            return param.negate;
-          }
+          var reg = param = new RegExp(param.regex);
+          return reg.test(value) ? !param.negate : param.negate;
         }, $.validator.format('The value does not match the expected format.'));
       });
     }

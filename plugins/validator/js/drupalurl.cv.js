@@ -45,7 +45,7 @@
       $(document).bind('clientsideValidationAddCustomRules', function(event) {
         // Support for Drupal urls.
         $.validator.addMethod("drupalURL", function(value, element, param) {
-          if ($.validator.methods.url.call(this, value, element)) {
+          if ($.validator.methods.url2.call(this, value, element)) {
             return this.optional(element) || true;
           }
           if (param.absolute === true) {

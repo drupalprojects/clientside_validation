@@ -180,8 +180,6 @@ function clientside_validation_update_7101() {
       'show_messages' => variable_get('clientside_validation_show_messages', 0),
     ),
     'error' => array(
-      'prefix' => variable_get('clientside_validation_prefix', ''),
-      'suffix' => variable_get('clientside_validation_suffix', ''),
       'scrollto_errormessage' => variable_get('clientside_validation_scrollto_errormessage', 1),
       'scroll_speed' => variable_get('clientside_validation_scroll_speed', 1000),
       'error_element' => variable_get('clientside_validation_error_element', 'label'),

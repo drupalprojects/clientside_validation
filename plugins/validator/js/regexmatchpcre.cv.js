@@ -57,7 +57,10 @@
         if (window.XRegExp && window.XRegExp.version) {
           try {
             var result = true;
-            for (var i = 0; i < param.expressions.length; i++) {
+            for (var i in param.expressions) {
+              if (!param.expressions.hasOwnProperty(i)) {
+                continue;
+              }
               var reg = param.expressions[i];
               var delim = reg.lastIndexOf(reg.charAt(0));
               // Only allow supported modifiers
@@ -83,11 +86,11 @@
             return result;
           }
           catch (e) {
-            return ajaxPCREfn(value, element, param);
+            return ajaxPCREfn.call(this, value, element, param);
           }
         }
         else {
-          return ajaxPCREfn(value, element, param);
+          return ajaxPCREfn.call(this, value, element, param);
         }
       };
       // Add an eventlistener to the document reacting on the

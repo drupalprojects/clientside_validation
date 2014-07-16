@@ -16,16 +16,16 @@ class CvFAPIAlphaNumericValidator extends CvFAPIValidator {
 
   public function getMessage(array $element) {
     $rule = $this->getRule($element);
-    return isset($rule['error']) && $rule['error'] ? $rule['error'] : t('Use only alpha numerics characters at @title.', array('@title' => $element['#title']));
+    return isset($rule['error']) && $rule['error'] ? t($rule['error'], array('%field' => $element['#title'])) : t('Use only alpha numerics characters at @title.', array('@title' => $element['#title']));
   }
 
   public function jsFiles(array &$element) {
     $files = parent::jsFiles($element);
-    $files[] = drupal_get_path('module', 'clientside_validation_fapi') . '/plugins/validator/js/regexmatchpcre.cv.js';
+    $files[] = drupal_get_path('module', 'clientside_validation') . '/plugins/validator/js/regexmatchpcre.cv.js';
     return $files;
   }
 
   public function getJsArg(array $element) {
-    return array('expressions' => array('numeric' => $this->js_arg), 'messages' => array('numeric' => $this->getMessage($element)));
+    return array('expressions' => array('alphanumeric' => $this->js_arg), 'messages' => array('alphanumeric' => $this->getMessage($element)));
   }
 }

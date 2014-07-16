@@ -274,7 +274,7 @@
           validator.form();
 
           // Check for the error.
-          QUnit.equal($('label[for="cv-checkboxes-0"].error:visible').length, 1, Drupal.t('Error label found for "Checkboxes"'));
+          QUnit.equal($('label[for="submitted-checkboxes-five-group"].error:visible').length, 1, Drupal.t('Error label found for "Checkboxes"'));
 
           // Select an option.
           $('#edit-submitted-checkboxes input[type="checkbox"]:even').attr('checked', 'checked');
@@ -283,7 +283,7 @@
           validator.form();
 
           // Check for the error.
-          QUnit.equal($('label[for="cv-checkboxes-0"].error:visible').length, 0, Drupal.t('Error label not found for "Checkboxes"'));
+          QUnit.equal($('label[for="submitted-checkboxes-five-group"].error:visible').length, 0, Drupal.t('Error label not found for "Checkboxes"'));
         };
       },
       webformTextarea: function($, Drupal, window, document, undefined) {

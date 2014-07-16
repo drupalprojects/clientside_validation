@@ -1,0 +1,6 @@
+name = Clientside Validation Term Reference Tree
+description = Adds clientside validation support for Taxonomy Term Reference Tree.
+core = 7.x
+package = Clientside Validation
+dependencies[] = clientside_validation
+dependencies[] = term_reference_tree

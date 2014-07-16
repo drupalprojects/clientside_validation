@@ -1,13 +1,13 @@
 /*jshint strict:true, browser:true, curly:true, eqeqeq:true, expr:true, forin:true, latedef:true, newcap:true, noarg:true, trailing: true, undef:true, unused:true */
 /*global Drupal: true, jQuery: true, QUnit:true*/
-(function ($, Drupal, window, document, undefined) {
+(function($, Drupal, window, document, undefined) {
   "use strict";
   /**
    * FAPI Validation.
    */
   var formid = 'clientside-validation-testswarm-fapi-validation';
   var validator = {};
-  $(document).bind('clientsideValidationInitialized', function (e, cv_instance){
+  $(document).bind('clientsideValidationInitialized', function(e, cv_instance) {
     if (cv_instance.form_id === formid) {
       validator = cv_instance.validator;
     }
@@ -21,7 +21,7 @@
       };
     },
     tests: {
-      numeric: function ($, Drupal, window, document, undefined) {
+      numeric: function($, Drupal, window, document, undefined) {
         return function() {
           QUnit.expect(3);
           // Validate the empty form.
@@ -49,8 +49,8 @@
           QUnit.equal($('label[for=edit-numeric].error:visible').length, 0, Drupal.t('Error label not found for "Numeric"'));
         };
       },
-      rangeLength: function ($, Drupal, window, document, undefined) {
-        return function () {
+      rangeLength: function($, Drupal, window, document, undefined) {
+        return function() {
           QUnit.expect(4);
 
           // Validate the empty form.
@@ -87,7 +87,7 @@
           QUnit.equal($('label[for=edit-length-range].error:visible').length, 0, Drupal.t('Error label not found for "Range length"'));
         };
       },
-      limitedChars: function ($, Drupal, window, document, undefined) {
+      limitedChars: function($, Drupal, window, document, undefined) {
         return function() {
           QUnit.expect(3);
 
@@ -116,7 +116,7 @@
           QUnit.equal($('label[for=edit-chars].error:visible').length, 0, Drupal.t('Error label not found for "Chars"'));
         };
       },
-      email: function ($, Drupal, window, document, undefined) {
+      email: function($, Drupal, window, document, undefined) {
         return function() {
           QUnit.expect(3);
 
@@ -145,7 +145,7 @@
           QUnit.equal($('label[for=edit-email].error:visible').length, 0, Drupal.t('Error label not found for "Email"'));
         };
       },
-      url: function ($, Drupal, window, document, undefined) {
+      url: function($, Drupal, window, document, undefined) {
         return function() {
           QUnit.expect(3);
           // Validate the form.
@@ -173,7 +173,7 @@
           QUnit.equal($('label[for=edit-url].error:visible').length, 0, Drupal.t('Error label not found for "URL"'));
         };
       },
-      ipv4: function ($, Drupal, window, document, undefined) {
+      ipv4: function($, Drupal, window, document, undefined) {
         return function() {
           QUnit.expect(3);
           // Validate the form.
@@ -201,63 +201,81 @@
           QUnit.equal($('label[for=edit-ipv4].error:visible').length, 0, Drupal.t('Error label not found for "IPv4"'));
         };
       },
-      alphaNumeric: function ($, Drupal, window, document, undefined) {
+      alphaNumeric: function($, Drupal, window, document, undefined) {
         return function() {
           QUnit.expect(3);
+          var delay = 1000;
+
           // Validate the form.
           validator.form();
 
           // Check for the error.
           QUnit.equal($('label[for=edit-alpha-numeric].error:visible').length, 1, Drupal.t('Error label found for "Alpha Numeric"'));
+
+          var $e = $('#edit-alpha-numeric');
+          QUnit.stop();
+          setTimeout(function() {
+            // Check for the error.
+            QUnit.equal($('label[for=edit-alpha-numeric].error:visible').length, 1, Drupal.t('Error label found for "Alpha Numeric"'));
+
+            setTimeout(function() {
+              // Check for the error.
+              QUnit.equal($('label[for=edit-alpha-numeric].error:visible').length, 0, Drupal.t('Error label not found for "Alpha Numeric"'));
+              QUnit.start();
+            }, delay);
+
+            // Fill in the field with valid value.
+            $e.val("abc123");
+
+            // Validate the form.
+            validator.form();
+          }, delay);
 
           // Fill in the field with an illegal alpha numeric value.
-          $('#edit-alpha-numeric').val("_oops_");
+          $e.val("_oops_");
 
           // Validate the form.
           validator.form();
 
-          // Check for the error.
-          QUnit.equal($('label[for=edit-alpha-numeric].error:visible').length, 1, Drupal.t('Error label found for "Alpha Numeric"'));
-
-          // Fill in the field with valid value.
-          $('#edit-alpha-numeric').val("abc123");
-
-          // Validate the form.
-          validator.form();
-
-          // Check for the error.
-          QUnit.equal($('label[for=edit-alpha-numeric].error:visible').length, 0, Drupal.t('Error label not found for "Alpha Numeric"'));
         };
       },
-      alphaDash: function ($, Drupal, window, document, undefined) {
+      alphaDash: function($, Drupal, window, document, undefined) {
         return function() {
           QUnit.expect(3);
+          var $e = $('#edit-alpha-dash');
+          var delay = 1000;
+
           // Validate the form.
           validator.form();
 
           // Check for the error.
           QUnit.equal($('label[for=edit-alpha-dash].error:visible').length, 1, Drupal.t('Error label found for "Alpha Dash"'));
 
+          QUnit.stop();
+          setTimeout(function() {
+            // Check for the error.
+            QUnit.equal($('label[for=edit-alpha-dash].error:visible').length, 1, Drupal.t('Error label found for "Alpha Dash"'));
+
+            setTimeout(function() {
+              // Check for the error.
+              QUnit.equal($('label[for=edit-alpha-dash].error:visible').length, 0, Drupal.t('Error label not found for "Alpha Dash"'));
+              QUnit.start();
+            }, delay);
+
+            // Fill in the field with valid value.
+            $e.val("a-b-c");
+
+            // Validate the form.
+            validator.form();
+          }, delay);
           // Fill in the field with an illegal alpha-dash value.
-          $('#edit-alpha-dash').val("*oops*");
+          $e.val("*oops*");
 
           // Validate the form.
           validator.form();
-
-          // Check for the error.
-          QUnit.equal($('label[for=edit-alpha-dash].error:visible').length, 1, Drupal.t('Error label found for "Alpha Dash"'));
-
-          // Fill in the field with valid value.
-          $('#edit-alpha-dash').val("a-b-c");
-
-          // Validate the form.
-          validator.form();
-
-          // Check for the error.
-          QUnit.equal($('label[for=edit-alpha-dash].error:visible').length, 0, Drupal.t('Error label not found for "Alpha Dash"'));
         };
       },
-      digit: function ($, Drupal, window, document, undefined) {
+      digit: function($, Drupal, window, document, undefined) {
         return function() {
           QUnit.expect(3);
           // Validate the form.
@@ -285,7 +303,7 @@
           QUnit.equal($('label[for=edit-digit].error:visible').length, 0, Drupal.t('Error label not found for "Digit"'));
         };
       },
-      decimalLimited: function ($, Drupal, window, document, undefined) {
+      decimalLimited: function($, Drupal, window, document, undefined) {
         return function() {
           QUnit.expect(3);
           // Validate the form.
@@ -313,34 +331,41 @@
           QUnit.equal($('label[for=edit-decimal-limited].error:visible').length, 0, Drupal.t('Error label not found for "Decimal (limited)"'));
         };
       },
-      regex: function ($, Drupal, window, document, undefined) {
+      regex: function($, Drupal, window, document, undefined) {
         return function() {
           QUnit.expect(3);
+          var delay = 1000;
+          var $e = $('#edit-regex');
           // Validate the form.
           validator.form();
 
           // Check for the error.
           QUnit.equal($('label[for=edit-regex].error:visible').length, 1, Drupal.t('Error label found for "Regex"'));
+
+          QUnit.stop();
+          setTimeout(function() {
+            // Check for the error.
+            QUnit.equal($('label[for=edit-regex].error:visible').length, 1, Drupal.t('Error label found for "Regex"'));
+
+            setTimeout(function() {
+              // Check for the error.
+              QUnit.equal($('label[for=edit-regex].error:visible').length, 0, Drupal.t('Error label not found for "Regex"'));
+              QUnit.start();
+            }, delay);
+            // Fill in the field with valid value.
+            $('#edit-regex').val("abc_123");
+
+            // Validate the form.
+            validator.form();
+          }, delay);
 
           // Fill in the field with an illegal value (this regex only allows alphanumerics and underscores).
-          $('#edit-regex').val("abc_123*");
+          $e.val("abc_123*");
 
           // Validate the form.
           validator.form();
-
-          // Check for the error.
-          QUnit.equal($('label[for=edit-regex].error:visible').length, 1, Drupal.t('Error label found for "Regex"'));
-
-          // Fill in the field with valid value.
-          $('#edit-regex').val("abc_123");
-
-          // Validate the form.
-          validator.form();
-
-          // Check for the error.
-          QUnit.equal($('label[for=edit-regex].error:visible').length, 0, Drupal.t('Error label not found for "Regex"'));
         };
       }
     }
   };
-})(jQuery, Drupal, this, this.document);
+})(jQuery, Drupal, this, document);

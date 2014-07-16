@@ -356,17 +356,29 @@ function clientside_validation_form_after_build_recurse($form_id, &$form, &$form
 }
 
 function clientside_validation_add_validation(&$element, &$form_state, $form_id) {
+  $form_settings = clientside_validation_settings_current_form();
   if (clientside_validation_should_validate($element)) {
     $validators = clientside_validation_get_validators($element, $form_state);
     foreach ($validators as $validator) {
-      $settings = $validator->getJavascriptSettings($element, $form_state);
+      $js_settings = array();
+      switch ($form_settings['validate_options']['rules_type']) {
+        case 'js_settings':
+          $js_settings = $validator->getJavascriptSettings($element, $form_state);
+          break;
+        case 'data_attributes':
+          $validator->setDataAttributes($element, $form_state);
+          $js_settings = $validator->getJavascriptSettings($element, $form_state);
+          unset($js_settings['rules']);
+          unset($js_settings['messages']);
+          break;
+      }
       $files = $validator->jsFiles($element);
-      if ($settings) {
+      if ($js_settings) {
         $element['#attached']['js'][] = array(
           'data' => array(
             'clientsideValidation' => array(
               'forms' => array(
-                $form_id => $settings,
+                $form_id => $js_settings,
               ),
             ),
           ),
@@ -417,13 +429,16 @@ function clientside_validation_get_validators($element, &$form_state) {
       'constructor argument' => array(),
     ),
   );
+  $form_settings = clientside_validation_settings_current_form();
   $validators = array();
-  foreach ($plugins as $plugin) {
-    $plugin = drupal_array_merge_deep($defaults, $plugin);
-    $class = ctools_plugin_get_class($plugin, 'validator');
-    if ($class && $instance = clientside_validation_get_validator_instance($class, $plugin['validator']['constructor argument'])) {
-      if ($instance->supports($element, $form_state)) {
-        $validators[] = $instance;
+  foreach ($plugins as $plugin_id => $plugin) {
+    if ($form_settings['plugins'][$plugin_id]) {
+      $plugin = drupal_array_merge_deep($defaults, $plugin);
+      $class = ctools_plugin_get_class($plugin, 'validator');
+      if ($class && $instance = clientside_validation_get_validator_instance($class, $plugin['validator']['constructor argument'])) {
+        if ($instance->supports($element, $form_state)) {
+          $validators[] = $instance;
+        }
       }
     }
   }
@@ -536,46 +551,6 @@ function clientside_validation_add_xregexp(&$form) {
     $form['#attached']['libraries_load'][] = array('xregexp', $variant);
     return (isset($lib['variants'][$variant]) && (!isset($lib['variants'][$variant]['error']) || !$lib['variants'][$variant]['error'])) ? 1 : 0;
   }
-}
-
-/**
- * Implements hook_theme().
- */
-function clientside_validation_theme($existing, $type, $theme, $path) {
-  return array(
-    'clientside_error' => array(
-      'variables' => array(
-        'message' => '',
-        'placeholders' => array(),
-        'error_type' => '',
-        'element_name' => '',
-      )
-    )
-  );
-}
-
-/**
- * Theme callback function.
- * @param array $variables
- * An array with the following keys:
- *  'message':
- *  A string containing the error message
- *  'placeholders':
- *  An associative array of replacements to make after translation.
- *  Incidences of any key in this array are replaced with the corresponding value.
- *  Based on the first character of the key, the value is escaped and/or themed:
- *    !variable: inserted as is
- *    @variable: escape plain text to HTML (check_plain)
- *    %variable: escape text and theme as a placeholder for user-submitted content (check_plain + theme_placeholder)
- *  'error_type':
- *  The error type of this error message (e.g. 'required', 'min', 'max', 'range', 'decimal', 'number', ...)
- *  'element_name':
- *  The name attribute of the element the error is for.
- *
- * @return string
- */
-function theme_clientside_error($variables) {
-  return t($variables['message'], $variables['placeholders']);
 }
 
 function clientside_validation_settings_delete($cvs_type, $cvs_formid) {
@@ -711,6 +686,7 @@ function clientside_validation_settings_load_defaults() {
 function clientside_validation_settings_load($cvs_type = NULL, $cvs_formid = NULL, $include_disabled = FALSE) {
   $default_settings = array(
     'validate_options' => array(
+      'rules_type' => 'js_settings',
       'disable_html5' => 1,
       'validate_onsubmit' => 1,
       'validate_onblur' => 1,
@@ -720,8 +696,6 @@ function clientside_validation_settings_load($cvs_type = NULL, $cvs_formid = NUL
       'show_messages' => 0,
     ),
     'error' => array(
-      'prefix' => '',
-      'suffix' => '',
       'scrollto_errormessage' => 1,
       'scroll_speed' => 1000,
       'error_element' => 'label',
@@ -737,6 +711,11 @@ function clientside_validation_settings_load($cvs_type = NULL, $cvs_formid = NUL
       'validate_tabs' => '',
     ),
   );
+  ctools_include('plugins');
+  $plugins = ctools_get_plugins('clientside_validation', 'validator');
+  foreach ($plugins as $plugin_id => $plugin) {
+    $default_settings['plugins'][$plugin_id] = 1;
+  }
   if ($cvs_type == 'default') {
     $settings = drupal_array_merge_deep($default_settings, variable_get('clientside_validation_default_settings', $default_settings));
     drupal_alter('clientside_validation_settings', $settings);

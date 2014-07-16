@@ -86,17 +86,18 @@ USAGE
   The only thing this module will do is translate validation rules defined in
   PHP to javascript counter parts, if you mark a field as required it will
   create a javascript rule that checks the field on submit. This means no real
-  configuration is needed. You can however configure the prefix and suffix used
-  for the field names in the error messages (e.g.: prefix:", suffix:" or
-  prefix:<<, suffix:>>), whether or not to use the minified version of
-  jquery.validate.js, whether or not to validate hidden fields on specific
-  forms, whether or not to validate all vertical tabs or only the visible one
-  and to add Clientside Validation to all forms or only to those specified.
+  configuration is needed. You can however configure whether or not to use the
+  minified version of jquery.validate.js, whether or not to validate hidden
+  fields on specific forms, whether or not to validate all vertical tabs or only
+  the visible one and to add Clientside Validation to all forms or only to those
+  specified.
 
 AUTHOR
 ======
   The author can be contacted for paid customizations of this module as well as
-  Drupal consulting and development.DESCRIPTION
+  Drupal consulting and development.
+
+DESCRIPTION
 ===========
   This module adds clientside validation for all forms and webforms using
   jquery.validate[1]. The included jquery.validate.js file is patched because we
@@ -174,24 +175,3 @@ STATUS
   * Checkboxes are working
   * Now using jquery.validate 1.8
   * Supports multi page webforms
-
-TODO
-====
-  * Add settings to control position and behaviour of the error messages
-
-USAGE
-=====
-  The only thing this module will do is translate validation rules defined in
-  PHP to javascript counter parts, if you mark a field as required it will
-  create a javascript rule that checks the field on submit. This means no real
-  configuration is needed. You can however configure the prefix and suffix used
-  for the field names in the error messages (e.g.: prefix:", suffix:" or
-  prefix:<<, suffix:>>), whether or not to use the minified version of
-  jquery.validate.js, whether or not to validate hidden fields on specific
-  forms, whether or not to validate all vertical tabs or only the visible one
-  and to add Clientside Validation to all forms or only to those specified.
-
-AUTHOR
-======
-  The author can be contacted for paid customizations of this module as well as
-  Drupal consulting and development.

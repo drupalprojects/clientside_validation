@@ -39,7 +39,7 @@ class CvWebformValidationBlacklistValidator extends CvWebformValidationValidator
 
   public function jsFiles(array &$element) {
     $files = parent::jsFiles($element);
-    $files[] = drupal_get_path('module', 'clientside_validation_webform_validation') . '/plugins/validator/js/blacklist.cv.js';
+    $files[] = drupal_get_path('module', 'clientside_validation') . '/plugins/validator/js/blacklist.cv.js';
     return $files;
   }
 }
