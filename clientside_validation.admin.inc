@@ -429,7 +429,6 @@ function clientside_validation_settings_form($form, &$form_state, $cvs_formid = 
     '#collapsed' => FALSE,
     '#title' => t('Plugin settings'),
     '#weight' => 21,
-    '#tree' => FALSE,
   );
 
   ctools_include('plugins');
@@ -511,6 +510,11 @@ function clientside_validation_settings_form_submit($form, &$form_state) {
   unset($values['cvs_type']);
   unset($values['cvs_formid']);
   unset($values['new']);
+  $plugin_settings = array();
+  foreach ($values['plugins'] as $setting) {
+    $plugin_settings = array_merge($plugin_settings, $setting);
+  }
+  $values['plugins'] = $plugin_settings;
 
   if ($cvs_type == 'default') {
     variable_set('clientside_validation_default_settings', $values);
