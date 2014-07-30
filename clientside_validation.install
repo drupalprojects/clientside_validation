@@ -377,5 +377,5 @@ function clientside_validation_update_7200() {
       $enable_list[] = 'clientside_validation_' . $module;
     }
   }
-  module_enable($module_list);
+  module_enable($enable_list);
 }
