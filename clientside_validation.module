@@ -37,6 +37,10 @@ define('CLIENTSIDE_VALIDATION_CUSTOM_ERROR_FUNCTION', 7);
 function clientside_validation_requirements($phase) {
   $requirements = array();
   if ($phase == 'runtime' || $phase == 'update') {
+    // Fix dependencies first.
+    if ($phase == 'update' && !module_exists('libraries')) {
+      return $requirements;
+    }
     $t = get_t();
     $lib = libraries_detect('jquery.validate');
     if ($lib['installed']) {
