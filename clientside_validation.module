@@ -82,6 +82,9 @@ function clientside_validation_ctools_plugin_type() {
 function clientside_validation_library() {
   $libraries = array();
   $lib = libraries_detect('jquery.validate');
+  if (!$lib) {
+    return array();
+  }
   $libraries['jquery.validate'] = array(
     'title' => 'jQuery Validate',
     'website' => 'http://jqueryvalidation.org/',
