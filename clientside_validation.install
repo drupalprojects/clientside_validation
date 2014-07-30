@@ -351,3 +351,31 @@ function clientside_validation_update_7105() {
   }
   variable_set('clientside_validation_path_list', implode("\n", $paths));
 }
+
+/**
+ * Update Clientside Validation to 7.x-2.0
+ */
+function clientside_validation_update_7200() {
+  db_delete('system')
+    ->condition('name', array('clientside_validation_form', 'clientside_validation_html5'))
+    ->condition('type', 'module')
+    ->execute();
+  $enable_list = array();
+  $modules = array(
+    'captcha',
+    'date',
+    'elements',
+    'email',
+    'hierarchical_select',
+    'link',
+    'phone',
+    'term_reference_tree',
+    'webform_validation',
+  );
+  foreach ($modules as $module) {
+    if (module_exists($module)) {
+      $enable_list[] = 'clientside_validation_' . $module;
+    }
+  }
+  module_enable($module_list);
+}

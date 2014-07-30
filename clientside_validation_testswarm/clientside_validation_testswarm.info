@@ -12,6 +12,7 @@ dependencies[] = clientside_validation_fapi
 dependencies[] = clientside_validation_field_validation
 dependencies[] = clientside_validation_elements
 dependencies[] = clientside_validation_webform
+dependencies[] = clientside_validation_webform_validation
 dependencies[] = clientside_validation_test_field_validation
 dependencies[] = webform_validation
 dependencies[] = testswarm
