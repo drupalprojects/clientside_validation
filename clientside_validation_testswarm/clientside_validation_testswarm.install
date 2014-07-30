@@ -110,7 +110,7 @@ function clientside_validation_testswarm_update_7200() {
     return;
   }
   $ruleids = db_select('webform_validation_rule', 'r')
-    ->fields('r', 'ruleid')
+    ->fields('r', array('ruleid'))
     ->condition('nid', $nid)
     ->condition('rulename', array('cv_oneof', 'cv_oneoftwo'))
     ->execute()
