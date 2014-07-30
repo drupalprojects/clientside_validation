@@ -41,9 +41,6 @@ function clientside_validation_requirements($phase) {
     if ($phase == 'update' && !module_exists('libraries')) {
       return $requirements;
     }
-    if (!function_exists('libraries_detect')) {
-      drupal_load('module', 'libraries');
-    }
     $t = get_t();
     $lib = libraries_detect('jquery.validate');
     if ($lib['installed']) {
@@ -88,9 +85,12 @@ function clientside_validation_ctools_plugin_type() {
  */
 function clientside_validation_library() {
   $libraries = array();
+  if (!module_exists('libraries')) {
+    return $libraries;
+  }
   $lib = libraries_detect('jquery.validate');
   if (!$lib) {
-    return array();
+    return $libraries;
   }
   $libraries['jquery.validate'] = array(
     'title' => 'jQuery Validate',
