@@ -30,7 +30,7 @@ function clientside_validation_js_alter(&$javascript) {
     $clientside_validation_settings['clientsideValidation']['general']['months'][t(date('F', $date))] = $month_number;
     $clientside_validation_settings['clientsideValidation']['general']['months'][t(date('M', $date))] = $month_number;
   }
-  drupal_add_js($clientside_validation_settings, 'setting');
+  $javascript['settings']['data'][] = $clientside_validation_settings;
 }
 
 function clientside_validation_ajax_render_alter(&$commands) {
