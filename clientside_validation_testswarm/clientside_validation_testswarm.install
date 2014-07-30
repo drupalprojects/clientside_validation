@@ -99,3 +99,33 @@ function clientside_validation_testswarm_update_7103() {
 function clientside_validation_testswarm_update_7104() {
   clientside_validation_testswarm_enable();
 }
+
+/**
+ * Update testswarm tests.
+ */
+function clientside_validation_testswarm_update_7200() {
+  $nodenames = variable_get('clientside_validation_testswarm_nodenames', array());
+  $nid = isset($nodenames['webformvalidation']) ? $nodenames['webformvalidation'] : FALSE;
+  if (!$nid) {
+    return;
+  }
+  $ruleids = db_select('webform_validation_rule', 'r')
+    ->fields('r', 'ruleid')
+    ->condition('nid', $nid)
+    ->condition('rulename', array('cv_oneof', 'cv_oneoftwo'))
+    ->execute()
+    ->fetchCol();
+  foreach ($ruleids as $ruleid) {
+    webform_dynamic_delete_rule($ruleid);
+  }
+  $new_rule = array(
+    'rulename' => 'cv_oneof',
+    'nid' => $nid,
+    'validator' => 'someofseveral',
+    'data' => NULL,
+    'error_message' => NULL,
+    'rule_components' => drupal_map_assoc(array(10, 11, 12)),
+    'action' => 'add',
+  );
+  webform_validation_rule_save($new_rule);
+}
