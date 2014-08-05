@@ -8,7 +8,7 @@ $plugin = array(
 );
 
 
-class CvCoreEmailValidator extends ClientsideValidationValidator {
+class CvCoreLinkValidator extends ClientsideValidationValidator {
 
   public function supports(array $element, array &$form_state) {
     $supports = (
