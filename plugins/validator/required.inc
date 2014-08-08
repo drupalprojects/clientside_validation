@@ -34,6 +34,12 @@ class CvCoreRequiredValidator extends ClientsideValidationValidator {
       }
       return $settings;
     }
+    if ($element['#type'] == 'select') {
+      // Use blacklist to avoid the '_none' value used as empty value by Drupal.
+      $settings['rules'][$name]['blacklist'] = array('', '_none');
+      $settings['messages'][$name]['blacklist'] = $this->getMessage($element);
+      return $settings;
+    }
     return array(
       'rules' => array(
         $name => array(
@@ -76,5 +82,13 @@ class CvCoreRequiredValidator extends ClientsideValidationValidator {
     else {
       parent::setDataAttributes($element, $form_state);
     }
+  }
+
+  public function jsFiles(array &$element) {
+    $files = parent::jsFiles($element);
+    if ($element['#type'] == 'select') {
+      $files[] = drupal_get_path('module', 'clientside_validation') . '/plugins/validator/js/blacklist.cv.js';
+    }
+    return $files;
   }
 }
