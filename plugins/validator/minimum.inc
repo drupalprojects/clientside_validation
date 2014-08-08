@@ -40,7 +40,7 @@ class CvCoreMinimumValidator extends ClientsideValidationValidator {
   }
 
   public function getMessage(array $element) {
-    return t('@title field has to be greater than @min.', array('@min' => $element['#cv_data']['min'], '@title' => $element['#title']));
+    return t('!title field has to be greater or equal than @min.', array('@min' => $element['#cv_data']['min'], '!title' => $element['#title']));
   }
 
 }

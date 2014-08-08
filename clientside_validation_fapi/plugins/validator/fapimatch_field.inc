@@ -16,7 +16,7 @@ class CvFAPIMatchFieldValidator extends CvFAPIValidator {
 
   public function getMessage(array $element) {
     $rule = $this->getRule($element);
-    return isset($rule['error']) && $rule['error'] ? t($rule['error'], array('%field' => $element['#title'])) : t('@title value does not match other field.', array('@title' => $element['#title']));
+    return isset($rule['error']) && $rule['error'] ? t($rule['error'], array('%field' => $element['#title'])) : t('!title value does not match other field.', array('!title' => $element['#title']));
   }
 
   public function getJsArg(array $element) {

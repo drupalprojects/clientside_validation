@@ -38,7 +38,7 @@ class CvWebformFileValidator extends CvWebformValidator {
   }
 
   public function getMessage(array $element) {
-    return t('Only files with a @exts extension are allowed for @title.', array('@exts' => implode(', ', $element['#cv_data']['extensions']), '@title' => $element['#title']));
+    return t('Only files with a @exts extension are allowed for !title.', array('@exts' => implode(', ', $element['#cv_data']['extensions']), '!title' => $element['#title']));
   }
 
 }

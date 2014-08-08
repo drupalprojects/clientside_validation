@@ -70,7 +70,7 @@ class CvDateDateFormatValidator extends ClientsideValidationValidator {
   }
 
   public function getMessage(array $element) {
-    return t('The value in @title is not a valid date.', array('@title' => $element['#title']));
+    return t('The value in !title is not a valid date.', array('!title' => $element['#title']));
   }
 
 }

@@ -13,6 +13,6 @@ $plugin = array(
 
 class CvWebformValidationMaxWordsValidator extends CvWebformValidationValidator {
   public function getMessage(array $element) {
-    return format_plural($element['#cv_data']['maxWords'], '@title should be at most 1 word long.', '@title should be at most @count words long.', array('@title' => $element['#title']));
+    return format_plural($element['#cv_data']['maxWords'], '!title should be at most 1 word long.', '!title should be at most @count words long.', array('!title' => $element['#title']));
   }
 }

@@ -46,7 +46,7 @@ class CvElementsNumberValidator extends ClientsideValidationValidator {
   }
 
   public function getMessage(array $element) {
-    return $element['#cv_data']['is_decimal'] ? t('@title field accepts only numbers (use a \'.\' as decimal point).', array('@title' => $element['#title'])) : t('@title field accepts only numbers.', array('@title' => $element['#title']));
+    return $element['#cv_data']['is_decimal'] ? t("!title field accepts only numbers (use a '.' as decimal point).", array('!title' => $element['#title'])) : t('!title field accepts only numbers.', array('!title' => $element['#title']));
   }
 
 }

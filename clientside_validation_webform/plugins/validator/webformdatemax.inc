@@ -58,7 +58,7 @@ class CvWebformDateMaxValidator extends CvWebformValidator {
   }
 
   public function getMessage(array $element) {
-    return isset($element['#year_end']) ? t('The year in @title must be before @year', array('@title' => $element['#title'], '@date' => $element['#year_end'])) : t('The entered date in @title must be before @date', array('@title' => $element['#title'], '@year' => $element['#end_date']));
+    return isset($element['#year_end']) ? t('The year in !title must be before @date', array('!title' => $element['#title'], '@date' => $element['#year_end'])) : t('The entered date in !title must be before @date', array('!title' => $element['#title'], '@date' => $element['#end_date']));
   }
 
   public function setDataAttributes(array &$element, array &$form_state) {

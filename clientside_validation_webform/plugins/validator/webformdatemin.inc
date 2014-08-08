@@ -58,7 +58,7 @@ class CvWebformDateMinValidator extends CvWebformValidator {
   }
 
   public function getMessage(array $element) {
-    return isset($element['#year_start']) ? t('The year in @title must be aftr @year', array('@title' => $element['#title'], '@year' => $element['#year_start'])) : t('The entered date in @title must be after @date', array('@title' => $element['#title'], '@date' => $element['#start_date']));
+    return isset($element['#year_start']) ? t('The year in !title must be after @date', array('!title' => $element['#title'], '@date' => $element['#year_start'])) : t('The entered date in !title must be after @date', array('!title' => $element['#title'], '@date' => $element['#start_date']));
   }
 
   public function setDataAttributes(array &$element, array &$form_state) {

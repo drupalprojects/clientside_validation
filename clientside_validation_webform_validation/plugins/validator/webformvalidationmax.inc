@@ -42,6 +42,6 @@ class CvWebformValidationMaximumValidator extends CvWebformValidationValidator {
   }
 
   public function getMessage(array $element) {
-    return t('@title should be less than or equal to @max.', array('@title' => $element['#title'], '@max' => $element['#cv_data']['max']));
+    return t('!title has to be less than or equal to @max.', array('!title' => $element['#title'], '@max' => $element['#cv_data']['max']));
   }
 }

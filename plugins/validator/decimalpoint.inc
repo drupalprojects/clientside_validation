@@ -50,7 +50,7 @@ class CvCoreDecimalPointValidator extends ClientsideValidationValidator {
   }
 
   public function getMessage(array $element) {
-    return t('@title field accepts only numbers (use a \'.\' as decimal point).', array('@title' => $element['#title']));
+    return t("!title field accepts only numbers (use a '.' as decimal point).", array('!title' => $element['#title']));
   }
 
 }

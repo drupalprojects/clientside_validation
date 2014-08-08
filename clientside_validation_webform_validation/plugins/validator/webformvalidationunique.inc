@@ -32,7 +32,7 @@ class CvWebformValidationUniqueValidator extends CvWebformValidationValidator {
   }
 
   public function getMessage(array $element) {
-    return t('The value of @title is not unique.', array('@title' => $element['#title']));
+    return t('The value of !title is not unique.', array('!title' => $element['#title']));
   }
 
   public function jsFiles(array &$element) {

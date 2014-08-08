@@ -52,9 +52,9 @@ class CvCoreMaximumLengthValidator extends ClientsideValidationValidator {
 
   public function getMessage(array $element) {
     if ($element['#type'] == 'select') {
-      return t('@title field has to have maximum @max values.', array('@title' => $element['#title'], '@max' => $element['#cv_data']['maxlength']));
+      return t('!title field has to have maximum @max values.', array('!title' => $element['#title'], '@max' => $element['#cv_data']['maxlength']));
     }
-    return t('@title field has a maximum length of @max.', array('@title' => $element['#title'], '@max' => $element['#cv_data']['maxlength']));
+    return t('!title field has a maximum length of @max.', array('!title' => $element['#title'], '@max' => $element['#cv_data']['maxlength']));
   }
 
 }

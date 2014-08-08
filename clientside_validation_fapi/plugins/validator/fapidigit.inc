@@ -16,6 +16,6 @@ class CvFAPIDigitValidator extends CvFAPIValidator {
 
   public function getMessage(array $element) {
     $rule = $this->getRule($element);
-    return isset($rule['error']) && $rule['error'] ? t($rule['error'], array('%field' => $element['#title'])) : t('Use only digits on @field.', array('@title' => $element['#title']));
+    return isset($rule['error']) && $rule['error'] ? t($rule['error'], array('%field' => $element['#title'])) : t('Use only digits on !title.', array('!title' => $element['#title']));
   }
 }

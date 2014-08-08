@@ -35,7 +35,7 @@ class CvWebformValidationPlainTextValidator extends CvWebformValidationValidator
   }
 
   public function getMessage(array $element) {
-    return $element['#cv_data']['rule']['negate'] ? t('@title must contain HTML tags.', array('@title' => $element['#title'])) : t('@title only allows the use of plain text.', array('@title' => $element['#title']));
+    return $element['#cv_data']['rule']['negate'] ? t('!title must contain HTML tags.', array('!title' => $element['#title'])) : t('!title only allows the use of plain text.', array('!title' => $element['#title']));
   }
 
   public function jsFiles(array &$element) {

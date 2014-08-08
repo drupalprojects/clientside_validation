@@ -30,6 +30,6 @@ class CvWebformValidationNumericValidator extends CvWebformValidationValidator {
   }
 
   public function getMessage(array $element) {
-    return t('@title is not numeric.', array('@title' => $element['#title']));
+    return t('!title is not numeric.', array('!title' => $element['#title']));
   }
 }

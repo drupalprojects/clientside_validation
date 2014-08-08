@@ -44,7 +44,7 @@ class CvCorePhoneValidator extends ClientsideValidationValidator {
   }
 
   public function getMessage(array $element) {
-    return t('The value in @title is not a valid phone number.', array('@title' => $element['#title']));
+    return t('The value in !title is not a valid phone number.', array('!title' => $element['#title']));
   }
 
 }

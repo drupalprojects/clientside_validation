@@ -31,7 +31,7 @@ class CvWebformValidationEmptyValidator extends CvWebformValidationValidator {
   }
 
   public function getMessage(array $element) {
-    return t('@title does not contain the correct data.', array('@title' => $element['#title']));
+    return t('!title does not contain the correct data.', array('!title' => $element['#title']));
   }
 
   public function jsFiles(array &$element) {

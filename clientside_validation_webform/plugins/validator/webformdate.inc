@@ -38,13 +38,13 @@ class CvWebformDateValidator extends CvWebformValidator {
         ),
         'messages' => array(
           $day_name => array(
-            'required' => t('Day in !title field is required.', array('@title' => $element['#title'])),
+            'required' => t('Day in !title field is required.', array('!title' => $element['#title'])),
           ),
           $month_name => array(
-            'required' => t('Month in !title field is required.', array('@title' => $element['#title'])),
+            'required' => t('Month in !title field is required.', array('!title' => $element['#title'])),
           ),
           $year_name => array(
-            'required' => t('Year in !title field is required.', array('@title' => $element['#title'])),
+            'required' => t('Year in !title field is required.', array('!title' => $element['#title'])),
           ),
         ),
       );

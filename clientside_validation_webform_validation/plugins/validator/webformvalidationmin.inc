@@ -42,6 +42,6 @@ class CvWebformValidationMinimumValidator extends CvWebformValidationValidator {
   }
 
   public function getMessage(array $element) {
-    return t('@title should be greater than or equal to @min.', array('@title' => $element['#title'], '@min' => $element['#cv_data']['min']));
+    return t('!title field has to be greater or equal than @min.', array('!title' => $element['#title'], '@min' => $element['#cv_data']['min']));
   }
 }

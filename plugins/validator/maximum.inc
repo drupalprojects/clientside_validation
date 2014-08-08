@@ -40,7 +40,7 @@ class CvCoreMaximumValidator extends ClientsideValidationValidator {
   }
 
   public function getMessage(array $element) {
-    return t('@title field has to be smaller than @max.', array('@title' => $element['#title'], '@max' => $element['#cv_data']['max']));
+    return t('!title field has to be smaller than @max.', array('!title' => $element['#title'], '@max' => $element['#cv_data']['max']));
   }
 
 }

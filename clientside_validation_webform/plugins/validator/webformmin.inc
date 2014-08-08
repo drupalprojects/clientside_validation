@@ -36,7 +36,7 @@ class CvWebformMinValidator extends CvWebformValidator {
 
   public function getMessage(array $element) {
     $settings = $element['#webform_component']['extra'];
-    return (isset($settings['step']) && !empty($settings['step']) && $settings['step'] != 'any') ? t('@title field has to be greater than @min and must be dividable by @step.', array('@title' => $element['#title'], '@min' => $settings['min'], '@step' => $settings['step'])) : t('@title field has to be greater than @min.', array('@title' => $element['#title'], '@min' => $settings['min']));
+    return (isset($settings['step']) && !empty($settings['step']) && $settings['step'] != 'any') ? t('!title field has to be greater than @min and must be dividable by @step.', array('!title' => $element['#title'], '@min' => $settings['min'], '@step' => $settings['step'])) : t('!title field has to be greater than @min.', array('!title' => $element['#title'], '@min' => $settings['min']));
   }
 
   public function jsFiles(array &$element) {

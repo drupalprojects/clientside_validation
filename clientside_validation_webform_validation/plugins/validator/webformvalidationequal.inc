@@ -44,6 +44,6 @@ class CvWebformValidationEqualValidator extends CvWebformValidationValidator {
   }
 
   public function getMessage(array $element) {
-    return t('@item_checked does not match @item_first.', array('@item_checked' => $element['#title'], '@item_first' => $element['#cv_data'][$this->js_rule]['name']));
+    return t('!title does not match @target.', array('!title' => $element['#title'], '@target' => $element['#cv_data'][$this->js_rule]['name']));
   }
 }
