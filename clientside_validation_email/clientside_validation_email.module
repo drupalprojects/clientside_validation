@@ -15,7 +15,7 @@ function clientside_validation_email_ctools_plugin_directory($module, $plugin) {
 function clientside_validation_email_field_widget_form_alter(&$element, &$form_state, $context) {
   switch ($context['field']['type']) {
     case 'email':
-      $element['value']['#clientside_validation_type'] = 'email';
+      $element['email']['#clientside_validation_type'] = 'email';
       break;
   }
 }
