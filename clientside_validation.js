@@ -534,7 +534,15 @@
             };
             break;
           case 6: // CLIENTSIDE_VALIDATION_TOP_OF_FIRST_FORM
-            if ($('div.messages.error').length) {
+            if ($('div.messages--error').length) {
+              if ($('div.messages--error').attr('id').length) {
+                errorel = $('div.messages--error').attr('id');
+              }
+              else {
+                $('div.messages--error').attr('id', errorel);
+              }
+            }
+            else if ($('div.messages.error').length) {
               if ($('div.messages.error').attr('id').length) {
                 errorel = $('div.messages.error').attr('id');
               }
