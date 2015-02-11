@@ -288,6 +288,12 @@
           errorElement: self.forms[f].general.errorElement,
           unhighlight: function(element, errorClass, validClass) {
             var tab;
+
+            // If this is a pending element skip handling.
+            if (typeof this.pending[element.name] != 'undefined') {
+              return;
+            }
+
             // Default behavior
             $(element).removeClass(errorClass).addClass(validClass);
 
@@ -309,6 +315,15 @@
                 tab.removeClass(errorClass).addClass(validClass);
               }
             }
+
+            /**
+             * Let other modules know this / which / an element is valid.
+             * @event clientsideValidationValid
+             * @name clientsideValidationValid
+             * @memberof Drupal.clientsideValidation
+             */
+            $(element).trigger('clientsideValidationValid');
+            jQuery.event.trigger('clientsideValidationValid', [element]);
           },
           highlight: function(element, errorClass, validClass) {
             // Default behavior
@@ -323,6 +338,15 @@
             if (tab) {
               tab.addClass(errorClass).removeClass(validClass);
             }
+
+            /**
+             * Let other modules know this / which / an element is invalid.
+             * @event clientsideValidationInvalid
+             * @name clientsideValidationInvalid
+             * @memberof Drupal.clientsideValidation
+             */
+            $(element).trigger('clientsideValidationInvalid');
+            jQuery.event.trigger('clientsideValidationInvalid', [element]);
           },
           invalidHandler: function(form, validator) {
             var tab;
@@ -1438,6 +1462,116 @@
       return isValid;
     }, jQuery.validator.format("Please fill at least {0} of these fields."));
 
+
+    // Enhances the provided "remote" method by adding our own success and
+    // progress handling.
+    jQuery.validator.methods.original_remote = jQuery.validator.methods.remote;
+    jQuery.validator.methods.remote = function(value, element, param) {
+      if ( this.optional(element) ) {
+        return "dependency-mismatch";
+      }
+
+      var previous = this.previousValue(element);
+      if (!this.settings.messages[element.name] ) {
+        this.settings.messages[element.name] = {};
+      }
+      previous.originalMessage = this.settings.messages[element.name].remote;
+      this.settings.messages[element.name].remote = previous.message;
+
+      param = typeof param === "string" && {url:param} || param;
+
+      if ( previous.old === value ) {
+        return previous.valid;
+      }
+
+      previous.old = value;
+      var validator = this;
+      this.startRequest(element);
+      var data = {};
+      data[element.name] = value;
+
+      $.ajax($.extend(true, {
+        url: param,
+        mode: "abort",
+        port: "validate" + element.name,
+        dataType: "json",
+        progress: {
+          type: 'throbber',
+          message: Drupal.t('Please wait...')
+        },
+        data: data,
+        // We provide our own success handling to ensure the pending array is
+        // cleaned before executing showErrors(). That way handling highlight
+        // unhighlight is easier for pending elements (avoid) flickering.
+        // However we still need the original success handler of Drupal.ajax to
+        // do the progress handling.
+        success: function(response) {
+          // Remove element from pending list as we now know what state it has.
+          delete validator.pending[element.name];
+          validator.settings.messages[element.name].remote = previous.originalMessage;
+          var valid = response === true || response === "true";
+          if ( valid ) {
+            var submitted = validator.formSubmitted;
+            // Don't invoke this because this will avoid that the highlight /
+            // unhighlight handlers are called.
+            // validator.prepareElement(element);
+            validator.formSubmitted = submitted;
+            validator.successList.push(element);
+            delete validator.invalid[element.name];
+            validator.showErrors();
+          } else {
+            var errors = {};
+            var message = response || validator.defaultMessage( element, "remote" );
+            errors[element.name] = previous.message = $.isFunction(message) ? message(value) : message;
+            validator.invalid[element.name] = true;
+            validator.showErrors(errors);
+          }
+          previous.valid = valid;
+          validator.stopRequest(element, valid);
+        },
+        beforeSend: function () {
+          // Disable the element that received the change to prevent user interface
+          // interaction while the Ajax request is in progress. ajax.ajaxing prevents
+          // the element from triggering a new request, but does not prevent the user
+          // from changing its value.
+          $(element).addClass('progress-disabled').attr('disabled', true);
+
+          // Insert progressbar or throbber.
+          if (this.progress.type == 'bar') {
+            var progressBar = new Drupal.progressBar('ajax-progress-' + element.id, eval(this.progress.update_callback), this.progress.method, eval(this.progress.error_callback));
+            if (this.progress.message) {
+              progressBar.setProgress(-1, this.progress.message);
+            }
+            if (this.progress.url) {
+              progressBar.startMonitoring(this.progress.url, this.progress.interval || 1500);
+            }
+            this.progress.element = $(progressBar.element).addClass('ajax-progress ajax-progress-bar');
+            this.progress.object = progressBar;
+            $(element).after(this.progress.element);
+          }
+          else if (this.progress.type == 'throbber') {
+            this.progress.element = $('<div class="ajax-progress ajax-progress-throbber"><div class="throbber">&nbsp;</div></div>');
+            if (this.progress.message) {
+              $('.throbber', this.progress.element).after('<div class="message">' + this.progress.message + '</div>');
+            }
+            $(element).after(this.progress.element);
+          }
+        },
+        complete: function() {
+          // Remove the progress element.
+          if (this.progress.element) {
+            $(this.progress.element).remove();
+          }
+          if (this.progress.object) {
+            this.progress.object.stopMonitoring();
+          }
+          $(element).removeClass('progress-disabled').removeAttr('disabled');
+        }
+      }, param));
+      return "pending";
+    };
+
+
     /**
      * Allow other modules to add more rules.
      * @event clientsideValidationAddCustomRules
@@ -1500,4 +1634,33 @@
       }
     }
   };
+
+  /**
+   * Integrate with the states handling.
+   *
+   * Prvides the condtions:
+   *  * clientside_validation: Value is valid.
+   *  * clientside_validated: Value was validated actually.
+   */
+  if (typeof Drupal.states != 'undefined') {
+    Drupal.states.Trigger.states.clientside_validation = function (element) {
+      element
+        .bind('clientsideValidationValid', function () {
+          element.trigger({type: 'state:clientside_validation', value: true});
+          element.trigger({type: 'state:clientside_validated', value: true});
+        })
+        .bind('clientsideValidationInvalid', function () {
+          element.trigger({type: 'state:clientside_validation', value: false});
+          element.trigger({type: 'state:clientside_validated', value: true});
+        })
+        .bind('change keyup', function () {
+          element.trigger({type: 'state:clientside_validated', value: false});
+        });
+
+      Drupal.states.postponed.push($.proxy(function () {
+        element.trigger({type: 'state:clientside_validation', value: true});
+        element.trigger({type: 'state:clientside_validated', value: false});
+      }, window));
+    };
+  }
 })(jQuery);
