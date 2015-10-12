@@ -645,6 +645,7 @@
           };
         }
       }
+      $.event.trigger('clientsideValidationAddCustomOptions', validate_options);
       self.validator = self.$form.validate(validate_options);
 
       // Disable HTML5 validation
