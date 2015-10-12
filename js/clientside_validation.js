@@ -766,7 +766,7 @@
             ret = true;
           }
           var id = element.is('form') ? element.attr('id') : element.closest('form').attr('id');
-          if (id && Drupal.cvInstances[id].validator) {
+          if (id && Drupal.cvInstances[id] && Drupal.cvInstances[id].validator && Drupal.cvInstances[id].validator.form) {
             Drupal.cvInstances[id].validator.onsubmit = false;
             ret = ret && Drupal.cvInstances[id].validator.form();
             if (!ret) {
