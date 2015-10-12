@@ -89,8 +89,24 @@ abstract class CvFieldValidationValidator extends ClientsideValidationValidator 
     return $files;
   }
 
+  /**
+   * Retrieves the message from the rule config.
+   */
   public function getMessage(array $element) {
     $rule = $this->getRule($element);
-    return $rule->error_message;
+    $error_message = t($rule->error_message);
+    $settings = $rule->settings;
+    $tokens = array(
+      '[entity-type]' => $rule->entity_type,
+      '[bundle]' => $rule->bundle,
+    );
+    if (isset($settings['min']) && $settings['min'] != '') {
+      $tokens['[min]'] = $settings['min'];
+    }
+    if (isset($settings['max']) && $settings['max'] != '') {
+      $tokens['[max]'] = $settings['max'];
+    }
+    return field_filter_xss(strtr($error_message, $tokens));
   }
+
 }
