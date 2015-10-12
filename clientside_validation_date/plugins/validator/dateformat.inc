@@ -65,7 +65,7 @@ class CvDateDateFormatValidator extends ClientsideValidationValidator {
 
   public function jsFiles(array &$element) {
     $files = parent::jsFiles($element);
-    $files[] = drupal_get_path('module', 'clientside_validation') . '/plugins/validator/js/dateformat.cv.js';
+    $files[] = drupal_get_path('module', 'clientside_validation_date') . '/plugins/validator/js/dateformat.cv.js';
     return $files;
   }
 
