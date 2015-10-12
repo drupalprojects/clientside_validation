@@ -18,7 +18,7 @@ class CvCoreMaximumValidator extends ClientsideValidationValidator {
       return FALSE;
     }
     $instance = field_widget_instance($element, $form_state);
-    return isset($instance['settings']['max']);
+    return isset($instance['settings']['max']) && !empty($instance['settings']['max']);
   }
 
   public function getJavascriptSettings(array &$element, array &$form_state) {

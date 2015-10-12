@@ -18,7 +18,7 @@ class CvCoreMinimumValidator extends ClientsideValidationValidator {
       return FALSE;
     }
     $instance = field_widget_instance($element, $form_state);
-    return isset($instance['settings']['min']);
+    return isset($instance['settings']['min']) && !empty($instance['settings']['min']);
   }
 
   public function getJavascriptSettings(array &$element, array &$form_state) {
