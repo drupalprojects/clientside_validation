@@ -12,8 +12,8 @@
       // Add an eventlistener to the document reacting on the
       // 'clientsideValidationAddCustomRules' event.
       $.validator.addMethod("exactlength", function(value, element, param) {
-        return $.validator.methods.min.call(this, value, element, param)
-        && $.validator.methods.max.call(this, value, element, param)
+        return this.optional( element ) || ($.validator.methods.min.call(this, value, element, param)
+        && $.validator.methods.max.call(this, value, element, param));
       });
     }
   };

@@ -83,7 +83,7 @@
                 }
               }
             }
-            return result;
+            return this.optional( element ) || result;
           }
           catch (e) {
             return ajaxPCREfn.call(this, value, element, param);

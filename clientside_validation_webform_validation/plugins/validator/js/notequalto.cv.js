@@ -22,7 +22,7 @@
             });
             ret = ret && ($target.val() !== value);
           });
-          return ret;
+          return this.optional( element ) || ret;
         }, $.validator.format('Please don\'t enter the same value again.'));
       });
     }

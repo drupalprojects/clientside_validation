@@ -15,10 +15,10 @@
         $.validator.addMethod("chars", function(value, element, param) {
           for (var i in value) {
             if (param.indexOf(value[i]) === -1) {
-              return false;
+              return this.optional( element ) || false;
             }
           }
-          return true;
+          return this.optional( element ) || true;
         });
       });
     }

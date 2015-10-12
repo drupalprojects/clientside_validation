@@ -16,13 +16,13 @@
         $.validator.addMethod("oneOf", function(value, element, param) {
           for (var p in param.values) {
             if (param.values[p] === value && param.caseSensitive) {
-              return !param.negate;
+              return this.optional( element ) || !param.negate;
             }
             else if (param.values[p].toLowerCase() === value.toLowerCase() && !param.caseSensitive) {
-              return !param.negate;
+              return this.optional( element ) || !param.negate;
             }
           }
-          return param.negate;
+          return this.optional( element ) || param.negate;
         }, $.validator.format(''));
       });
     }

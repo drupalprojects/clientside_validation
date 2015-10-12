@@ -37,15 +37,15 @@
           }
 
           if (parseInt(yearelem.val(), 10) < parseInt(param[0], 10)) {
-            return false;
+            return this.optional( element ) || false;
           }
           else if (parseInt(yearelem.val(), 10) === parseInt(param[0], 10)) {
             if (parseInt(monthelem.val(), 10) < parseInt(param[1], 10)) {
-              return false;
+              return this.optional( element ) || false;
             }
             else if (parseInt(monthelem.val(), 10) === parseInt(param[1], 10)) {
               if (parseInt(dayelem.val(), 10) < parseInt(param[2], 10)) {
-                return false;
+                return this.optional( element ) || false;
               }
             }
           }
@@ -64,7 +64,7 @@
               $(this).trigger('focusout').trigger('blur');
             });
           }).removeClass('error');
-          return true;
+          return this.optional( element ) || true;
         });
       });
     }
