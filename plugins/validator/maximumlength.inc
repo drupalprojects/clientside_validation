@@ -39,7 +39,7 @@ class CvCoreMaximumLengthValidator extends ClientsideValidationValidator {
     return array(
       'rules' => array(
         $name => array(
-          'maxlength' => $max,
+          'maxlength' => (int) $max,
         ),
       ),
       'messages' => array(

@@ -23,7 +23,7 @@ class CvWebformMinValidator extends CvWebformValidator {
     return array(
       'rules' => array(
          $name => array(
-          $rule => $rule == 'min' ? $settings['min'] : array($settings['min'], $settings['step']),
+          $rule => $rule == 'min' ? floatval($settings['min']) : array(floatval($settings['min']), floatval($settings['step'])),
         ),
       ),
       'messages' => array(

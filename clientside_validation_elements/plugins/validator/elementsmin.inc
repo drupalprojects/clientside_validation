@@ -32,7 +32,7 @@ class CvElementsMinValidator extends ClientsideValidationValidator {
     return array(
       'rules' => array(
         $name => array(
-          $rule => $rule == 'min' ? $min : array('min' => $min, 'step' => $step),
+          $rule => $rule == 'min' ? floatval($min) : array('min' => floatval($min), 'step' => floatval($step)),
         ),
       ),
       'messages' => array(

@@ -23,7 +23,7 @@ class CvWebformMaxValidator extends CvWebformValidator {
     return array(
       'rules' => array(
          $name => array(
-          $rule => $rule == 'max' ? $settings['max'] : array($settings['max'], $settings['step']),
+          $rule => $rule == 'max' ? floatval($settings['max']) : array(floatval($settings['max']), floatval($settings['step'])),
         ),
       ),
       'messages' => array(

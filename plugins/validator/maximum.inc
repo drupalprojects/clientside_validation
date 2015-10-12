@@ -28,7 +28,7 @@ class CvCoreMaximumValidator extends ClientsideValidationValidator {
     return array(
       'rules' => array(
         $name => array(
-          'max' => $instance['settings']['max'],
+          'max' => floatval($instance['settings']['max']),
         ),
       ),
       'messages' => array(

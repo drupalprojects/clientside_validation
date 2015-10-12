@@ -32,7 +32,7 @@ class CvElementsMaxValidator extends ClientsideValidationValidator {
     return array(
       'rules' => array(
         $name => array(
-          $rule => $rule == 'max' ? $max : array('max' => $max, 'step' => $step),
+          $rule => $rule == 'max' ? floatval($max) : array('max' => floatval($max), 'step' => floatval($step)),
         ),
       ),
       'messages' => array(

@@ -28,7 +28,7 @@ class CvCoreMinimumValidator extends ClientsideValidationValidator {
     return array(
       'rules' => array(
         $name => array(
-          'min' => $instance['settings']['min'],
+          'min' => floatval($instance['settings']['min']),
         ),
       ),
       'messages' => array(
