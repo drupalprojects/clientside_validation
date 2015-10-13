@@ -32,6 +32,7 @@
                   label.html(
                     label.html()
                       .replace("[value]", $element.val())
+                      .replace("[length]", $element.val().length)
                       .replace("[field-name]", $element.closest(".form-item").find('label').first().text().replace(' *',''))
                   );
                 }
