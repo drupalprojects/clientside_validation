@@ -1608,7 +1608,7 @@
             ret = true;
           }
           var id = element.is('form') ? element.attr('id') : element.closest('form').attr('id');
-          if (id && Drupal.myClientsideValidation.validators[id]) {
+          if (id && Drupal.myClientsideValidation.validators[id] && Drupal.myClientsideValidation.validators[id].form) {
             Drupal.myClientsideValidation.validators[id].onsubmit = false;
             ret = ret && Drupal.myClientsideValidation.validators[id].form();
             if (!ret) {
