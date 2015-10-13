@@ -81,54 +81,34 @@ function clientside_validation_ctools_plugin_type() {
 }
 
 /**
- * Implements hook_library().
- */
-function clientside_validation_library() {
-  $libraries = array();
-  if (!module_exists('libraries')) {
-    return $libraries;
-  }
-  $lib = libraries_detect('jquery.validate');
-  if (!$lib) {
-    return $libraries;
-  }
-  $libraries['jquery.validate'] = array(
-    'title' => 'jQuery Validate',
-    'website' => 'http://jqueryvalidation.org/',
-    'version' => $lib['version'],
-    'js' => array(
-      $lib['library path'] . '/dist/jquery.validate.js' => array(),
-      $lib['library path'] . '/dist/additional-methods.js' => array(),
-    ),
-  );
-
-  $libraries['clientside.validation'] = array(
-    'title' => 'Clientside Validation',
-    'website' => 'http://drupal.org/project/clientside_validation',
-    'version' => '7.x-2.x',
-    'js' => array(
-      drupal_get_path('module', 'clientside_validation') . '/js/clientside_validation.ie8.js' => array(
-        'scope' => 'footer',
-        'weight' => 19,
-        'browsers' => array('IE' => 'lt IE 9', '!IE' => FALSE),
-      ),
-      drupal_get_path('module', 'clientside_validation') . '/js/clientside_validation.js' => array(
-        'scope' => 'footer',
-        'weight' => 20
-      ),
-    ),
-    'dependencies' => array(
-      array('clientside_validation', 'jquery.validate'),
-    ),
-  );
-  return $libraries;
-}
-
-/**
  * Implements hook_libraries_info().
  */
 function clientside_validation_libraries_info() {
   $libraries = array();
+
+  $libraries['clientside.validation'] = array(
+    'title' => 'Clientside Validation',
+    'vendor url' => 'http://drupal.org/project/clientside_validation',
+    'version' => '7.x-2.x',
+    'library path' => drupal_get_path('module', 'clientside_validation') . '/js',
+    'files' => array(
+      'js' => array(
+        'clientside_validation.ie8.js' => array(
+          'scope' => 'footer',
+          'weight' => 19,
+          'browsers' => array('IE' => 'lt IE 9', '!IE' => FALSE),
+        ),
+        'clientside_validation.js' => array(
+          'scope' => 'footer',
+          'weight' => 20,
+        ),
+      ),
+    ),
+    'dependencies' => array(
+      'jquery.validate',
+    ),
+  );
+
   $libraries['jquery.validate'] = array(
     'name' => 'jQuery Validate',
     'vendor url' => 'http://jqueryvalidation.org/',
@@ -144,9 +124,28 @@ function clientside_validation_libraries_info() {
       'pattern' => '/([0-9\.-]+)/',
       'lines' => 4,
     ),
+    'callbacks' => array(
+      'pre-load' => array(
+        'clientside_validation_libraries_add_locale',
+      ),
+    ),
   );
 
   return $libraries;
+}
+
+/**
+ * Load the localization file to show the messages in the current language.
+ */
+function clientside_validation_libraries_add_locale(&$library) {
+  // Get the current language.
+  global $language;
+  $path = 'dist/localization/messages_' . $language->language . '.js';
+  // Check if we do not use English and there is a translation.
+  if ($language->language != 'en' && file_exists($library['library path'] . '/' . $path)) {
+    // Add the localized language to the files.
+    $library['files']['js'][] = $path;
+  }
 }
 
 /**
@@ -338,7 +337,7 @@ function clientside_validation_form_after_build(&$form, &$form_state) {
       // @see http://remysharp.com/2007/04/20/performance-profiling-javascript/
       $form['#attached']['js'][] = drupal_get_path('module', 'clientside_validation') . '/js/time.js';
     }
-    $form['#attached']['library'][] = array('clientside_validation', 'clientside.validation');
+    $form['#attached']['libraries_load'][] = array('clientside.validation');
     $form['#attached']['js'][] = array('data' => $settings, 'type' => 'setting');
   }
   return $form;
