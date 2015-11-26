@@ -20,24 +20,26 @@
    */
   Drupal.behaviors.clientsideValidationFieldValidation = {
     attach: function () {
-      $(document).bind('clientsideValidationInitialized', function(){
+      $(document).bind('clientsideValidationInitialized', function () {
         for (var formid in Drupal.cvInstances) {
           if (Drupal.cvInstances.hasOwnProperty(formid)) {
-            Drupal.cvInstances[formid].validator.settings.showErrors = function (errorMap, errorList) {
-              this.defaultShowErrors();
-              for (var index in errorList) {
-                var $element = $(errorList[index].element);
-                var label = this.errorsFor(errorList[index].element);
-                if ( label.length ) {
-                  label.html(
-                    label.html()
-                      .replace("[value]", $element.val())
-                      .replace("[length]", $element.val().length)
-                      .replace("[field-name]", $element.closest(".form-item").find('label').first().text().replace(' *',''))
-                  );
+            if (Drupal.cvInstances[formid].validator.settings) {
+              Drupal.cvInstances[formid].validator.settings.showErrors = function (errorMap, errorList) {
+                this.defaultShowErrors();
+                for (var index in errorList) {
+                  var $element = $(errorList[index].element);
+                  var label = this.errorsFor(errorList[index].element);
+                  if (label.length) {
+                    label.html(
+                        label.html()
+                        .replace("[value]", $element.val())
+                        .replace("[length]", $element.val().length)
+                        .replace("[field-name]", $element.closest(".form-item").find('label').first().text().replace(' *',''))
+                        );
+                  }
                 }
-              }
-            };
+              };
+            }
           }
         }
       });
