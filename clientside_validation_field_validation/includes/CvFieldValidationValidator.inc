@@ -36,10 +36,11 @@ abstract class CvFieldValidationValidator extends ClientsideValidationValidator 
 
   public function getJavascriptSettings(array &$element, array &$form_state) {
     $name = $this->getName($element);
+    $arg = $this->getJsArg($element);
     return array(
       'rules' => array(
         $name => array(
-          $this->js_rule => $this->getJsArg($element),
+          $this->js_rule => is_numeric($arg) ? floatval($arg) : $arg,
         ),
       ),
       'messages' => array(
