@@ -30,7 +30,7 @@ function clientside_validation_fapi_menu() {
 
 function _clientside_validation_ajax_regex_pcre() {
   $param = $_POST['param'];
-  $value = check_plain($_POST['value']);
+  $value = $_POST['value'];
   $result = array();
   foreach ($param['expressions'] as $key => $regex) {
     if (!(bool) preg_match($regex, (string) $value)) {
