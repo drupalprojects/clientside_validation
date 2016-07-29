@@ -5,6 +5,7 @@ package = Clientside Validation
 
 dependencies[] = ctools
 dependencies[] = libraries
+dependencies[] = jquery_update
 
 files[] = includes/ClientsideValidationValidator.inc
 
