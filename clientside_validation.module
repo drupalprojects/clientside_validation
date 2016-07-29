@@ -439,6 +439,7 @@ function clientside_validation_get_validators($element, &$form_state) {
     foreach ($plugins as $plugin_id => $plugin) {
       $plugin = drupal_array_merge_deep($defaults, $plugin);
       $plugin['class'] = ctools_plugin_get_class($plugin, 'validator');
+      $plugins[$plugin_id] = $plugin;
     }
     uasort($plugins, 'drupal_sort_weight');
   }
