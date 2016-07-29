@@ -192,7 +192,7 @@
 
     // Check for the vertical tabs fieldset and the verticalTab data
     var $fieldset = $element.parents('fieldset.vertical-tabs-pane');
-    if (($fieldset.size() > 0) && (typeof (fieldset.data('verticalTab')) !== 'undefined')) {
+    if (($fieldset.size() > 0) && (typeof ($fieldset.data('verticalTab')) !== 'undefined')) {
       var $tab = $($fieldset.data('verticalTab').item[0]).find('a');
       if ($tab.size()) {
         return $tab;
