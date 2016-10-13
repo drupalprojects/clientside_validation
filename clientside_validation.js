@@ -701,6 +701,13 @@
             };
           }
         }
+        /**
+         * Let other modules alter the validation options for this form.
+         * @event clientsideValidationAlterOptions
+         * @name clientsideValidationAlterOptions
+         * @memberof Drupal.clientsideValidation
+         */
+        $.event.trigger('clientsideValidationAlterOptions', [validate_options, f]);
         self.validators[f] = $('#' + f).validate(validate_options);
 
         // Disable HTML5 validation
