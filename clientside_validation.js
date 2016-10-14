@@ -397,7 +397,21 @@
                     x = $("#" + errorel).offset().top - $("#" + errorel).height() - 100; // provides buffer in viewport
                   }
                   else {
-                    x = $(validator.errorList[0].element).offset().top - $(validator.errorList[0].element).height() - 100;
+                    var first_element = $(validator.errorList[0].element);
+                    var hidden_element = first_element.is(":hidden");
+                    if (hidden_element) {
+                      var original_visibility = first_element.css('visibility');
+                      var original_position = first_element.css('position');
+                      first_element.css('visibility', 'hidden');
+                      first_element.css('position', 'absolute');
+                      first_element.show();
+                    }
+                    x = first_element.offset().top - first_element.height() - 100;
+                    if (hidden_element) {
+                      first_element.hide();
+                      first_element.css('position', original_position);
+                      first_element.css('visibility', original_visibility);
+                    }
                   }
                   $('html, body').addClass('cv-scrolling').animate(
                     {scrollTop: x},
