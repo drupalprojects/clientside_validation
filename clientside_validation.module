@@ -40,6 +40,11 @@ function clientside_validation_js_alter(&$javascript) {
         $javascript[$path . '/clientside_validation.ckeditor.js']['weight'] -= 0.001;
         $javascript[$path . '/clientside_validation.ckeditor.js']['data'] = $path . '/clientside_validation.ckeditor.js';
       }
+      if (strpos($script, 'chosen') !== FALSE) {
+        $javascript[$path . '/clientside_validation.chosen.js'] = $javascript[$path. '/clientside_validation.js'];
+        $javascript[$path . '/clientside_validation.chosen.js']['weight'] -= 0.001;
+        $javascript[$path . '/clientside_validation.chosen.js']['data'] = $path . '/clientside_validation.chosen.js';
+      }
     }
   }
 }
