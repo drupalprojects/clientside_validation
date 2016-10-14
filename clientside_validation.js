@@ -601,7 +601,7 @@
           }
         }
         else {
-          validate_options.ignore += ', .horizontal-tab-hidden :input';
+          validate_options.ignore += (validate_options.ignore === '') ? '.horizontal-tab-hidden :input' : ', .horizontal-tab-hidden :input';
         }
         //Since we can only give boolean false to onsubmit, onfocusout and onkeyup, we need
         //a lot of if's (boolean true can not be passed to these properties).
