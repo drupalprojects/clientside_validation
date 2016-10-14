@@ -52,8 +52,14 @@
         };
       };
       var updateText = function (instance) {
-        return debounce(function () {
+        return debounce(function (e) {
           instance.updateElement();
+          var event = $.extend(true, {}, e.data.$);
+          delete event.target;
+          delete event.explicitOriginalTarget;
+          delete event.originalTarget;
+          delete event.currentTarget;
+          $(instance.element.$).trigger(new $.Event(e.name, event));
         }, 250);
       };
       CKEDITOR.on('instanceReady', function () {
