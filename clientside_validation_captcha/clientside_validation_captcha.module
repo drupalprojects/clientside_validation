@@ -12,7 +12,7 @@ function clientside_validation_captcha_ctools_plugin_directory($module, $plugin)
 /**
  * Implements hook_menu().
  */
-function clientside_validation_captcha() {
+function clientside_validation_captcha_menu() {
   $items = array();
   $items['clientside_validation/captcha'] = array(
     'title' => 'Clientside validation ajax callback to validate captcha',
