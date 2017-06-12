@@ -12,7 +12,7 @@ class CvCoreCaptchaValidator extends ClientsideValidationValidator {
 
   public function supports(array $element, array &$form_state) {
     return (
-      parent::supports($element, $form_state)
+      isset($element['#name'])
       && isset($element['#type'])
       && $element['#type'] == 'captcha'
       && isset($element['captcha_widgets']['captcha_response'])
@@ -43,7 +43,7 @@ class CvCoreCaptchaValidator extends ClientsideValidationValidator {
   }
 
   public function getMessage(array $element) {
-    return t('Wrong answer for !title.', array('!title' => $element['#title']));
+    return t('Wrong answer for !title.', array('!title' => $element['captcha_widgets']['captcha_response']['#title']));
   }
 
 }

@@ -399,11 +399,12 @@ function clientside_validation_add_validation(&$element, &$form_state, $form_id)
           $element['#attached']['js'][] = array(
             'data' => $file,
             'type' => 'file',
+            'scope' => 'footer',
           );
         }
       }
     }
-    return empty($validators);
+    return !empty($validators);
   }
   return FALSE;
 }
