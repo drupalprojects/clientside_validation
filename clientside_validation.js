@@ -1061,7 +1061,7 @@
         'type': "POST",
         'data': {
           'value': value,
-          'param': [sid, param]
+          'param': [sid, param.validate, param.token]
         },
         'dataType': 'json',
         'async': false,
