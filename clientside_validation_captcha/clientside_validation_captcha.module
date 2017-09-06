@@ -30,6 +30,10 @@ function _clientside_validation_captcha_ajax_captcha() {
   $captcha_response = filter_xss($_POST['value']);
   $csid = $_POST['param'][0];
   $captcha_validate = $_POST['param'][1];
+  $token = $_POST['param'][2];
+  if (!drupal_valid_token($token, $captcha_validate)) {
+    return drupal_access_denied();
+  }
   $solution = db_query(
     'SELECT solution FROM {captcha_sessions} WHERE csid = :csid',
     array(':csid' => $csid)

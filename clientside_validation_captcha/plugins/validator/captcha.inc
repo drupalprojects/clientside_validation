@@ -25,7 +25,10 @@ class CvCoreCaptchaValidator extends ClientsideValidationValidator {
     return array(
       'rules' => array(
         $name => array(
-          'captcha' => $element['#captcha_validate'],
+          'captcha' => array(
+            'validate' => $element['#captcha_validate'],
+            'token' => drupal_get_token($element['#captcha_validate']),
+          ),
         ),
       ),
       'messages' => array(
