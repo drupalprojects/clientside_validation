@@ -1061,7 +1061,7 @@
         'type': "POST",
         'data': {
           'value': value,
-          'param': [sid, param.validate, param.token]
+          'param': [sid, param.captcha_validate, param.token, param.captcha_token]
         },
         'dataType': 'json',
         'async': false,
