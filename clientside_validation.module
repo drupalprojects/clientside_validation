@@ -1,10 +1,12 @@
 <?php
+
 /**
  * @file
  * Hook implementations for the Clientside Validation module.
  */
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
 
 /**
  * Implements hook_form_alter().
@@ -27,7 +29,7 @@ function clientside_validation_form_after_build($form, FormStateInterface $form_
  * Recursive function to add clientside validation to a from.
  */
 function clientside_validation_form_after_build_recurse($form_id, &$form, &$form_state) {
-  if (($children = Drupal\Core\Render\Element::children($form))) {
+  if (($children = Element::children($form))) {
     foreach ($children as $item) {
       $element = &$form[$item];
       clientside_validation_add_validation($element, $form_state, $form_id);
@@ -62,10 +64,19 @@ function clientside_validation_add_validation(&$element, FormStateInterface &$fo
  */
 function clientside_validation_should_validate($element, FormStateInterface &$form_state, $form_id) {
   $hook = 'clientside_validation_should_validate';
-  $implementations = \Drupal::moduleHandler()->getImplementations($hook);
-  $should_validate = TRUE;
+  $hook_args = [$element, $form_state, $form_id];
+
+  /** @var \Drupal\Core\Extension\ModuleHandlerInterface $module_handler */
+  $module_handler = \Drupal::moduleHandler();
+
+  $implementations = $module_handler->getImplementations($hook);
+
   foreach ($implementations as $implementation) {
-    $should_validate = $should_validate && (\Drupal::moduleHandler()->invoke($implementation, $hook, [$element, $form_state, $form_id]) !== FALSE);
+    if ($module_handler->invoke($implementation, $hook, $hook_args) === FALSE) {
+      // Don't validate even if any one implementation returns false.
+      return FALSE;
+    }
   }
-  return $should_validate;
+
+  return TRUE;
 }

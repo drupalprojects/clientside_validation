@@ -27,13 +27,19 @@ class MaxLength extends CvValidatorBase {
     if (isset($element['#type']) && $element['#type'] == 'select') {
       return [
         'messages' => [
-          'maxlength' => $this->t('@title field can only have a maximum of @max values.', ['@title' => $this->getElementTitle($element), '@max' => $this->getAttributeValue($element, 'maxlength')]),
+          'maxlength' => $this->t('@title field can only have a maximum of @max values.', [
+            '@title' => $this->getElementTitle($element),
+            '@max' => $this->getAttributeValue($element, 'maxlength'),
+          ]),
         ],
       ];
     }
     return [
       'messages' => [
-        'maxlength' => $this->t('@title field has a maximum length of @max.', ['@title' => $this->getElementTitle($element), '@max' => $this->getAttributeValue($element, 'maxlength')]),
+        'maxlength' => $this->t('@title field has a maximum length of @max.', [
+          '@title' => $this->getElementTitle($element),
+          '@max' => $this->getAttributeValue($element, 'maxlength'),
+        ]),
       ],
     ];
   }

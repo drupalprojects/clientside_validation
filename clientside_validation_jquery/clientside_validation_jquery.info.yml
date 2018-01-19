@@ -4,4 +4,4 @@ description: 'Uses the jQuery Validate plugin as the clientside validation libra
 package: Clientside Validation
 core: 8.x
 dependencies:
-  - clientside_validation
+  - clientside_validation:clientside_validation

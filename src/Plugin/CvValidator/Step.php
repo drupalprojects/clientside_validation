@@ -27,13 +27,20 @@ class Step extends CvValidatorBase {
       if (($min = $this->getAttributeValue($element, 'min'))) {
         return [
           'messages' => [
-            'step' => $this->t('The value in @title has to be greater than @min by steps of @step.', ['@title' => $this->getElementTitle($element), '@step' => $step, '@min' => $min]),
+            'step' => $this->t('The value in @title has to be greater than @min by steps of @step.', [
+              '@title' => $this->getElementTitle($element),
+              '@step' => $step,
+              '@min' => $min,
+            ]),
           ],
         ];
       }
       return [
         'messages' => [
-          'step' => $this->t('The value in @title has to be divisible by @step.', ['@title' => $this->getElementTitle($element), '@step' => $step]),
+          'step' => $this->t('The value in @title has to be divisible by @step.', [
+            '@title' => $this->getElementTitle($element),
+            '@step' => $step,
+          ]),
         ],
       ];
     }

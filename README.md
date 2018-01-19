@@ -33,19 +33,19 @@ To install the library using Composer:
 1. Add the proper repository to your `composer.json` file to be able to require
    the JS library:
 
-    ```
-        {
-          "type": "package",
-          "package": {
-            "name": "jqueryvalidate",
-            "version": "1.17.0",
-            "type": "drupal-library",
-            "dist": {
-              "url": "https://github.com/jquery-validation/jquery-validation/releases/download/1.17.0/jquery-validation-1.17.0.zip",
-              "type": "zip"
-            }
+    ```json
+      {
+        "type": "package",
+        "package": {
+          "name": "jqueryvalidate",
+          "version": "1.17.0",
+          "type": "drupal-library",
+          "dist": {
+            "url": "https://github.com/jquery-validation/jquery-validation/releases/download/1.17.0/jquery-validation-1.17.0.zip",
+            "type": "zip"
           }
         }
+      }
     ```
 
     It is always good to download and use the latest version here but new 
@@ -60,7 +60,8 @@ To install the library using Composer:
 If you need support for other contrib modules, you can add a CvValidator plugin
 to that module and it will be picked up by the base module.
 
-If you require custom javascript, you can implement `hook_clientside_validation_validator_info_alter()`
+If you require custom javascript, you can implement 
+`hook_clientside_validation_validator_info_alter()`
 
 # Contribute
 

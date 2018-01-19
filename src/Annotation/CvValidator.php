@@ -7,7 +7,7 @@ use Drupal\Component\Annotation\Plugin;
 /**
  * Defines a clientside validation validator.
  *
- * Plugin Namespace: Plugin\clientside_validation\CvValidator
+ * Plugin Namespace: Plugin\clientside_validation\CvValidator.
  *
  * @see \Drupal\clientside_validation\ValidatorManager
  * @see plugin_api
@@ -47,6 +47,8 @@ class CvValidator extends Plugin {
 
   /**
    * An array of assets that can be #attached to a form element.
+   *
+   * @var array
    */
   public $attachments = [];
 

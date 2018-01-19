@@ -10,3 +10,23 @@
  */
 function clientside_validation_jquery_update_8001() {
 }
+
+/**
+ * Implements hook_requirements().
+ */
+function clientside_validation_jquery_requirements($phase) {
+  $requirements = [];
+
+  if ($phase == 'runtime') {
+    $library_exists = file_exists('libraries/jqueryvalidate/dist/jquery.validate.js');
+
+    $requirements['clientside_validation_jquery_library'] = [
+      'title' => t('Clientside Validation jQuery library'),
+      'value' => $library_exists ? t('Downloaded in Library') : t('Downloaded in module OR using from CDN'),
+      'description' => $library_exists ? '' : t('Check README in module folder for instructions on how to use it through libraries (Drupal way).'),
+      'severity' => $library_exists ? REQUIREMENT_OK : REQUIREMENT_WARNING,
+    ];
+  }
+
+  return $requirements;
+}

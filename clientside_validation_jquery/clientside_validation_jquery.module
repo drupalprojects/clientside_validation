@@ -1,13 +1,16 @@
 <?php
+
 /**
  * @file
  * Hook implementations for the Clientside Validation jQuery module.
  */
 
+use Drupal\Core\Asset\AttachedAssetsInterface;
+
 /**
  * Implements hook_js_alter().
  */
-function clientside_validation_jquery_js_alter(&$javascript, \Drupal\Core\Asset\AttachedAssetsInterface $assets) {
+function clientside_validation_jquery_js_alter(&$javascript, AttachedAssetsInterface $assets) {
   if (\Drupal::moduleHandler()->moduleExists('ckeditor')) {
     $library_discovery = \Drupal::service('library.discovery');
     $ckeditor = $library_discovery->getLibraryByName('ckeditor', 'drupal.ckeditor');
@@ -93,24 +96,4 @@ function clientside_validation_jquery_library_info_alter(&$libraries, $extension
       $libraries['jquery.validate.additional']['js'][$cdn_url . 'additional-methods.min.js'] = ['type' => 'external'];
     }
   }
-}
-
-/**
- * Implements hook_requirements().
- */
-function clientside_validation_jquery_requirements($phase) {
-  $requirements = [];
-
-  if ($phase == 'runtime') {
-    $library_exists = file_exists('libraries/jqueryvalidate/dist/jquery.validate.js');
-
-    $requirements['clientside_validation_jquery_library'] = [
-      'title' => t('Clientside Validation jQuery library'),
-      'value' => $library_exists ? t('Downloaded in Library') : t('Downloaded in module OR using from CDN'),
-      'description' => $library_exists ? '' : t('Check README in module folder for instructions on how to use it through libraries (Drupal way).'),
-      'severity' => $library_exists ? REQUIREMENT_OK : REQUIREMENT_WARNING,
-    ];
-  }
-
-  return $requirements;
 }

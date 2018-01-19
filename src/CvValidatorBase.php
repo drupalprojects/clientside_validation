@@ -9,6 +9,11 @@ use Drupal\Component\Utility\Unicode;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Component\Utility\NestedArray;
 
+/**
+ * Class CvValidatorBase.
+ *
+ * @package Drupal\clientside_validation
+ */
 abstract class CvValidatorBase extends PluginBase implements CvValidatorInterface {
   use StringTranslationTrait;
 
@@ -71,9 +76,26 @@ abstract class CvValidatorBase extends PluginBase implements CvValidatorInterfac
         : (isset($element['#attributes'][$attribute]) ? $element['#attributes'][$attribute] : NULL);
   }
 
-  protected function getElementTitle(array $element, $default = 'This field') {
+  /**
+   * Get title for form element.
+   *
+   * @param array $element
+   *   Element.
+   * @param string $default
+   *   Default value for the title.
+   *
+   * @return \Drupal\Core\StringTranslation\TranslatableMarkup|mixed
+   *   Title value.
+   */
+  protected function getElementTitle(array $element, $default = '') {
+
     $title = $this->getAttributeValue($element, 'title');
-    return $title ? $title : t($default);
+
+    if (empty($title) && empty($default)) {
+      return t('This field');
+    }
+
+    return $title ? $title : $default;
   }
 
 }

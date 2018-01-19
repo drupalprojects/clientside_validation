@@ -37,8 +37,8 @@ class UrlInternalExternal extends CvValidatorBase {
    */
   public function addValidation(array &$element, FormStateInterface $form_state) {
     parent::addValidation($element, $form_state);
-    // needs patch from https://www.drupal.org/node/2613694
-    switch($element['#link_type']) {
+    // Needs patch from https://www.drupal.org/node/2613694
+    switch ($element['#link_type']) {
       case LinkItemInterface::LINK_GENERIC:
         $element['#attributes']['pattern'] = '\<front\>|\/.*|\?.*|#.*|[hH][tT][Tt][pP][sS]?://.+|.*\(\d+\)';
         break;
