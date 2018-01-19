@@ -24,7 +24,7 @@ class MaxLength extends CvValidatorBase {
   protected function getRules($element, FormStateInterface $form_state) {
     // Drupal already adds the maxlength attribute, so we don't need to set the
     // maxlength rule.
-    if ($element['#type'] == 'select') {
+    if (isset($element['#type']) && $element['#type'] == 'select') {
       return [
         'messages' => [
           'maxlength' => $this->t('@title field can only have a maximum of @max values.', ['@title' => $this->getElementTitle($element), '@max' => $this->getAttributeValue($element, 'maxlength')]),
