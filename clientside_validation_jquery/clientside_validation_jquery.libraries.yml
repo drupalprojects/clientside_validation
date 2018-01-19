@@ -2,6 +2,7 @@ jquery.validate:
   js:
     js/lib/dist/jquery.validate.js: {}
   dependencies:
+    - core/drupal
     - core/jquery
 jquery.validate.additional:
   js:
