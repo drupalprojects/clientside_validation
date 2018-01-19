@@ -1,12 +1,12 @@
 jquery.validate:
   js:
-    js/lib/dist/jquery.validate.js: {}
+    /libraries/jqueryvalidate/dist/jquery.validate.js: {}
   dependencies:
     - core/drupal
     - core/jquery
 jquery.validate.additional:
   js:
-    js/lib/dist/additional-methods.js: {}
+    /libraries/jqueryvalidate/dist/additional-methods.js: {}
   dependencies:
     - clientside_validation_jquery/jquery.validate
 cv.jquery.validate:
