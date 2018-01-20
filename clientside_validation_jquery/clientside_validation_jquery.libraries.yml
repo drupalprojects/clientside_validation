@@ -1,10 +1,20 @@
 jquery.validate:
+  remote: https://jqueryvalidation.org/
+  license:
+    name: MIT
+    url: https://github.com/jquery-validation/jquery-validation/blob/master/LICENSE.md
+    gpl-compatible: true
   js:
     /libraries/jqueryvalidate/dist/jquery.validate.js: {}
   dependencies:
     - core/drupal
     - core/jquery
 jquery.validate.additional:
+  remote: https://jqueryvalidation.org/
+  license:
+    name: MIT
+    url: https://github.com/jquery-validation/jquery-validation/blob/master/LICENSE.md
+    gpl-compatible: true
   js:
     /libraries/jqueryvalidate/dist/additional-methods.js: {}
   dependencies:
