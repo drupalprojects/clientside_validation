@@ -49,42 +49,49 @@ function clientside_validation_jquery_clientside_validation_validator_info_alter
  */
 function clientside_validation_jquery_library_info_alter(&$libraries, $extension) {
   if ($extension == 'clientside_validation_jquery' && isset($libraries['jquery.validate'])) {
-    // Based on updated readme instructions, check in libraries.
-    if (file_exists('libraries/jqueryvalidate/dist/jquery.validate.js')) {
-      // We do nothing here if it is available in libraries.
-      return;
-    }
-
     $module_path = drupal_get_path('module', 'clientside_validation_jquery');
     $path_in_yml = '/libraries/jqueryvalidate/dist/';
 
-    // Previously we told users to extract the /dist folder.
-    // Make sure we still support this.
-    // Check direct extraction and extraction of just dist dir both.
-    $paths_to_check = [
-      '/js/lib/',
-      '/js/lib/dist/',
-    ];
+    // Load settings from config.
+    $config = \Drupal::config('clientside_validation_jquery.settings');
 
-    foreach ($paths_to_check as $path) {
-      if (file_exists($module_path . $path . 'jquery.validate.js')) {
-        unset($libraries['jquery.validate']['js'][$path_in_yml . 'jquery.validate.js']);
-        $libraries['jquery.validate']['js']['js/lib/jquery.validate.js'] = [];
-
-        // Add additional methods js only if required.
-        if (isset($libraries['jquery.validate.additional']['js'][$path_in_yml . 'additional-methods.js'])) {
-          unset($libraries['jquery.validate.additional']['js'][$path_in_yml . 'additional-methods.js']);
-          $libraries['jquery.validate']['js'][$path . 'additional-methods.js'] = [];
-        }
-
-        // Nothing left to be processed now, we simply return.
+    // Check for library or js in module only if use_cdn flag is set to false.
+    if (empty($config->get('use_cdn'))) {
+      // Based on updated readme instructions, check in libraries.
+      if (file_exists('libraries/jqueryvalidate/dist/jquery.validate.js')) {
+        // We do nothing here if it is available in libraries.
         return;
+      }
+
+      // Previously we told users to extract the /dist folder.
+      // Make sure we still support this.
+      // Check direct extraction and extraction of just dist dir both.
+      $paths_to_check = [
+        '/js/lib/',
+        '/js/lib/dist/',
+      ];
+
+      foreach ($paths_to_check as $path) {
+        if (file_exists($module_path . $path . 'jquery.validate.js')) {
+          unset($libraries['jquery.validate']['js'][$path_in_yml . 'jquery.validate.js']);
+          $libraries['jquery.validate']['js']['js/lib/jquery.validate.js'] = [];
+
+          // Add additional methods js only if required.
+          if (isset($libraries['jquery.validate.additional']['js'][$path_in_yml . 'additional-methods.js'])) {
+            unset($libraries['jquery.validate.additional']['js'][$path_in_yml . 'additional-methods.js']);
+            $libraries['jquery.validate']['js'][$path . 'additional-methods.js'] = [];
+          }
+
+          // Nothing left to be processed now, we simply return.
+          return;
+        }
       }
     }
 
-    // Use JS from CDN as we didn't find it in module or libraries.
-    // @TODO: Make version number configurable here.
-    $cdn_url = '//cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/';
+    // Use JS from CDN.
+    // Fallback to CDN if not available in libraries or module.
+    // Also use this by default if config says use CDN.
+    $cdn_url = $config->get('cdn_base_url');
 
     // For CDN we use the min versions as Drupal is not going to compress them.
     unset($libraries['jquery.validate']['js'][$path_in_yml . 'jquery.validate.js']);
