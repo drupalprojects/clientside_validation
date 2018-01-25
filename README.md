@@ -15,7 +15,12 @@ automatically included by linking to the CDN version.
 If you would prefer to download the library, you can either install it manually
 or using Composer.
 
-To install the library manually:
+### To install the library using drush:
+1. Install the module clientside_validation_jquery.
+
+2. Execute `drush [alias] cvjld`.
+
+### To install the library manually:
 
 1. Download the jQuery Validation library from http://jqueryvalidation.org/ .
    jQuery Validation 1.17.0 or higher is recommended.
@@ -28,7 +33,7 @@ To install the library manually:
    `/libraries/jqueryvalidate` folder (i.e.: so that the `jquery.validate.js`
    file is at `/libraries/jqueryvalidate/dist/jquery.validate.js`).
 
-To install the library using Composer:
+### To install the library using Composer:
 
 1. Add the proper repository to your `composer.json` file to be able to require
    the JS library:
