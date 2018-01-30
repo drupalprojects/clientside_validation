@@ -146,11 +146,8 @@ class ClientsideValidationTest extends JavascriptTestBase {
       $errorElement = $this->page->findById($key . '-error');
 
       if (empty($errorElement)) {
-        $message = sprintf('Element %s not found while trying to check for: %s',
-          $key,
-          $expected);
-
-        print $message;
+        // We will fail this scenario.
+        $this->assertEquals($expected, '');
 
         continue;
       }
