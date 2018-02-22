@@ -1476,7 +1476,12 @@
       if (!$(element).data("being_validated")) {
         $fields.data("being_validated", true);
         $fields.each(function() {
-          validator.element(this);
+          if (jQuery.data(this, 'clientside_validation_validated')) {
+            return;
+          } else {
+            jQuery.data(this, 'clientside_validation_validated', true);
+            validator.element(this);
+          }
         });
         $fields.data("being_validated", false);
       }
